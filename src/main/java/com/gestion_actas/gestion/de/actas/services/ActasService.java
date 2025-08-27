@@ -2,11 +2,11 @@ package com.gestion_actas.gestion.de.actas.services;
 
 import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
 import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
+import com.gestion_actas.gestion.de.actas.model.DTO.InicioTablaDTO;
 import com.gestion_actas.gestion.de.actas.repository.ActasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +16,7 @@ public class ActasService {
     @Autowired
     private ActasRepository actasRepository;
 
+    // Listar todos los usuarios en DTO
     public List<ActasUsuarioDTO> listarUsuarios() {
         return actasRepository.findAll().stream().map(personal -> {
             ActasUsuarioDTO dto = new ActasUsuarioDTO();
@@ -29,7 +30,6 @@ public class ActasService {
             dto.setCargo(personal.getCargo());
             dto.setFechaIngreso(personal.getFechaIngreso() != null ? personal.getFechaIngreso().toString() : "");
             dto.setFechaTermino(personal.getFechaTermino() != null ? personal.getFechaTermino().toString() : "");
-
 
             // --- Suma de Ingresos ---
             double ingresos = 0.0;
@@ -109,9 +109,26 @@ public class ActasService {
             return dto;
         }).collect(Collectors.toList());
     }
-//obtener detalles por id
+
+    // Obtener por ID
     public ActasPersonal obtenerPorId(Long id) {
         return actasRepository.findById(id).orElse(null);
+    }
+
+    // Obtener resumen de usuarios con query nativa
+    public List<InicioTablaDTO> obtenerResumenUsuarios() {
+        List<Object[]> resultados = actasRepository.obtenerResumenUsuarios();
+        return resultados.stream()
+                .map(row -> new InicioTablaDTO(
+                        (String) row[0],
+                        (String) row[1],
+                        (String) row[2],
+                        (String) row[3],
+                        (String) row[4],
+                        (String) row[5],
+                        (String) row[6],
+                        ((Number) row[7]).longValue()
+                )).collect(Collectors.toList());
     }
 
 }

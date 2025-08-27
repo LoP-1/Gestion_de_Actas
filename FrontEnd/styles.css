@@ -17,6 +17,7 @@ button {
     box-shadow: 0 2px 5px #0001;
     transition: background 0.2s;
 }
+
 button:hover {
     background: #357ab7;
 }
@@ -68,7 +69,8 @@ table {
     table-layout: fixed;
 }
 
-th, td {
+th,
+td {
     padding: 9px 10px;
     border-bottom: 1px solid #e0e8f7;
     text-align: left;
@@ -92,9 +94,11 @@ tr:last-child td {
         max-width: 99vw;
         padding: 10px;
     }
+
     button {
         margin-left: 10px;
     }
+
     table {
         min-width: 600px;
         font-size: 1rem;
@@ -102,7 +106,8 @@ tr:last-child td {
 }
 
 /* Botón de acción en la tabla */
-#tablaUsuarios button, .tabla-acciones button {
+#tablaUsuarios button,
+.tabla-acciones button {
     width: 80px;
     height: 36px;
     font-size: 1rem;
@@ -118,6 +123,44 @@ tr:last-child td {
     margin: 0;
     display: inline-block;
 }
-#tablaUsuarios button:hover, .tabla-acciones button:hover {
+
+#tablaUsuarios button:hover,
+.tabla-acciones button:hover {
     background: #357ab7;
+}
+
+.periodos-box {
+    margin-bottom: 18px;
+}
+
+.periodos-box label {
+    margin-right: 15px;
+}
+
+.paginador {
+    text-align: center;
+    margin: 18px 0 0 0;
+}
+
+.paginador button {
+    margin: 0 4px;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: none;
+    background: #4a90e2;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.paginador button.active,
+.paginador button:disabled {
+    background: #357ab7;
+    font-weight: bold;
+}
+
+.paginador button:disabled {
+    opacity: 0.7;
+    cursor: default;
 }

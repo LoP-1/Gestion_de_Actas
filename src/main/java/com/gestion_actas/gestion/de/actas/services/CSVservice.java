@@ -30,7 +30,7 @@ public class CSVservice {
                     isFirstLine = false; // Saltar encabezado
                     continue;
                 }
-                String[] data = line.split(";", -1); // Separador punto y coma ;, -1 para campos vacíos
+                String[] data = line.split(",", -1); // Separador punto y coma ;, -1 para campos vacíos
 
                 ActasPersonal lp = new ActasPersonal();
 
