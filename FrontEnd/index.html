@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Actas - Subir y Buscar CSV</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .periodos-box {
+            margin-bottom: 18px;
+        }
+        .periodos-box label {
+            margin-right: 15px;
+        }
+        .paginador {
+            text-align: center;
+            margin: 18px 0 0 0;
+        }
+        .paginador button {
+            margin: 0 4px;
+            padding: 6px 12px;
+            font-size: 1rem;
+            border: none;
+            background: #4a90e2;
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .paginador button.active, .paginador button:disabled {
+            background: #357ab7;
+            font-weight: bold;
+        }
+        .paginador button:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="window.location.href='subir.html'">subir csv</button>
+    <div class="container">
+        <h2>Usuarios de Actas</h2>
+        <div class="buscador-box">
+            <label for="buscador"><strong>Buscar usuario:</strong></label>
+            <input type="text" id="buscador" placeholder="Nombre o documento..." />
+        </div>
+        <div class="periodos-box" id="periodosBox">
+            <!-- Los checks se generan dinámicamente -->
+        </div>
+        <table id="tablaUsuarios">
+            <thead>
+                <tr>
+                    <th>Periodo</th>
+                    <th>Nombre Completo</th>
+                    <th>Documento</th>
+                    <th>Establecimiento</th>
+                    <th>Cargo</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Fecha Término</th>
+                    <th>Ingresos S/</th>
+                    <th>Egresos S/</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Filas generadas por JS -->
+            </tbody>
+        </table>
+        <div id="paginador" class="paginador"></div>
+    </div>
+
+    <script>
+        let usuarios = [];
+        let periodos = [];
+        let currentFiltro = "";
+        let currentPage = 1;
+        const pageSize = 50;
+
+        // Fetch usuarios y genera checks de periodo
+        fetch('http://localhost:8080/usuarios')
+            .then(res => res.json())
+            .then(arr => {
+                usuarios = arr;
+                // Extrae periodos únicos
+                periodos = [...new Set(arr.map(u => u.periodoPago).filter(p => p))];
+                renderPeriodosChecks();
+                renderTablaUsuarios();
+            });
+
+        // Renderiza los checks de periodo
+        function renderPeriodosChecks() {
+            const box = document.getElementById("periodosBox");
+            box.innerHTML = "<strong>Filtrar por periodo:</strong> ";
+            periodos.forEach(periodo => {
+                const id = "periodo_" + periodo;
+                box.innerHTML += `
+                    <label>
+                        <input type="checkbox" class="periodo-check" id="${id}" value="${periodo}" checked>
+                        ${periodo}
+                    </label>
+                `;
+            });
+            document.querySelectorAll(".periodo-check").forEach(check => {
+                check.addEventListener("change", () => {
+                    currentPage = 1;
+                    renderTablaUsuarios(currentFiltro);
+                });
+            });
+        }
+
+        // Tabla filtrando por nombre/documento y periodos chequeados, muestra solo la página actual
+        function renderTablaUsuarios(filtro = "") {
+            currentFiltro = filtro;
+            const tbody = document.querySelector("#tablaUsuarios tbody");
+            tbody.innerHTML = "";
+
+            // Periodos chequeados
+            const selectedPeriodos = Array.from(document.querySelectorAll(".periodo-check:checked")).map(c => c.value);
+            if (selectedPeriodos.length === 0) {
+                document.getElementById("paginador").innerHTML = "";
+                return;
+            }
+
+            let filtrados = usuarios.filter(u =>
+                selectedPeriodos.includes(u.periodoPago) &&
+                (
+                    (
+                        (u.nombres ? u.nombres : "") + " " +
+                        (u.apePaterno ? u.apePaterno : "") + " " +
+                        (u.apeMaterno ? u.apeMaterno : "")
+                    ).toLowerCase().includes(filtro.toLowerCase()) ||
+                    (u.nroDocumento ? u.nroDocumento : "").toLowerCase().includes(filtro.toLowerCase())
+                )
+            );
+
+            // PAGINACIÓN
+            const totalPages = Math.ceil(filtrados.length / pageSize);
+            if (currentPage > totalPages) currentPage = 1;
+            const startIdx = (currentPage - 1) * pageSize;
+            const endIdx = startIdx + pageSize;
+            const pagina = filtrados.slice(startIdx, endIdx);
+
+            pagina.forEach(u => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${u.periodoPago ?? ""}</td>
+                    <td class="usuario-nombre">${u.nombres ?? ""} ${u.apePaterno ?? ""} ${u.apeMaterno ?? ""}</td>
+                    <td>${u.nroDocumento ?? ""}</td>
+                    <td>${u.establecimiento ?? ""}</td>
+                    <td>${u.cargo ?? ""}</td>
+                    <td>${u.fechaIngreso ?? ""}</td>
+                    <td>${u.fechaTermino ?? ""}</td>
+                    <td class="ingreso">${u.ingresos !== undefined ? u.ingresos.toLocaleString("es-PE", { minimumFractionDigits: 2 }) : ""}</td>
+                    <td class="egreso">${u.egresos !== undefined ? u.egresos.toLocaleString("es-PE", { minimumFractionDigits: 2 }) : ""}</td>
+                    <td><button onclick="verDetalles(${u.id})">Ver más</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            renderPaginador(totalPages);
+        }
+
+        // Renderiza los botones de paginación
+        function renderPaginador(totalPages) {
+            const paginador = document.getElementById("paginador");
+            paginador.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            // Botón anterior
+            paginador.innerHTML += `<button ${currentPage === 1 ? "disabled" : ""} onclick="cambiarPagina(currentPage-1)">«</button>`;
+
+            // Números de página (máx 7 visibles, centrados en la actual)
+            let start = Math.max(1, currentPage - 3);
+            let end = Math.min(totalPages, currentPage + 3);
+
+            if (currentPage <= 4) { start = 1; end = Math.min(totalPages, 7); }
+            if (currentPage > totalPages - 4) { start = Math.max(1, totalPages - 6); end = totalPages; }
+
+            for (let i = start; i <= end; i++) {
+                paginador.innerHTML += `<button ${i === currentPage ? "class='active'" : ""} onclick="cambiarPagina(${i})">${i}</button>`;
+            }
+
+            // Botón siguiente
+            paginador.innerHTML += `<button ${currentPage === totalPages ? "disabled" : ""} onclick="cambiarPagina(currentPage+1)">»</button>`;
+        }
+
+        // Cambia la página y re-renderiza
+        function cambiarPagina(page) {
+            currentPage = page;
+            renderTablaUsuarios(currentFiltro);
+        }
+
+        // Filtro por buscador
+        document.getElementById("buscador").addEventListener("input", function () {
+            currentPage = 1;
+            renderTablaUsuarios(this.value);
+        });
+
+        function verDetalles(id) {
+            window.location.href = `detalles.html?id=${id}`;
+        }
+
+        // Hace global la función para los botones
+        window.cambiarPagina = cambiarPagina;
+    </script>
+</body>
+</html>

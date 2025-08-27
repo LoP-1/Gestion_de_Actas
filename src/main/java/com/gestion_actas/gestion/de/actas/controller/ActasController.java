@@ -1,0 +1,28 @@
+package com.gestion_actas.gestion.de.actas.controller;
+
+import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
+import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
+import com.gestion_actas.gestion.de.actas.services.ActasService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class ActasController {
+        @Autowired
+        private ActasService actasService;
+
+        @GetMapping("/usuarios")
+        public List<ActasUsuarioDTO> listarUsuarios() {
+            return actasService.listarUsuarios();
+        }
+
+    @GetMapping("/usuarios/{id}")
+    public ActasPersonal obtenerUsuario(@PathVariable Long id) {
+        return actasService.obtenerPorId(id);
+    }
+}
