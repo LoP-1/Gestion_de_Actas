@@ -5,6 +5,7 @@ import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
 import com.gestion_actas.gestion.de.actas.model.DTO.DetalleActasDTO;
 import com.gestion_actas.gestion.de.actas.model.DTO.InicioTablaDTO;
 import com.gestion_actas.gestion.de.actas.repository.ActasRepository;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,10 +112,7 @@ public class ActasService {
         }).collect(Collectors.toList());
     }
 
-    // Obtener por ID
-    public ActasPersonal obtenerPorId(Long id) {
-        return actasRepository.findById(id).orElse(null);
-    }
+
 
     // Obtener resumen de usuarios con query nativa
     public List<InicioTablaDTO> obtenerResumenUsuarios() {
@@ -142,4 +140,31 @@ public class ActasService {
                 row[3] != null ? ((Number) row[3]).doubleValue() : null // total_remuneracion
         )).collect(Collectors.toList());
     }
+    //entregar nombre por dni
+    public String getNombrePrincipalPorNroDocumento(String nroDocumento) {
+        return actasRepository.findNombreCompletoByNroDocumento(nroDocumento);
+    }
+
+    //CRUD
+    // Obtener por ID
+    public ActasPersonal obtenerPorId(Long id) {
+        return actasRepository.findById(id).orElse(null);
+    }
+
+    public Optional<ActasPersonal> buscarPorId(Long id) {
+        return actasRepository.findById(id);
+    }
+    public List<ActasPersonal> listarTodos() {
+        return actasRepository.findAll();
+    }
+
+    public ActasPersonal guardar(ActasPersonal acta) {
+        return actasRepository.save(acta);
+    }
+
+    public void eliminar(Long id) {
+        actasRepository.deleteById(id);
+    }
+
+
 }

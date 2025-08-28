@@ -28,4 +28,13 @@ public interface ActasRepository extends JpaRepository<ActasPersonal, Long> {
             nativeQuery = true
     )
     List<Object[]> findActasByNroDocumento(String nroDocumento);
+
+    //obtener el nombre por dni
+    @Query(
+            value = "SELECT CONCAT(nombres, ' ', ape_paterno, ' ', ape_materno) " +
+                    "FROM actas_personal WHERE nro_documento = ?1 LIMIT 1",
+            nativeQuery = true
+    )
+    String findNombreCompletoByNroDocumento(String nroDocumento);
+
 }

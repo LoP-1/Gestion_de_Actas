@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Actas Personal</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+        th, td { border: 1px solid #ccc; padding: 0.5em; }
+        th { background: #f5f5f5; }
+        .actions button { margin-right: 0.5em; }
+        .modal { display:none; position:fixed; left:0; top:0; width:100vw; height:100vh;
+            background:rgba(0,0,0,0.4); justify-content:center; align-items:center; z-index:99;}
+        .modal-content { background:#fff; padding:2em; border-radius:8px; width:90vw; max-width:900px; max-height:90vh; overflow:auto;}
+        .form-group { margin-bottom: 1em; display: flex; }
+        label { width: 220px; font-weight: bold; }
+        input, select { flex: 1; padding: 0.3em; border: 1px solid #ccc; border-radius: 3px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        #nuevoBtn { margin-bottom: 1em; }
+    </style>
+</head>
+<navbar>
+        <ul>
+            <li><a href="index.html">inicio</a></li>
+            <li><a href="subir.html">subir csv</a></li>
+            <li><a href="edicion.html">Editar Valores</a></li>
+            <li><a href=""></a>Exportar</li>
+        </ul>
+    </navbar>
+<body>
+    <h1>Edicion de usuarios Actas Personal</h1>
+    <button id="nuevoBtn">Nuevo registro</button>
+    <input type="text" id="buscador" placeholder="Buscar por nombre, apellido o Nro Documento" style="margin-bottom:1em; width:300px; padding:0.5em;">
+    <table id="tablaActas">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombres</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Nro Documento</th>
+                <th>Cargo</th>
+                <th>Periodo Pago</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Registros aquí -->
+        </tbody>
+    </table>
+
+    <!-- MODAL para crear/editar -->
+    <div id="modalCrud" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitulo"></h2>
+            <form id="formActasPersonal">
+                <!-- Todos los campos aquí (como en el formulario anterior) -->
+                <input type="hidden" name="id">
+                <div class="form-group"><label>Periodo Pago</label><input type="text" name="periodoPago"></div>
+                <div class="form-group"><label>Fecha Ingreso</label><input type="date" name="fechaIngreso"></div>
+                <div class="form-group"><label>Fecha Término</label><input type="date" name="fechaTermino"></div>
+                <div class="form-group"><label>Doc. Referencia</label><input type="text" name="docReferencia"></div>
+                <div class="form-group"><label>Código Modular</label><input type="text" name="codigoModular"></div>
+                <div class="form-group"><label>AIRHSP</label><input type="text" name="airhsp"></div>
+                <div class="form-group"><label>Cargo</label><input type="text" name="cargo"></div>
+                <div class="form-group"><label>Apellido Paterno</label><input type="text" name="apePaterno"></div>
+                <div class="form-group"><label>Apellido Materno</label><input type="text" name="apeMaterno"></div>
+                <div class="form-group"><label>Nombres</label><input type="text" name="nombres"></div>
+                <div class="form-group"><label>Situación</label><input type="text" name="situacion"></div>
+                <div class="form-group"><label>Días Licencia</label><input type="number" name="diasLicencia"></div>
+                <div class="form-group"><label>Fecha Inicio Licencia</label><input type="date" name="fecinilic"></div>
+                <div class="form-group"><label>Tipo Planilla</label><input type="text" name="tPlanilla"></div>
+                <div class="form-group"><label>Fecha Nacimiento</label><input type="date" name="fechaNacimiento"></div>
+                <div class="form-group"><label>Sexo</label>
+                    <select name="sexo">
+                        <option value="">--Seleccione--</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Tipo Documento</label><input type="text" name="tipoDocumento"></div>
+                <div class="form-group"><label>Nro. Documento</label><input type="text" name="nroDocumento"></div>
+                <div class="form-group"><label>IPSS</label><input type="text" name="ipss"></div>
+                <div class="form-group"><label>Reg. Pensionario</label><input type="text" name="regPensionario"></div>
+                <div class="form-group"><label>Código Nexus</label><input type="text" name="codNexus"></div>
+                <div class="form-group"><label>AFP</label><input type="text" name="afp"></div>
+                <div class="form-group"><label>CUSPP</label><input type="text" name="cuspp"></div>
+                <div class="form-group"><label>Fecha Afiliación</label><input type="date" name="fechaAfiliacion"></div>
+                <div class="form-group"><label>Fecha Devengue</label><input type="date" name="fechaDevengue"></div>
+                <div class="form-group"><label>UGEL</label><input type="text" name="ugel"></div>
+                <div class="form-group"><label>Código Establecimiento</label><input type="text" name="codEstablecimiento"></div>
+                <div class="form-group"><label>Establecimiento</label><input type="text" name="establecimiento"></div>
+                <div class="form-group"><label>Nivel</label><input type="text" name="nivel"></div>
+                <div class="form-group"><label>Caract. Establecimiento</label><input type="number" name="caractEstablecimiento"></div>
+                <div class="form-group"><label>Unidad Costeo</label><input type="text" name="unidCosteo"></div>
+                <div class="form-group"><label>Cargo/Orig</label><input type="text" name="cargoOrig"></div>
+                <div class="form-group"><label>Leyenda Permanente</label><input type="text" name="leyendaPermanente"></div>
+                <div class="form-group"><label>Modo Pago</label><input type="text" name="modoPago"></div>
+                <div class="form-group"><label>Cta Cte</label><input type="text" name="ctaCte"></div>
+                <div class="form-group"><label>Días Trabajados</label><input type="number" name="diasTrabajados"></div>
+                <div class="form-group"><label>Décimas</label><input type="number" name="decimas"></div>
+                <div class="form-group"><label>Reg. Laboral</label><input type="text" name="regLaboral"></div>
+                <div class="form-group"><label>Tipo Servidor</label><input type="text" name="tipoServidor"></div>
+                <div class="form-group"><label>Nivel Magisterial</label><input type="text" name="nivelMagisterial"></div>
+                <div class="form-group"><label>Código Comuna</label><input type="text" name="codcomuna"></div>
+                <div class="form-group"><label>Grupo Remunerativo</label><input type="text" name="grupoRemunerativo"></div>
+                <div class="form-group"><label>Jornada Laboral</label><input type="text" name="jornadaLaboral"></div>
+                <div class="form-group"><label>Tiempo Servicio</label><input type="text" name="tiempoServicio"></div>
+                <div class="form-group"><label>Cad. Presupuestal</label><input type="text" name="cadPresupuestal"></div>
+                <div class="form-group"><label>Timpopen</label><input type="text" name="timpopen"></div>
+                <div id="mensaje"></div>
+                <button type="submit" id="guardarBtn">Guardar</button>
+                <button type="button" onclick="cerrarModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="Scripts/crud.js"></script>
+</body>
+</html>

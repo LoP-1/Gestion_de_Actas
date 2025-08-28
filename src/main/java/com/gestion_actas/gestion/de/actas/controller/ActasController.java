@@ -6,6 +6,7 @@ import com.gestion_actas.gestion.de.actas.model.DTO.DetalleActasDTO;
 import com.gestion_actas.gestion.de.actas.model.DTO.InicioTablaDTO;
 import com.gestion_actas.gestion.de.actas.services.ActasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +25,8 @@ public class ActasController {
             return actasService.listarUsuarios();
         }
 
-    @GetMapping("/usuarios/{id}")
-    public ActasPersonal obtenerUsuario(@PathVariable Long id) {
+        @GetMapping("/usuarios/{id}")
+        public ActasPersonal obtenerUsuario(@PathVariable Long id) {
         return actasService.obtenerPorId(id);
     }
 
@@ -38,5 +39,14 @@ public class ActasController {
     public List<DetalleActasDTO> obtenerDetallesSimples(@RequestParam String nroDocumento) {
         return actasService.getActasPorNroDocumento(nroDocumento);
     }
+
+    @GetMapping("/usuarios/nombre")
+    public ResponseEntity<String> getNombrePrincipal(
+            @RequestParam String nroDocumento) {
+        String nombre = actasService.getNombrePrincipalPorNroDocumento(nroDocumento);
+        return ResponseEntity.ok(nombre != null ? nombre : "");
+    }
+
+
 
 }
