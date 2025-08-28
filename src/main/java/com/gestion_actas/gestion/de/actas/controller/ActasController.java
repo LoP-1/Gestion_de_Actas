@@ -34,4 +34,9 @@ public class ActasController {
         return actasService.obtenerResumenUsuarios();
     }
 
+    @GetMapping("/usuarios/detalles")
+    public List<DetalleActasDTO> obtenerDetallesSimples(@RequestParam String nroDocumento) {
+        return actasService.getActasPorNroDocumento(nroDocumento);
+    }
+
 }

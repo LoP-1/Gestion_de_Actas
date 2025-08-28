@@ -160,7 +160,7 @@ public class ActasPersonal {
     @Column(name = "imponible", precision = 10, scale = 2)
     private BigDecimal imponible;
 
-    @Column(name = "TotalRemuneración", precision = 10, scale = 2)
+    @Column(name = "TotalRemuneracion", precision = 10, scale = 2)
     private BigDecimal totalRemuneracion;
 
     @Column(name = "TotalLiquido", precision = 10, scale = 2)

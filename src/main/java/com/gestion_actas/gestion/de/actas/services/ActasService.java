@@ -2,6 +2,7 @@ package com.gestion_actas.gestion.de.actas.services;
 
 import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
 import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
+import com.gestion_actas.gestion.de.actas.model.DTO.DetalleActasDTO;
 import com.gestion_actas.gestion.de.actas.model.DTO.InicioTablaDTO;
 import com.gestion_actas.gestion.de.actas.repository.ActasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,4 +132,14 @@ public class ActasService {
                 )).collect(Collectors.toList());
     }
 
+    //cargar detalles basicos para la segunda ventana
+    public List<DetalleActasDTO> getActasPorNroDocumento(String nroDocumento) {
+        List<Object[]> resultados = actasRepository.findActasByNroDocumento(nroDocumento);
+        return resultados.stream().map(row -> new DetalleActasDTO(
+                row[0] != null ? ((Number) row[0]).longValue() : null,  // id
+                (String) row[1],                                        // periodo_pago
+                (String) row[2],                                        // codigo modular
+                row[3] != null ? ((Number) row[3]).doubleValue() : null // total_remuneracion
+        )).collect(Collectors.toList());
+    }
 }

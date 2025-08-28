@@ -22,4 +22,10 @@ public interface ActasRepository extends JpaRepository<ActasPersonal, Long> {
             nativeQuery = true
     )
     List<Object[]> obtenerResumenUsuarios();
+
+    @Query(
+            value = "SELECT id, periodo_pago, `codigo modular`, total_remuneracion FROM actas_personal WHERE nro_documento = ?1",
+            nativeQuery = true
+    )
+    List<Object[]> findActasByNroDocumento(String nroDocumento);
 }
