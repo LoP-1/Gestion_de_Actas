@@ -1,10 +1,12 @@
 package com.gestion_actas.gestion.de.actas.services;
 
 import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
-import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
-import com.gestion_actas.gestion.de.actas.model.DTO.DetalleActasDTO;
-import com.gestion_actas.gestion.de.actas.model.DTO.InicioTablaDTO;
+import com.gestion_actas.gestion.de.actas.model.DTO.*;
 import com.gestion_actas.gestion.de.actas.repository.ActasRepository;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -164,6 +166,84 @@ public class ActasService {
 
     public void eliminar(Long id) {
         actasRepository.deleteById(id);
+    }
+
+
+    //Version Angular
+    public List<UsuarioResumenDTO> obtenerResumenUsuariosSinDuplicados() {
+        List<Object[]> resultados = actasRepository.obtenerResumenUsuariosSinDuplicados();
+        List<UsuarioResumenDTO> lista = new ArrayList<>();
+        for(Object[] row : resultados){
+            UsuarioResumenDTO dto = new UsuarioResumenDTO(
+                    (String) row[0], // codigoModular
+                    (String) row[1], // dni
+                    ((String) row[2]) + " " + ((String) row[3]), // apellidos (concatenar)
+                    (String) row[4], // nombres
+                    (String) row[5], // cargo
+                    (String) row[6], // codEstablecimiento
+                    (String) row[7], // situacion
+                    (String) row[8], // tPlanilla
+                    (String) row[9], // region
+                    ((Number) row[10]).intValue() // vecesRepetido
+            );
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    public UsuarioDetalleDTO obtenerFormularioPorDni(String dni) {
+        // Cambia el repositorio para retornar una lista:
+        List<Object[]> filas = actasRepository.findEmpleadoFormularioPorDni(dni);
+        if (filas == null || filas.isEmpty()) return null; // Si no hay datos, retorna null
+
+        Object[] fila = filas.get(0); // El primer (y único) resultado
+
+        UsuarioDetalleDTO dto = new UsuarioDetalleDTO();
+        int i = 0;
+        dto.setCodigoModular(asString(fila[i++]));         // "codigo modular"
+        dto.setCargo(asString(fila[i++]));                 // "cargo"
+        dto.setApePaterno(asString(fila[i++]));            // "ape_paterno"
+        dto.setApeMaterno(asString(fila[i++]));            // "ape_materno"
+        dto.setNombres(asString(fila[i++]));               // "nombres"
+        dto.settPlanilla(asString(fila[i++]));             // "t_planilla"
+        dto.setSituacion(asString(fila[i++]));             // "situación"
+        dto.setFechaNacimiento(asLocalDate(fila[i++]));    // "fecha_nacimiento"
+        dto.setSexo(asString(fila[i++]));                  // "sexo"
+        dto.setUgel(asString(fila[i++]));                  // "ugel"
+        dto.setCodEstablecimiento(asString(fila[i++]));    // "cod_establecimiento"
+        dto.setEstablecimiento(asString(fila[i++]));       // "establecimiento"
+        dto.setCodModIE(asString(fila[i++]));              // "cod_nexus"
+        dto.setTipoDocumento(asString(fila[i++]));         // "tipo_documento"
+        dto.setNroDocumento(asString(fila[i++]));          // "nro_documento"
+        dto.setFechaIngreso(asLocalDate(fila[i++]));       // "fecha_ingreso"
+        dto.setFechaTermino(asLocalDate(fila[i++]));       // "fecha_término"
+        dto.setDocReferencia(asString(fila[i++]));         // "doc_referencia"
+        dto.setCargoOrig(asString(fila[i++]));             // "cargo/orig"
+        dto.setIpss(asString(fila[i++]));                  // "ipss"
+        dto.setRegPensionario(asString(fila[i++]));        // "reg_pensionario"
+        dto.setCadPresupuestal(asString(fila[i++]));       // "cad_presupuestal"
+        dto.setAfp(asString(fila[i++]));                   // "afp"
+        dto.setCuspp(asString(fila[i++]));                 // "cuspp"
+        dto.setFechaAfiliacion(asLocalDate(fila[i++]));    // "fecha_afiliación"
+        dto.setFechaDevengue(asLocalDate(fila[i++]));      // "fecha_devengue"
+        dto.setRegLaboral(asString(fila[i++]));            // "reg_laboral"
+        dto.setNivel(asString(fila[i++]));                 // "nivel"
+        dto.setNivelMagisterial(asString(fila[i++]));      // "nivel_magisterial"
+        dto.setModoPago(asString(fila[i++]));              // "modo_pago"
+        dto.setLeyendaPermanente(asString(fila[i++]));     // "leyenda_permanente"
+        dto.setCtaCte(asString(fila[i++]));                // "cta_cte"
+
+        return dto;
+    }
+
+    private String asString(Object o) {
+        return o == null ? null : o.toString();
+    }
+    private LocalDate asLocalDate(Object o) {
+        if (o == null) return null;
+        if (o instanceof LocalDate) return (LocalDate) o;
+        if (o instanceof Date) return ((Date) o).toLocalDate();
+        try { return LocalDate.parse(o.toString()); } catch (Exception e) { return null; }
     }
 
 

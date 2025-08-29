@@ -13,7 +13,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Permite todo endpoint para debug
-                        .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500")
+                        .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500","http://localhost:4200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

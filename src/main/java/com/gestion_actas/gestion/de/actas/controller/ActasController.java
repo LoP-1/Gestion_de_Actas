@@ -1,9 +1,7 @@
 package com.gestion_actas.gestion.de.actas.controller;
 
 import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
-import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
-import com.gestion_actas.gestion.de.actas.model.DTO.DetalleActasDTO;
-import com.gestion_actas.gestion.de.actas.model.DTO.InicioTablaDTO;
+import com.gestion_actas.gestion.de.actas.model.DTO.*;
 import com.gestion_actas.gestion.de.actas.services.ActasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +44,19 @@ public class ActasController {
         String nombre = actasService.getNombrePrincipalPorNroDocumento(nroDocumento);
         return ResponseEntity.ok(nombre != null ? nombre : "");
     }
+    //endpoints para version de angular
+    @GetMapping("/usuarios/por-dni-unicos")
+    public List<UsuarioResumenDTO> obtenerResumenUsuariosSinDuplicados() {
+        return actasService.obtenerResumenUsuariosSinDuplicados();
+    }
 
-
+    @GetMapping("usuarios/detalle/{dni}")
+    public ResponseEntity<UsuarioDetalleDTO> obtenerPorDni(@PathVariable String dni) {
+        UsuarioDetalleDTO dto = actasService.obtenerFormularioPorDni(dni);
+        if (dto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
+    }
 
 }

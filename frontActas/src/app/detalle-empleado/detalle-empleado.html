@@ -1,0 +1,56 @@
+<div class="modal-content-dashboard">
+  <h2 class="modal-title">Detalles del Empleado</h2>
+  <form class="empleado-form-dashboard">
+    <fieldset>
+      <legend>Datos Generales</legend>
+      <div class="form-row">
+        <div><label>Código Modular:</label><input [value]="data.codigoModular || ''" readonly></div>
+        <div><label>Cargo:</label><input [value]="data.cargo || ''" readonly></div>
+        <div><label>Apellido Paterno:</label><input [value]="data.apePaterno || ''" readonly></div>
+        <div><label>Apellido Materno:</label><input [value]="data.apeMaterno || ''" readonly></div>
+        <div><label>Nombres:</label><input [value]="data.nombres || ''" readonly></div>
+        <div><label>Tipo Planilla:</label><input [value]="data.tPlanilla || ''" readonly></div>
+        <div><label>Situación:</label><input [value]="data.situacion || ''" readonly></div>
+      </div>
+      <div class="form-row">
+        <div><label>Fecha de Nacimiento:</label><input [value]="data.fechaNacimiento || ''" readonly></div>
+        <div><label>Sexo:</label><input [value]="data.sexo || ''" readonly></div>
+        <div><label>UGEL:</label><input [value]="data.ugel || ''" readonly></div>
+        <div><label>Cód. Establecimiento:</label><input [value]="data.codEstablecimiento || ''" readonly></div>
+        <div><label>Establecimiento:</label><input [value]="data.establecimiento || ''" readonly></div>
+        <div><label>Cód. Modular IE:</label><input [value]="data.codModIE || ''" readonly></div>
+      </div>
+      <div class="form-row">
+        <div><label>Tipo Documento:</label><input [value]="data.tipoDocumento || ''" readonly></div>
+        <div><label>N° Documento:</label><input [value]="data.nroDocumento || ''" readonly></div>
+        <div><label>Fecha Ingreso:</label><input [value]="data.fechaIngreso || ''" readonly></div>
+        <div><label>Fecha Término:</label><input [value]="data.fechaTermino || ''" readonly></div>
+        <div><label>Doc. Referencia:</label><input [value]="data.docReferencia || ''" readonly></div>
+        <div><label>Cargo Original:</label><input [value]="data.cargoOrig || ''" readonly></div>
+      </div>
+      <div class="form-row">
+        <div><label>IPSS:</label><input [value]="data.ipss || ''" readonly></div>
+        <div><label>REG Pensionario:</label><input [value]="data.regPensionario || ''" readonly></div>
+        <div><label>Cad. Presupuestal:</label><input [value]="data.cadPresupuestal || ''" readonly></div>
+        <div><label>AFP:</label><input [value]="data.afp || ''" readonly></div>
+        <div><label>CUSPP:</label><input [value]="data.cuspp || ''" readonly></div>
+        <div><label>Fecha Afiliación:</label><input [value]="data.fechaAfiliacion || ''" readonly></div>
+        <div><label>Fecha Devengue:</label><input [value]="data.fechaDevengue || ''" readonly></div>
+      </div>
+      <div class="form-row">
+        <div><label>Reg. Laboral:</label><input [value]="data.regLaboral || ''" readonly></div>
+        <div><label>Nivel:</label><input [value]="data.nivel || ''" readonly></div>
+        <div><label>Nivel Magisterial:</label><input [value]="data.nivelMagisterial || ''" readonly></div>
+        <div><label>Modo de Pago:</label><input [value]="data.modoPago || ''" readonly></div>
+      </div>
+      <div class="form-row">
+        <div><label>Leyenda Permanente:</label><input [value]="data.leyendaPermanente || ''" readonly></div>
+        <div><label>Cuenta Corriente:</label><input [value]="data.ctaCte || ''" readonly></div>
+      </div>
+    </fieldset>
+    <div class="modal-actions-dashboard">
+      <button mat-raised-button color="primary" type="button" class="dashboard-btn" (click)="cerrar()">Cerrar</button>
+      <button mat-raised-button color="accent" type="button" class="dashboard-btn" (click)="verBoletas()">Ver boletas</button>
+    </div>
+  </form>
+</div>

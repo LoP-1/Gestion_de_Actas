@@ -37,4 +37,68 @@ public interface ActasRepository extends JpaRepository<ActasPersonal, Long> {
     )
     String findNombreCompletoByNroDocumento(String nroDocumento);
 
+
+
+    //actas version angular
+    @Query(
+            value = "SELECT " +
+                    "`codigo modular` as codigoModular, " +
+                    "nro_documento as dni, " +
+                    "MAX(ape_paterno) as ape_paterno, " +
+                    "MAX(ape_materno) as ape_materno, " +
+                    "MAX(nombres) as nombres, " +
+                    "MAX(cargo) as cargo, " +
+                    "MAX(cod_establecimiento) as codEstablecimiento, " +
+                    "MAX(situación) as situacion, " +
+                    "MAX(t_planilla) as tPlanilla, " +
+                    "MAX(ugel) as ugel, " +
+                    "COUNT(*) as vecesRepetido " +
+                    "FROM actas_personal " +
+                    "WHERE nro_documento IS NOT NULL AND nro_documento <> '' " +
+                    "GROUP BY nro_documento " +
+                    "ORDER BY vecesRepetido DESC",
+            nativeQuery = true
+    )
+    List<Object[]> obtenerResumenUsuariosSinDuplicados();
+
+    @Query(
+            value = "SELECT " +
+                    "`codigo modular`, " +
+                    "`cargo`, " +
+                    "`ape_paterno`, " +
+                    "`ape_materno`, " +
+                    "`nombres`, " +
+                    "`t_planilla`, " +
+                    "`situación`, " +
+                    "`fecha_nacimiento`, " +
+                    "`sexo`, " +
+                    "`ugel`, " +
+                    "`cod_establecimiento`, " +
+                    "`establecimiento`, " +
+                    "`cod_nexus`, " +
+                    "`tipo_documento`, " +
+                    "`nro_documento`, " +
+                    "`fecha_ingreso`, " +
+                    "`fecha_término`, " +
+                    "`doc_referencia`, " +
+                    "`cargo/orig`, " +
+                    "`ipss`, " +
+                    "`reg_pensionario`, " +
+                    "`cad_presupuestal`, " +
+                    "`afp`, " +
+                    "`cuspp`, " +
+                    "`fecha_afiliación`, " +
+                    "`fecha_devengue`, " +
+                    "`reg_laboral`, " +
+                    "`nivel`, " +
+                    "`nivel_magisterial`, " +
+                    "`modo_pago`, " +
+                    "`leyenda_permanente`, " +
+                    "`cta_cte` " +
+                    "FROM actas_personal WHERE `nro_documento` = ?1 ORDER BY `periodo_pago` DESC LIMIT 1",
+            nativeQuery = true
+    )
+    List<Object[]> findEmpleadoFormularioPorDni(String dni);
+
+
 }
