@@ -170,26 +170,52 @@ public class ActasService {
 
 
     //Version Angular
-    public List<UsuarioResumenDTO> obtenerResumenUsuariosSinDuplicados() {
-        List<Object[]> resultados = actasRepository.obtenerResumenUsuariosSinDuplicados();
+    //Obtener los usuarios sin duplicar dni
+//    public List<UsuarioResumenDTO> obtenerResumenUsuariosSinDuplicados() {
+//        List<Object[]> resultados = actasRepository.obtenerResumenUsuariosSinDuplicados();
+//        List<UsuarioResumenDTO> lista = new ArrayList<>();
+//        for(Object[] row : resultados){
+//            UsuarioResumenDTO dto = new UsuarioResumenDTO(
+//                    (String) row[0], // codigoModular
+//                    (String) row[1], // dni
+//                    ((String) row[2]) + " " + ((String) row[3]), // apellidos (concatenar)
+//                    (String) row[4], // nombres
+//                    (String) row[5], // cargo
+//                    (String) row[6], // codEstablecimiento
+//                    (String) row[7], // situacion
+//                    (String) row[8], // tPlanilla
+//                    (String) row[9], // region
+//                    ((Number) row[10]).intValue() // vecesRepetido
+//            );
+//            lista.add(dto);
+//        }
+//        return lista;
+//    }
+
+    public List<UsuarioResumenDTO> obtenerUsuariosPorPeriodo(String periodoPago) {
+        List<Object[]> resultados = actasRepository.ListarUsuariosPorPeriodo(periodoPago);
         List<UsuarioResumenDTO> lista = new ArrayList<>();
         for(Object[] row : resultados){
             UsuarioResumenDTO dto = new UsuarioResumenDTO(
-                    (String) row[0], // codigoModular
-                    (String) row[1], // dni
-                    ((String) row[2]) + " " + ((String) row[3]), // apellidos (concatenar)
-                    (String) row[4], // nombres
-                    (String) row[5], // cargo
-                    (String) row[6], // codEstablecimiento
-                    (String) row[7], // situacion
-                    (String) row[8], // tPlanilla
-                    (String) row[9], // region
-                    ((Number) row[10]).intValue() // vecesRepetido
+                    ((Number) row[0]).longValue(), // id
+                    (String) row[1], // codigoModular
+                    (String) row[2], // dni
+                    ((String) row[3]) + " " + ((String) row[4]), // apellidos (concatenar)
+                    (String) row[5], // nombres
+                    (String) row[6], // cargo
+                    (String) row[7], // cargoOrig
+                    (String) row[8], // codEstablecimiento
+                    (String) row[9], // situacion
+                    (String) row[10], // tPlanilla
+                    (String) row[11] // region
             );
             lista.add(dto);
         }
         return lista;
     }
+
+
+
 
     public UsuarioDetalleDTO obtenerFormularioPorDni(String dni) {
         // Cambia el repositorio para retornar una lista:
@@ -246,5 +272,14 @@ public class ActasService {
         try { return LocalDate.parse(o.toString()); } catch (Exception e) { return null; }
     }
 
+    // Listar todos los periodos con datos adicionales
+    public List<InicioPeriodosDTO> listarPeriodos() {
+        List<String> periodos = actasRepository.ListarPeriodoPago();
+        List<InicioPeriodosDTO> periodosPago = new ArrayList<>();
+        for (String periodo : periodos) {
+            periodosPago.add(new InicioPeriodosDTO(periodo));
+        }
+        return periodosPago;
+    }
 
 }

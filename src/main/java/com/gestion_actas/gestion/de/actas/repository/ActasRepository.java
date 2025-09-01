@@ -40,26 +40,55 @@ public interface ActasRepository extends JpaRepository<ActasPersonal, Long> {
 
 
     //actas version angular
+    //obtener usuarios sin duplicados
+//    @Query(
+//            value = "SELECT " +
+//                    "`codigo modular` as codigoModular, " +
+//                    "nro_documento as dni, " +
+//                    "MAX(ape_paterno) as ape_paterno, " +
+//                    "MAX(ape_materno) as ape_materno, " +
+//                    "MAX(nombres) as nombres, " +
+//                    "MAX(cargo) as cargo, " +
+//                    "MAX(cod_establecimiento) as codEstablecimiento, " +
+//                    "MAX(situación) as situacion, " +
+//                    "MAX(t_planilla) as tPlanilla, " +
+//                    "MAX(ugel) as ugel, " +
+//                    "COUNT(*) as vecesRepetido " +
+//                    "FROM actas_personal " +
+//                    "WHERE nro_documento IS NOT NULL AND nro_documento <> '' " +
+//                    "GROUP BY nro_documento " +
+//                    "ORDER BY vecesRepetido DESC",
+//            nativeQuery = true
+//    )
+//    List<Object[]> obtenerResumenUsuariosSinDuplicados();
+
+
+    //Consulta para seleccionar todos los usuarios por periodo
     @Query(
             value = "SELECT " +
+                    "id, " +
                     "`codigo modular` as codigoModular, " +
                     "nro_documento as dni, " +
-                    "MAX(ape_paterno) as ape_paterno, " +
-                    "MAX(ape_materno) as ape_materno, " +
-                    "MAX(nombres) as nombres, " +
-                    "MAX(cargo) as cargo, " +
-                    "MAX(cod_establecimiento) as codEstablecimiento, " +
-                    "MAX(situación) as situacion, " +
-                    "MAX(t_planilla) as tPlanilla, " +
-                    "MAX(ugel) as ugel, " +
-                    "COUNT(*) as vecesRepetido " +
+                    "ape_paterno, " +
+                    "ape_materno, " +
+                    "nombres, " +
+                    "cargo, " +
+                    "`cargo/orig` as cargoOrig, " +
+                    "cod_establecimiento as codEstablecimiento, " +
+                    "situación as situacion, " +
+                    "t_planilla as tPlanilla, " +
+                    "ugel as region " +
                     "FROM actas_personal " +
-                    "WHERE nro_documento IS NOT NULL AND nro_documento <> '' " +
-                    "GROUP BY nro_documento " +
-                    "ORDER BY vecesRepetido DESC",
+                    "WHERE nro_documento IS NOT NULL " +
+                    "AND nro_documento <> '' " +
+                    "AND periodo_pago = ?1 " +
+                    "ORDER BY dni, id",
             nativeQuery = true
     )
-    List<Object[]> obtenerResumenUsuariosSinDuplicados();
+    List<Object[]> ListarUsuariosPorPeriodo(String periodoPago);
+
+
+
 
     @Query(
             value = "SELECT " +
@@ -99,6 +128,13 @@ public interface ActasRepository extends JpaRepository<ActasPersonal, Long> {
             nativeQuery = true
     )
     List<Object[]> findEmpleadoFormularioPorDni(String dni);
+
+//obtener periodos
+@Query(
+        value = "SELECT DISTINCT periodo_pago FROM actas_personal ORDER BY periodo_pago DESC",
+        nativeQuery = true
+)
+List<String> ListarPeriodoPago();
 
 
 }

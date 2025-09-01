@@ -1,1 +1,43 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container class="main-container">
+  <!-- Sidebar izquierdo (menú) -->
+  <mat-sidenav mode="side" opened class="sidebar">
+    <h2 class="sidebar-title">Menú</h2>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>home</mat-icon>
+        Inicio
+      </a>
+      <a mat-list-item routerLink="/usuarios-periodo" routerLinkActive="active">
+        <mat-icon>group</mat-icon>
+        Empleados del periodo
+      </a>
+      <a mat-list-item [routerLink]="['/detalles-completos', ultimoBoletaId ]" routerLinkActive="active">
+        <mat-icon>settings</mat-icon>
+        Detalles Completos
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Sidebar derecho (carrito) -->
+  <mat-sidenav position="end" mode="side" opened class="carrito-sidebar">
+    <h2>Lista de Boletas</h2>
+    <div *ngIf="carritoBoletas.length === 0" style="color: #888; margin-bottom: 1rem;">
+      No hay boletas agregadas.
+    </div>
+    <div *ngFor="let boleta of carritoBoletas">
+      <div>
+        <strong>{{boleta.nombre}}</strong>
+        <span style="color: #888; font-size: 0.95em;">(Periodo: {{boleta.periodo}})</span>
+      </div>
+      <button mat-button color="warn" (click)="removerBoleta(boleta.id)">Quitar</button>
+      <button mat-button color="primary" [routerLink]="['/detalles-completos', boleta.id]">
+        Ver Detalle Completo
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <!-- Contenido principal (solo uno) -->
+  <mat-sidenav-content class="main-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

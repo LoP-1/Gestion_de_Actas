@@ -1,4 +1,170 @@
-/* You can add global styles to this file, and also import other style files */
+/* Layout principal */
+.main-container,
+mat-sidenav-container {
+  height: 100vh !important;
+  min-height: 100vh;
+  width: 100vw;
+  background: #f5f4f7;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Sidebar izquierdo tipo dashboard */
+.sidebar, mat-sidenav.sidebar {
+  min-width: 210px;
+  width: 230px;
+  background: linear-gradient(180deg, #263043 0%, #202738 100%);
+  border-right: 1.5px solid #232b3e;
+  box-shadow: 2px 0 7px rgba(0,0,0,0.09);
+  padding-top: 18px;
+  overflow: auto;
+  color: #fff;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+/* Sidebar título y logo */
+.sidebar-title {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 22px;
+  color: #fff;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 8px #151c25;
+}
+
+/* Menú Material dashboard: letra e iconos blancos */
+.sidebar .mat-mdc-list-item,
+.sidebar .mat-list-item {
+  border-radius: 8px !important;
+  margin-bottom: 8px;
+  background: transparent;
+  font-size: 1.05rem;
+  min-height: 44px;
+  box-shadow: none;
+  font-weight: 500;
+  padding: 0 10px 0 16px;
+  display: flex;
+  align-items: center;
+  transition: background 0.13s, color 0.13s;
+  color: #fff !important;
+}
+
+/* Iconos Material blancos */
+.sidebar .mat-mdc-list-item .mat-icon,
+.sidebar .mat-list-item .mat-icon {
+  font-size: 1.23em !important;
+  margin-right: 13px;
+  vertical-align: middle;
+  color: #fff !important;
+  transition: color .13s;
+}
+
+/* Texto blanco por defecto en el menú de la izquierda */
+.sidebar .mat-mdc-list-item .mdc-list-item__primary-text,
+.sidebar .mat-mdc-list-item .mdc-list-item__secondary-text,
+.sidebar .mat-list-item .mdc-list-item__primary-text,
+.sidebar .mat-list-item .mdc-list-item__secondary-text {
+  color: #fff !important;
+}
+
+/* Hover: fondo azul más claro, letra e ícono blancos */
+.sidebar .mat-mdc-list-item:hover,
+.sidebar .mat-list-item:hover {
+  background: linear-gradient(90deg, #34405a 0%, #3c4672 100%) !important;
+  color: #fff !important;
+}
+.sidebar .mat-mdc-list-item:hover .mat-icon,
+.sidebar .mat-list-item:hover .mat-icon {
+  color: #fff !important;
+}
+.sidebar .mat-mdc-list-item:hover .mdc-list-item__primary-text,
+.sidebar .mat-list-item:hover .mdc-list-item__primary-text {
+  color: #fff !important;
+}
+
+/* Elemento activo: fondo blanco, texto e iconos azul oscuro (invertido) */
+.sidebar .mat-mdc-list-item.active,
+.sidebar .mat-list-item.active {
+  background: #fff !important;
+  color: #263043 !important;
+  box-shadow: 0 4px 12px 0 rgba(76,195,247,0.08);
+  border-left: 4px solid #4fc3f7;
+}
+
+/* Texto dentro del item activo */
+.sidebar .mat-mdc-list-item.active .mdc-list-item__primary-text,
+.sidebar .mat-mdc-list-item.active .mdc-list-item__secondary-text,
+.sidebar .mat-list-item.active .mdc-list-item__primary-text,
+.sidebar .mat-list-item.active .mdc-list-item__secondary-text {
+  color: #263043 !important;
+}
+
+/* Ícono activo */
+.sidebar .mat-mdc-list-item.active .mat-icon,
+.sidebar .mat-list-item.active .mat-icon {
+  color: #263043 !important;
+}
+
+/* Quitar bordes redondeados de botones Material */
+.mat-raised-button, .mat-flat-button, .mat-stroked-button, .mat-button {
+  border-radius: 4px !important;
+  min-width: 120px;
+}
+
+/* Botones de periodo */
+.periodo-button {
+  border-radius: 7px !important;
+  min-width: 180px;
+  margin-right: 16px;
+  margin-bottom: 8px;
+  background: #1976d2 !important;
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(30,64,175,0.13);
+}
+
+/* Quitar bordes y fondo de los listados en carrito */
+.carrito-sidebar .mat-list-item,
+.carrito-sidebar .mat-list-item-content {
+  background: transparent;
+  border-radius: 0 !important;
+  margin-bottom: 8px;
+}
+
+/* Sidebar derecho */
+.carrito-sidebar, mat-sidenav.carrito-sidebar {
+  min-width: 240px;
+  width: 290px;
+  background: #f7f8fa;
+  border-left: 1.5px solid #e3e6ee;
+  box-shadow: -2px 0 7px rgba(25,49,83,0.03);
+  padding: 16px 18px;
+  overflow: auto;
+  color: #263043;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+.carrito-sidebar h2 {
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #263043;
+  letter-spacing: 0.02em;
+}
+
+/* Responsive para pantallas medianas */
+@media (max-width: 1200px) {
+  .sidebar, mat-sidenav.sidebar {
+    width: 150px;
+    min-width: 120px;
+  }
+  .carrito-sidebar, mat-sidenav.carrito-sidebar {
+    width: 150px;
+    min-width: 120px;
+    padding: 10px 6px;
+  }
+  .main-content, mat-sidenav-content {
+    padding: 10px 8px;
+  }
+}

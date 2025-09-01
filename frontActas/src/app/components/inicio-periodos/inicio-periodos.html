@@ -1,0 +1,13 @@
+<div *ngIf="loading" class="centrado-info">Cargando periodos...</div>
+<div *ngIf="error" class="centrado-info error">{{ error }}</div>
+<div *ngIf="!loading && !error" class="contenedor-periodos">
+  <h2 class="titulo-periodos">Selecciona un periodo</h2>
+  <div class="botones-periodos">
+    <button *ngFor="let periodo of periodos; let i = index"
+            (click)="seleccionarPeriodo(periodo)"
+            class="btn-periodo"
+            [ngClass]="'color-periodo-' + (i % 5)">
+      {{ periodo.month }} {{ periodo.year }}
+    </button>
+  </div>
+</div>

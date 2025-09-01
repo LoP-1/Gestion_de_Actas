@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 public class ActasController {
+        //implementacion del servicio
         @Autowired
         private ActasService actasService;
 
@@ -23,6 +24,7 @@ public class ActasController {
             return actasService.listarUsuarios();
         }
 
+        //Obtener detalles
         @GetMapping("/usuarios/{id}")
         public ActasPersonal obtenerUsuario(@PathVariable Long id) {
         return actasService.obtenerPorId(id);
@@ -44,11 +46,6 @@ public class ActasController {
         String nombre = actasService.getNombrePrincipalPorNroDocumento(nroDocumento);
         return ResponseEntity.ok(nombre != null ? nombre : "");
     }
-    //endpoints para version de angular
-    @GetMapping("/usuarios/por-dni-unicos")
-    public List<UsuarioResumenDTO> obtenerResumenUsuariosSinDuplicados() {
-        return actasService.obtenerResumenUsuariosSinDuplicados();
-    }
 
     @GetMapping("usuarios/detalle/{dni}")
     public ResponseEntity<UsuarioDetalleDTO> obtenerPorDni(@PathVariable String dni) {
@@ -59,4 +56,15 @@ public class ActasController {
         return ResponseEntity.ok(dto);
     }
 
+    //devolver el json de periodos
+    @GetMapping("/periodo")
+    public List<InicioPeriodosDTO> listarPeriodos() {
+        return actasService.listarPeriodos();
+    }
+
+    //obtener los usuarios por cada periodo
+    @GetMapping("/periodo/{periodoPago}")
+    public List<UsuarioResumenDTO> listarUsuariosPorPeriodo(@PathVariable String periodoPago) {
+        return actasService.obtenerUsuariosPorPeriodo(periodoPago);
+    }
 }

@@ -1,0 +1,139 @@
+.dashboard-table-container {
+  background: #f7f8fa;
+  border-radius: 18px;
+  box-shadow: 0 6px 28px 0 rgba(25,49,83,0.07);
+  padding: 24px 28px 32px 28px;
+  margin: 32px auto;
+  max-width: 98vw;
+  overflow-x: auto;
+}
+
+.dashboard-table-container.wide {
+  max-width: 1450px;
+}
+
+.dashboard-table-container h2 {
+  font-size: 1.27rem;
+  font-weight: 700;
+  color: #263043;
+  margin-bottom: 18px;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.dashboard-table-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.dashboard-table-filters mat-form-field {
+  min-width: 170px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.dashboard-btn {
+  font-weight: 500;
+  border-radius: 8px !important;
+  min-width: 120px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px 0 rgba(30,64,175,0.09);
+}
+
+/* Tabla tipo dashboard */
+.dashboard-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.98rem;
+  background: #fff;
+  box-shadow: 0 3px 12px 0 rgba(25,49,83,0.05);
+}
+
+.wide-table {
+  min-width: 1200px;
+}
+
+.dashboard-table th.mat-header-cell {
+  background: #263043;
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 2px solid #e3e6ee;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+  padding: 12px 8px;
+}
+
+.dashboard-table td.mat-cell {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e3e6ee;
+  background: #f9fafb;
+  color: #263043;
+  font-size: 0.97rem;
+}
+
+.dashboard-table tr.mat-row:hover td.mat-cell {
+  background: #e3eaf7;
+}
+
+.dashboard-table td.mat-cell:last-child, .dashboard-table th.mat-header-cell:last-child {
+  text-align: center;
+}
+
+.dashboard-table td.mat-cell button {
+  min-width: 80px;
+  font-size: 0.97rem;
+  border-radius: 7px !important;
+  box-shadow: 0 2px 8px 0 rgba(76,195,247,0.08);
+}
+
+/* Paginador tipo dashboard */
+.mat-paginator {
+  background: #f7f8fa;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-top: 18px;
+  color: #263043;
+  box-shadow: 0 2px 8px 0 rgba(25,49,83,0.07);
+}
+
+.mat-paginator .mat-select-value {
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.mat-paginator .mat-button, .mat-paginator .mat-icon-button {
+  color: #1976d2;
+  font-weight: 500;
+}
+
+/* Responsive para pantallas medianas */
+@media (max-width: 1400px) {
+  .dashboard-table-container.wide {
+    max-width: 98vw;
+    padding: 6px 3vw;
+  }
+  .dashboard-table {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-table-container {
+    padding: 6px 1vw;
+  }
+  .dashboard-table-filters {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+  }
+  .dashboard-table {
+    min-width: 600px;
+    font-size: 0.91rem;
+  }
+}

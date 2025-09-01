@@ -1,0 +1,69 @@
+.boleta-titulo {
+  margin-top: 1.5rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.02em;
+}
+
+.boleta-flex-mat {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.boleta-card {
+  border-radius: 0;
+  box-shadow: none;
+  border: 0px solid #222;
+  margin-bottom: 0;
+  background: #fff;
+}
+
+.boleta-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.boleta-card td, .boleta-card th {
+  border: 1px solid #222;
+  background: #fff;
+  font-size: 0.97em;
+  padding: 6px 10px;
+  color: #222;
+}
+
+.boleta-card th {
+  font-weight: 600;
+  background: #ededed;
+}
+
+.boleta-ing-egre-mat {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 330px;
+  max-width: 500px;
+}
+
+/* Saldo neto */
+.saldo-neto-mat {
+  font-size: 1.08em;
+  font-weight: bold;
+  margin-top: 1.2em;
+}
+
+@media (max-width: 900px) {
+  .boleta-flex-mat {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+  .boleta-card, .boleta-ing-egre-mat {
+    max-width: 100vw;
+    min-width: unset;
+  }
+}
