@@ -1,0 +1,57 @@
+<mat-card class="import-card">
+  <div class="header">
+    <div class="title">
+      <mat-icon>file_upload</mat-icon>
+      <h2>Importar CSV</h2>
+    </div>
+    <div class="hint">Sube el archivo CSV para procesar licencias del personal.</div>
+  </div>
+
+  <!-- Zona Drag & Drop -->
+  <div class="dropzone" [class.active]="dragActive">
+    <mat-icon class="cloud">cloud_upload</mat-icon>
+    <p>Arrastra y suelta tu archivo CSV aquí</p>
+    <span class="or">o</span>
+    <label class="select-btn">
+      <input type="file" accept=".csv,text/csv" (change)="onFileSelected($event)" hidden>
+      <button mat-raised-button color="primary" type="button">
+        <mat-icon>attach_file</mat-icon>
+        Seleccionar CSV
+      </button>
+    </label>
+
+    <div class="file-info" *ngIf="selectedFile">
+      <mat-icon>description</mat-icon>
+      <span>{{ selectedFile.name }} ({{ selectedFile.size / 1024 | number:'1.0-0' }} KB)</span>
+      <button mat-button color="warn" class="clear-btn" (click)="cancelarSeleccion()" [disabled]="uploading">
+        Limpiar
+      </button>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="subir()" [disabled]="!selectedFile || uploading">
+      <mat-icon>cloud_done</mat-icon>
+      Subir y procesar
+    </button>
+  </div>
+
+  <!-- Progreso -->
+  <mat-progress-bar *ngIf="uploading" class="progress" mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+
+  <!-- Mensajes -->
+  <div class="message success" *ngIf="!uploading && serverMessage">
+    <mat-icon>check_circle</mat-icon>
+    <span>{{ serverMessage }}</span>
+  </div>
+  <div class="message error" *ngIf="errorMessage">
+    <mat-icon>error</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <div class="tips">
+    <mat-icon>info</mat-icon>
+    <span>Tamaño máximo 10 MB.</span>
+  </div>
+</mat-card>

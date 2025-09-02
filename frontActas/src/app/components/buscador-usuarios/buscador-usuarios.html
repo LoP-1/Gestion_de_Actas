@@ -1,0 +1,124 @@
+<div class="dashboard-table-container wide">
+  <h2>BUSCADOR DE USUARIOS</h2>
+
+  <!-- Filtros -->
+  <div class="dashboard-table-filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por DNI</mat-label>
+      <mat-icon matPrefix>badge</mat-icon>
+      <input matInput [(ngModel)]="filtroDni" (keyup)="aplicarFiltro()" placeholder="DNI">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por Nombre</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
+      <input matInput [(ngModel)]="filtroNombre" (keyup)="aplicarFiltro()" placeholder="Nombre">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por Apellido</mat-label>
+      <mat-icon matPrefix>person_outline</mat-icon>
+      <input matInput [(ngModel)]="filtroApellido" (keyup)="aplicarFiltro()" placeholder="Apellido">
+    </mat-form-field>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-wrapper mat-elevation-z0">
+    <table mat-table [dataSource]="dataSource" class="dashboard-table wide-table usuarios-table" multiTemplateDataRows>
+
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario.id}} </td>
+      </ng-container>
+
+      <!-- DNI -->
+      <ng-container matColumnDef="dni">
+        <th mat-header-cell *matHeaderCellDef> DNI </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario.dni}} </td>
+      </ng-container>
+
+      <!-- Nombres -->
+      <ng-container matColumnDef="nombres">
+        <th mat-header-cell *matHeaderCellDef> Nombres </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario.nombres}} </td>
+      </ng-container>
+
+      <!-- Apellido -->
+      <ng-container matColumnDef="apellido">
+        <th mat-header-cell *matHeaderCellDef> Apellido </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario.apellido}} </td>
+      </ng-container>
+
+      <!-- Código Modular -->
+      <ng-container matColumnDef="codigoModular">
+        <th mat-header-cell *matHeaderCellDef> C. Modular </th>
+        <td mat-cell *matCellDef="let usuario"> {{usuario.codigoModular}} </td>
+      </ng-container>
+
+      <!-- Expandir -->
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let usuario" class="expand-cell">
+          <button mat-icon-button (click)="onRowExpand(usuario)" [attr.aria-label]="'Expandir ' + usuario.nombres" class="expand-btn">
+            <mat-icon [class.rotated]="expandedElement === usuario">expand_more</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Fila de detalle expandida -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length" class="expanded-cell">
+          <ng-container *ngIf="expandedElement === row">
+            <div class="expanded-content">
+              <h4 class="expanded-title">Periodos de {{row.nombres}} {{row.apellido}}</h4>
+
+              <ng-container *ngIf="periodosPorUsuario[row.dni] as periodos; else cargando">
+                <ng-container *ngIf="periodos.length > 0; else sinPeriodos">
+                  <mat-action-list class="periodos-list">
+                    <button
+                      mat-list-item
+                      *ngFor="let periodo of periodos"
+                      (click)="onPeriodoClick(periodo, row)"
+                      class="periodo-item">
+                      <mat-icon matListItemIcon>event</mat-icon>
+                      <div matListItemTitle class="periodo-title">{{ periodo.periodoPago }}</div>
+                      <div matListItemLine class="muted">Presiona para ver detalles</div>
+                      <mat-icon matListItemMeta>chevron_right</mat-icon>
+                    </button>
+                  </mat-action-list>
+                </ng-container>
+              </ng-container>
+
+              <ng-template #sinPeriodos>
+                <div class="empty-state">
+                  <mat-icon>info</mat-icon>
+                  <span>Sin periodos.</span>
+                </div>
+              </ng-template>
+
+              <ng-template #cargando>
+                <div class="loading-state">
+                  <span class="loader"></span>
+                  <span>Cargando periodos...</span>
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.expanded]="expandedElement === row"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="expanded-row"></tr>
+    </table>
+
+    <!-- Paginador -->
+    <mat-paginator
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      showFirstLastButtons
+      (page)="onPageChange()">
+    </mat-paginator>
+  </div>
+</div>

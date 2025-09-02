@@ -6,11 +6,17 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-detalle-simple',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, RouterModule, MatCardModule, MatButtonModule, MatTableModule],
+  imports: [CommonModule, MatDialogModule, RouterModule, MatCardModule, MatButtonModule, MatTableModule,    MatDialogModule,   // para mat-dialog-close
+    MatIconModule,     // para <mat-icon>
+    MatButtonModule,   // para botones
+    MatCardModule,     // para <mat-card>
+    MatTableModule],
   templateUrl: './detalle-simple.html',
   styleUrl: './detalle-simple.css'
 })

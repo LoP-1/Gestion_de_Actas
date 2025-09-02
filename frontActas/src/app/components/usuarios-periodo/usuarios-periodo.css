@@ -1,11 +1,26 @@
+/* Paleta del dashboard, en línea con el navbar */
 .dashboard-table-container {
-  background: #f7f8fa;
+  --nav-1: #263043;   /* header/nav oscuro */
+  --nav-2: #202738;   /* gradiente */
+  --ink: #263043;     /* texto principal */
+  --muted: #6b7280;   /* texto suave */
+  --paper: #ffffff;   /* tarjetas blancas */
+  --bg: #f5f6fa;      /* fondo dashboard */
+  --divider: #e7ebf3; /* separadores */
+  --accent: #4fc3f7;  /* acento celeste */
+  --primary: #1976d2; /* primario */
+}
+
+/* Contenedor “card” ancho */
+.dashboard-table-container {
+  background: linear-gradient(180deg, #f8f9fd 0%, #f5f6fb 100%);
   border-radius: 18px;
-  box-shadow: 0 6px 28px 0 rgba(25,49,83,0.07);
-  padding: 24px 28px 32px 28px;
-  margin: 32px auto;
+  box-shadow: 0 8px 28px rgba(25,49,83,0.07);
+  padding: 22px 24px 28px 24px;
+  margin: 22px auto;
   max-width: 98vw;
   overflow-x: auto;
+  border: 0px solid rgba(35, 43, 62, 0.06);
 }
 
 .dashboard-table-container.wide {
@@ -13,110 +28,135 @@
 }
 
 .dashboard-table-container h2 {
-  font-size: 1.27rem;
-  font-weight: 700;
-  color: #263043;
-  margin-bottom: 18px;
+  font-size: 1.16rem;
+  font-weight: 800;
+  color: var(--nav-1);
+  margin: 0 0 16px 0;
   text-align: center;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.03em;
 }
 
+/* Barra de filtros */
 .dashboard-table-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2rem;
+  gap: 12px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .dashboard-table-filters mat-form-field {
-  min-width: 170px;
-  background: #fff;
-  border-radius: 8px;
+  min-width: 200px;
+  background: var(--paper);
+  border-radius: 10px;
   margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(25,49,83,0.05);
 }
 
 .dashboard-btn {
-  font-weight: 500;
-  border-radius: 8px !important;
+  font-weight: 600;
+  border-radius: 10px !important;
   min-width: 120px;
+  padding: 8px 16px;
   margin-bottom: 8px;
-  box-shadow: 0 2px 8px 0 rgba(30,64,175,0.09);
+  box-shadow: 0 3px 10px rgba(30,64,175,0.12);
 }
 
-/* Tabla tipo dashboard */
+/* Tabla dashboard */
 .dashboard-table {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  font-size: 0.98rem;
-  background: #fff;
-  box-shadow: 0 3px 12px 0 rgba(25,49,83,0.05);
+  background: var(--paper);
+  box-shadow: 0 4px 14px rgba(25,49,83,0.08);
+  border: 1px solid var(--divider);
 }
 
 .wide-table {
-  min-width: 1200px;
+  min-width: 1100px;
 }
 
+/* Header sticky con colores del navbar */
 .dashboard-table th.mat-header-cell {
-  background: #263043;
+  background: linear-gradient(90deg, var(--nav-1) 0%, var(--nav-2) 100%);
   color: #fff;
-  font-weight: 600;
-  border-bottom: 2px solid #e3e6ee;
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-  padding: 12px 8px;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(79,195,247,0.18);
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  padding: 12px 10px;
 }
 
+/* Celdas y filas */
 .dashboard-table td.mat-cell {
-  padding: 12px 8px;
-  border-bottom: 1px solid #e3e6ee;
-  background: #f9fafb;
-  color: #263043;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--divider);
+  background: #fbfcff;
+  color: var(--ink);
   font-size: 0.97rem;
 }
 
-.dashboard-table tr.mat-row:hover td.mat-cell {
-  background: #e3eaf7;
+/* Rayado tipo zebra */
+.dashboard-table tr.mat-row:nth-child(even) td.mat-cell {
+  background: #f6f8fd;
 }
 
-.dashboard-table td.mat-cell:last-child, .dashboard-table th.mat-header-cell:last-child {
+/* Hover suave */
+.dashboard-table tr.mat-row:hover td.mat-cell {
+  background: #edf3ff;
+}
+
+/* Bordes redondeados visuales en primera y última fila (cuando no hay sticky footer) */
+.dashboard-table tr.mat-row:first-of-type td.mat-cell {
+  border-top: 1px solid var(--divider);
+}
+
+/* Columna de acciones centrada */
+.dashboard-table td.mat-cell:last-child,
+.dashboard-table th.mat-header-cell:last-child {
   text-align: center;
 }
 
-.dashboard-table td.mat-cell button {
-  min-width: 80px;
-  font-size: 0.97rem;
-  border-radius: 7px !important;
-  box-shadow: 0 2px 8px 0 rgba(76,195,247,0.08);
+/* Botón Detalle tipo píldora */
+.pill-btn {
+  min-width: 96px;
+  font-size: 0.95rem !important;
+  border-radius: 999px !important;
+  padding: 4px 14px !important;
+  box-shadow: 0 4px 12px rgba(79,195,247,0.18) !important;
+  background: linear-gradient(90deg, #1e88e5 0%, #42a5f5 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.35) !important;
 }
 
-/* Paginador tipo dashboard */
-.mat-paginator {
-  background: #f7f8fa;
-  border-radius: 8px;
-  font-weight: 500;
-  margin-top: 18px;
-  color: #263043;
-  box-shadow: 0 2px 8px 0 rgba(25,49,83,0.07);
+/* Paginador acorde al tema (compatibilidad MDC/legacy) */
+.mat-mdc-paginator, .mat-paginator {
+  background: transparent;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 14px;
+  color: var(--ink);
+  box-shadow: 0 2px 10px rgba(25,49,83,0.07);
+  border: 1px solid var(--divider);
 }
 
+.mat-mdc-paginator .mat-mdc-select-value,
 .mat-paginator .mat-select-value {
-  color: #1976d2;
-  font-weight: 500;
+  color: var(--primary);
+  font-weight: 600;
 }
 
-.mat-paginator .mat-button, .mat-paginator .mat-icon-button {
-  color: #1976d2;
-  font-weight: 500;
+.mat-mdc-paginator .mat-mdc-icon-button,
+.mat-paginator .mat-icon-button {
+  color: var(--primary);
 }
 
-/* Responsive para pantallas medianas */
+/* Scroll y responsivo */
 @media (max-width: 1400px) {
   .dashboard-table-container.wide {
     max-width: 98vw;
-    padding: 6px 3vw;
+    padding: 12px 2vw 18px 2vw;
   }
   .dashboard-table {
     min-width: 900px;
@@ -125,15 +165,15 @@
 
 @media (max-width: 900px) {
   .dashboard-table-container {
-    padding: 6px 1vw;
+    padding: 10px 2vw 14px 2vw;
   }
   .dashboard-table-filters {
     flex-direction: column;
-    gap: 0.7rem;
+    gap: 10px;
     align-items: stretch;
   }
   .dashboard-table {
-    min-width: 600px;
-    font-size: 0.91rem;
+    min-width: 640px;
+    font-size: 0.92rem;
   }
 }

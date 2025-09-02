@@ -1,5 +1,6 @@
 <div class="dashboard-table-container wide">
   <h2>EMPLEADOS DEL PERIODO {{periodoPago}}</h2>
+
   <div class="dashboard-table-filters">
     <mat-form-field appearance="outline">
       <mat-label>Buscar por Nombre</mat-label>
@@ -20,59 +21,74 @@
     <button mat-raised-button color="primary" class="dashboard-btn" (click)="limpiarFiltros()">Limpiar</button>
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 dashboard-table wide-table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 dashboard-table wide-table">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID </th>
       <td mat-cell *matCellDef="let emp">{{emp.id}}</td>
     </ng-container>
+
     <ng-container matColumnDef="codigoModular">
       <th mat-header-cell *matHeaderCellDef> C. Modular </th>
       <td mat-cell *matCellDef="let emp">{{emp.codigoModular}}</td>
     </ng-container>
+
     <ng-container matColumnDef="dni">
       <th mat-header-cell *matHeaderCellDef> DNI </th>
       <td mat-cell *matCellDef="let emp">{{emp.dni}}</td>
     </ng-container>
+
     <ng-container matColumnDef="apellidos">
       <th mat-header-cell *matHeaderCellDef> Apellidos </th>
       <td mat-cell *matCellDef="let emp">{{emp.apellidos}}</td>
     </ng-container>
+
     <ng-container matColumnDef="nombres">
       <th mat-header-cell *matHeaderCellDef> Nombres </th>
       <td mat-cell *matCellDef="let emp">{{emp.nombres}}</td>
     </ng-container>
+
     <ng-container matColumnDef="cargo">
       <th mat-header-cell *matHeaderCellDef> Cargo </th>
       <td mat-cell *matCellDef="let emp">{{emp.cargo}}</td>
     </ng-container>
+
     <ng-container matColumnDef="cargoOrig">
       <th mat-header-cell *matHeaderCellDef> Cargo Original </th>
       <td mat-cell *matCellDef="let emp">{{emp.cargoOrig}}</td>
     </ng-container>
+
     <ng-container matColumnDef="codEstablecimiento">
       <th mat-header-cell *matHeaderCellDef> C. Establecimiento </th>
       <td mat-cell *matCellDef="let emp">{{emp.codEstablecimiento}}</td>
     </ng-container>
+
     <ng-container matColumnDef="situacion">
       <th mat-header-cell *matHeaderCellDef> Situación </th>
       <td mat-cell *matCellDef="let emp">{{emp.situacion}}</td>
     </ng-container>
+
     <ng-container matColumnDef="tPlanilla">
       <th mat-header-cell *matHeaderCellDef> IT. Planilla </th>
       <td mat-cell *matCellDef="let emp">{{emp.tPlanilla}}</td>
     </ng-container>
+
     <ng-container matColumnDef="region">
       <th mat-header-cell *matHeaderCellDef> Región </th>
       <td mat-cell *matCellDef="let emp">{{emp.region}}</td>
     </ng-container>
+
     <ng-container matColumnDef="acciones">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let emp">
-        <button mat-raised-button color="primary" (click)="abrirDetalle(emp)">Detalle</button>
+        <!-- agregado: clase pill-btn -->
+        <button mat-raised-button color="primary" class="pill-btn" (click)="abrirDetalle(emp.id)">Detalle</button>
       </td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <!-- agregado: sticky header -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
   <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 </div>

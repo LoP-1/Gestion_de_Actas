@@ -1,7 +1,18 @@
 <mat-card class="boleta-window">
-  <mat-card-title>Detalle de la Boleta</mat-card-title>
-  <mat-card-content>
-    <div class="boleta-flex-content">
+  <!-- Encabezado moderno -->
+  <div class="boleta-header">
+    <div class="title-wrap">
+      <mat-icon>receipt_long</mat-icon>
+      <h2>Detalle de la Boleta</h2>
+    </div>
+    <button mat-icon-button mat-dialog-close class="close-btn" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Zona scrollable principal (ocupa todo el alto disponible) -->
+  <div class="boleta-scroll">
+    <div class="boleta-grid">
       <!-- Datos a la izquierda -->
       <mat-card class="boleta-user-card">
         <mat-card-title>Datos del Usuario</mat-card-title>
@@ -19,7 +30,7 @@
         </mat-card-content>
       </mat-card>
 
-      <!-- Ingresos y egresos a la derecha -->
+      <!-- Ingresos y Egresos a la derecha -->
       <div class="boleta-tables">
         <mat-card class="boleta-ing-card">
           <mat-card-title>Ingresos</mat-card-title>
@@ -35,15 +46,17 @@
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="ingresosDisplayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: ingresosDisplayedColumns;"></tr>
-              <tr *ngIf="ingresos.length === 0">
-                <td colspan="2" style="text-align:center;">Sin ingresos</td>
+              <tr class="empty-row" *ngIf="ingresos.length === 0">
+                <td colspan="2">Sin ingresos</td>
               </tr>
             </table>
-            <div class="boleta-totales"><strong>Total Ingresos:</strong> {{totalIngresos | currency:'PEN'}}</div>
+            <div class="boleta-totales">
+              <strong>Total Ingresos:</strong> {{totalIngresos | currency:'PEN'}}
+            </div>
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="boleta-egre-card" style="margin-top:1.5rem;">
+        <mat-card class="boleta-egre-card">
           <mat-card-title>Egresos</mat-card-title>
           <mat-card-content>
             <table mat-table [dataSource]="egresos" class="mat-elevation-z1">
@@ -57,8 +70,8 @@
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="egresosDisplayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: egresosDisplayedColumns;"></tr>
-              <tr *ngIf="egresos.length === 0">
-                <td colspan="2" style="text-align:center;">Sin egresos</td>
+              <tr class="empty-row" *ngIf="egresos.length === 0">
+                <td colspan="2">Sin egresos</td>
               </tr>
             </table>
             <div class="boleta-totales"><strong>Total Egresos:</strong> {{totalEgresos | currency:'PEN'}}</div>
@@ -67,10 +80,21 @@
         </mat-card>
       </div>
     </div>
-    <div class="boleta-actions">
-      <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
-      <button mat-raised-button color="accent" (click)="agregarADetalles()">Agregar a detalles</button>
-      <button mat-button color="primary" [routerLink]="['/detalles-completos', dialogData.id]">Ver Detalle Completo</button>
-    </div>
-  </mat-card-content>
+  </div>
+
+  <!-- Acciones fijas al fondo -->
+  <div class="boleta-actions">
+    <button mat-raised-button color="primary" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+      Cerrar
+    </button>
+    <button mat-raised-button color="accent" (click)="agregarADetalles()">
+      <mat-icon>playlist_add</mat-icon>
+      Agregar a detalles
+    </button>
+    <button mat-button color="primary" [routerLink]="['/detalles-completos', dialogData.id]">
+      <mat-icon>open_in_new</mat-icon>
+      Ver Detalle Completo
+    </button>
+  </div>
 </mat-card>

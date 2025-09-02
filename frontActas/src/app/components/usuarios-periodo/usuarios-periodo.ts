@@ -86,12 +86,16 @@ export class UsuariosPeriodoComponent implements OnInit, AfterViewInit {
     this.filtrar();
   }
 
-  abrirDetalle(emp: UsuarioPeriodo) {
-    this.dialog.open(DetalleSimpleComponent, {
-  data: { id: emp.id },
-  width: '70vw',        // O '90vw' para casi toda la pantalla
-  maxWidth: '98vw',       // Limita el ancho máximo
-  height: '80vh',        // O '80vh' si quieres alto fijo
-});
-  }
+  abrirDetalle(id: number | string) {
+  this.dialog.open(DetalleSimpleComponent, {
+    data: { id },
+    panelClass: 'boleta-dialog-panel',
+    // Ocupa casi toda la ventana
+    width: '96vw',
+    height: '92vh',
+    maxWidth: '100vw',
+    // Opcional: si quieres que no se cierre clickeando afuera
+    // disableClose: true
+  });
+}
 }

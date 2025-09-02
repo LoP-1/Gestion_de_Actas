@@ -1,0 +1,168 @@
+/* Contenedor card tipo dashboard */
+.dashboard-table-container {
+  --nav-1: #263043;
+  --nav-2: #202738;
+  --ink: #263043;
+  --muted: #6b7280;
+  --paper: #ffffff;
+  --bg: #f5f6fa;
+  --divider: #e7ebf3;
+  --primary: #1976d2;
+
+  background: linear-gradient(180deg, #f8f9fd 0%, #f5f6fb 100%);
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(25,49,83,0.07);
+  padding: 22px 24px 28px 24px;
+  margin: 22px auto;
+  max-width: 98vw;
+  border: 1px solid rgba(35, 43, 62, 0.06);
+  overflow-x: auto;
+}
+.dashboard-table-container.wide { max-width: 1450px; }
+.dashboard-table-container h2 {
+  font-size: 1.16rem;
+  font-weight: 800;
+  color: var(--nav-1);
+  margin: 0 0 16px 0;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+/* Filtros */
+.dashboard-table-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.dashboard-table-filters mat-form-field {
+  min-width: 200px;
+  background: var(--paper);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(25,49,83,0.05);
+}
+.dashboard-table-filters .mat-mdc-text-field-wrapper {
+  --mdc-outlined-text-field-container-shape: 10px;
+}
+
+/* Caja tabla */
+.table-wrapper {
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(25,49,83,0.08);
+  border: 1px solid var(--divider);
+  overflow: hidden;
+}
+
+/* Tabla dashboard base */
+.dashboard-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--paper);
+}
+.wide-table { min-width: 1100px; }
+
+/* Header sticky con gradiente */
+.dashboard-table th.mat-header-cell {
+  background: linear-gradient(90deg, var(--nav-1) 0%, var(--nav-2) 100%);
+  color: #fff;
+  font-weight: 700;
+  border-bottom: 2px solid rgba(79,195,247,0.18);
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+  padding: 12px 10px;
+}
+
+/* Filas y celdas */
+.dashboard-table td.mat-cell {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--divider);
+  background: #fbfcff;
+  color: var(--ink);
+  font-size: 0.97rem;
+}
+.dashboard-table tr.mat-row:nth-child(even) td.mat-cell { background: #f6f8fd; }
+.dashboard-table tr.mat-row:hover td.mat-cell { background: #edf3ff; }
+
+/* Columnas útiles */
+.usuarios-table .mat-column-id { width: 90px; }
+.usuarios-table .mat-column-expand { width: 56px; text-align: right; }
+.expand-cell { text-align: right; }
+.expand-btn .mat-icon { transition: transform 150ms ease; color: var(--primary); }
+.expand-btn .mat-icon.rotated { transform: rotate(180deg); }
+
+/* Expanded row */
+.expanded-row .expanded-cell { padding: 0; }
+.expanded-content {
+  padding: 14px 16px 16px;
+  background: #f9fafb;
+  border-top: 1px solid #e6e9ee;
+}
+.expanded-title {
+  margin: 2px 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Lista de periodos dentro del detalle */
+.periodos-list {
+  background: #fff;
+  border: 1px solid #d8deea;
+  border-radius: 10px;
+  padding: 6px;
+}
+.periodos-list .mat-mdc-list-item {
+  min-height: 40px;
+  border-radius: 8px;
+  margin: 4px 2px;
+  padding: 0 6px;
+}
+.periodos-list .mat-mdc-list-item:hover { background: #eaf2ff; }
+.periodo-item mat-icon[matListItemIcon] { color: #5b6b8c; }
+.periodo-item mat-icon[matListItemMeta] { color: var(--primary); }
+.periodo-title { font-weight: 700; color: var(--ink); }
+.periodo-item .muted { color: #6b7280; font-size: 12px; }
+
+/* Estados */
+.empty-state, .loading-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  padding: 8px;
+}
+.empty-state mat-icon { color: #9aa3b2; }
+.loader {
+  width: 14px; height: 14px;
+  border: 2px solid #c7d2fe; border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Paginador a juego */
+.mat-mdc-paginator, .mat-paginator {
+  background: transparent;
+  border-radius: 10px;
+  font-weight: 600;
+  margin: 14px;
+  color: var(--ink);
+  box-shadow: 0 2px 10px rgba(25,49,83,0.07);
+  border: 1px solid var(--divider);
+}
+.mat-mdc-paginator .mat-mdc-select-value,
+.mat-paginator .mat-select-value { color: var(--primary); font-weight: 600; }
+.mat-mdc-paginator .mat-mdc-icon-button,
+.mat-paginator .mat-icon-button { color: var(--primary); }
+
+/* Responsive: oculta columna modular para ganar espacio */
+@media (max-width: 900px) {
+  .dashboard-table-container { padding: 12px; }
+  .dashboard-table { min-width: 640px; font-size: .92rem; }
+  .usuarios-table .mat-column-codigoModular { display: none; }
+}

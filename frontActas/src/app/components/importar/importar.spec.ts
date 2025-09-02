@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DetalleCompletoComponent } from './detalle-completo';
 
-describe('DetalleCompletoComponent', () => {
-  let component: DetalleCompletoComponent;
-  let fixture: ComponentFixture<DetalleCompletoComponent>;
+import { ImportarCsvComponent } from './importar';
+
+describe('ImportarCsvComponent', () => {
+  let component: ImportarCsvComponent;
+  let fixture: ComponentFixture<ImportarCsvComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetalleCompletoComponent]
+      imports: [ImportarCsvComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DetalleCompletoComponent);
+    fixture = TestBed.createComponent(ImportarCsvComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

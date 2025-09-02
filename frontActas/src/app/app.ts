@@ -26,6 +26,9 @@ export class App implements OnInit {
   ultimoBoletaId: number = 1;
   carritoBoletas: any[] = [];
 
+  // Estado de despliegue del submenú de "Seleccionar Periodo"
+  periodoMenuOpen = true;
+
   constructor(private router: Router) {}
 
   ngOnInit() {
@@ -37,13 +40,18 @@ export class App implements OnInit {
       this.cargarCarrito();
     });
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.cargarCarrito();
-      const ultimo = localStorage.getItem('ultimoBoletaId');
-      this.ultimoBoletaId = ultimo ? Number(ultimo) : 1;
-    });
+    // Abrir/cerrar submenú automáticamente según la ruta
+    this.periodoMenuOpen = this.isSeleccionarPeriodoActive();
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.cargarCarrito();
+        const ult = localStorage.getItem('ultimoBoletaId');
+        this.ultimoBoletaId = ult ? Number(ult) : 1;
+
+        this.periodoMenuOpen = this.isSeleccionarPeriodoActive();
+      });
   }
 
   cargarCarrito() {
@@ -56,4 +64,13 @@ export class App implements OnInit {
     window.dispatchEvent(new Event('carritoActualizado'));
   }
 
+  // Marca el padre "Seleccionar Periodo" como activo si estamos en "/" o en "/usuarios-periodo"
+  isSeleccionarPeriodoActive(): boolean {
+    const url = this.router.url || '';
+    return url === '/' || url.startsWith('/usuarios-periodo');
+  }
+
+  togglePeriodoMenu() {
+    this.periodoMenuOpen = !this.periodoMenuOpen;
+  }
 }

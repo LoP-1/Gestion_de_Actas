@@ -5,11 +5,12 @@ import { MatTableModule } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-detalle-completo',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatProgressSpinnerModule, MatCardModule],
+  imports: [CommonModule, MatTableModule, MatProgressSpinnerModule, MatCardModule, MatIconModule],
   templateUrl: './detalle-completo.html',
   styleUrl: './detalle-completo.css'
 })
@@ -17,6 +18,7 @@ export class DetalleCompletoComponent implements OnInit {
   id!: number;
   data: any = null;
   isLoading: boolean = true;
+  public today: Date = new Date();
 
   ingresos: Array<{ concepto: string, monto: number }> = [];
   egresos: Array<{ concepto: string, monto: number }> = [];
@@ -81,4 +83,8 @@ export class DetalleCompletoComponent implements OnInit {
       this.data = null;
     });
   }
+
+  imprimir() {
+  window.print();
+}
 }
