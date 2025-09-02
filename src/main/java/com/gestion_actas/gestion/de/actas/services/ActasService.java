@@ -282,4 +282,33 @@ public class ActasService {
         return periodosPago;
     }
 
+    /**
+     * Servicio para listar todos los usuarios únicos por DNI.
+     * Devuelve una lista de ListaUsuariosDTO.
+     */
+    public List<ListaUsuariosDTO> listarUsuariosUnicosPorDni() {
+        List<Object[]> resultados = actasRepository.listarUsuariosUnicosPorDni();
+        return resultados.stream()
+                .map(row -> new ListaUsuariosDTO(
+                        row[0] != null ? ((Number) row[0]).longValue() : null, // id
+                        (String) row[1], // dni
+                        (String) row[2], // nombres
+                        (String) row[3], // apellido (concatenado)
+                        (String) row[4]  // codigoModular
+                )).collect(Collectors.toList());
+    }
+
+    /**
+     * Servicio que, dado un DNI, devuelve los periodos de pago y el id de cada registro.
+     * Devuelve una lista de PeriodosDTO.
+     */
+    public List<PeriodosDTO> listarPeriodosPorDni(String dni) {
+        List<Object[]> resultados = actasRepository.listarPeriodosPorDni(dni);
+        return resultados.stream()
+                .map(row -> new PeriodosDTO(
+                        row[0] != null ? ((Number) row[0]).longValue() : null, // id
+                        (String) row[1] // periodoPago
+                )).collect(Collectors.toList());
+    }
+
 }

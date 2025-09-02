@@ -67,4 +67,19 @@ public class ActasController {
     public List<UsuarioResumenDTO> listarUsuariosPorPeriodo(@PathVariable String periodoPago) {
         return actasService.obtenerUsuariosPorPeriodo(periodoPago);
     }
+    @GetMapping("/usuarios/lista-unicos")
+    public List<ListaUsuariosDTO> listarUsuariosUnicosPorDni() {
+        return actasService.listarUsuariosUnicosPorDni();
+    }
+
+    /**
+     * Endpoint para obtener todos los periodos de pago y id por un DNI.
+     * GET /usuarios/periodos/{dni}
+     * Devuelve los periodos de pago y el id de cada registro donde aparece el DNI.
+     */
+    @GetMapping("/usuarios/periodos/{dni}")
+    public List<PeriodosDTO> listarPeriodosPorDni(@PathVariable String dni) {
+        return actasService.listarPeriodosPorDni(dni);
+    }
+
 }

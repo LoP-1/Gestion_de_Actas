@@ -137,4 +137,31 @@ public interface ActasRepository extends JpaRepository<ActasPersonal, Long> {
 List<String> ListarPeriodoPago();
 
 
+
+    /**
+     * Consulta para listar todos los usuarios únicos por DNI.
+     * Devuelve el id, nro_documento (DNI), nombres, apellidos y código modular,
+     * sin repetir usuarios por DNI.
+     */
+    @Query(
+            value = "SELECT MIN(id) as id, nro_documento as dni, nombres, CONCAT(ape_paterno, ' ', ape_materno) as apellido, `codigo modular` " +
+                    "FROM actas_personal " +
+                    "WHERE nro_documento IS NOT NULL AND nro_documento <> '' " +
+                    "GROUP BY nro_documento, nombres, ape_paterno, ape_materno, `codigo modular`",
+            nativeQuery = true
+    )
+    List<Object[]> listarUsuariosUnicosPorDni();
+
+    /**
+     * Consulta para obtener todos los periodos de pago e id de registros
+     * en los que aparece un DNI específico.
+     * Devuelve el id y el periodo_pago por cada aparición del DNI.
+     */
+    @Query(
+            value = "SELECT id, periodo_pago FROM actas_personal WHERE nro_documento = ?1 ORDER BY periodo_pago DESC",
+            nativeQuery = true
+    )
+    List<Object[]> listarPeriodosPorDni(String dni);
+
+
 }
