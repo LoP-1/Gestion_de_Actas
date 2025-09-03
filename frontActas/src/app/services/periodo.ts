@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Periodo } from '../models/periodo';
+import { environment } from '../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PeriodoService {
-  private apiUrl = 'http://localhost:8080/periodo';
+  private apiUrl = `${environment.apiUrl}/periodo`;
 
   constructor(private http: HttpClient) {}
 

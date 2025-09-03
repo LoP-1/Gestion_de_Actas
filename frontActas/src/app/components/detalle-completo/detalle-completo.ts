@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { environment } from '../../../enviroments/enviroment';
 
 @Component({
   selector: 'app-detalle-completo',
@@ -88,8 +89,9 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   cargarDatos() {
+    const url = `${environment.apiUrl}/usuarios/${this.id}`;
     this.isLoading = true;
-    this.http.get<any>(`http://localhost:8080/usuarios/${this.id}`).subscribe(resp => {
+    this.http.get<any>(url).subscribe(resp => {
       this.data = resp;
       this.isLoading = false;
 

@@ -7,7 +7,7 @@ import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/rout
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+import { environment } from '../../../enviroments/enviroment';
 
 @Component({
   selector: 'app-detalle-simple',
@@ -63,7 +63,7 @@ export class DetalleSimpleComponent {
   ) {
     if (dialogData?.id) {
       localStorage.setItem('ultimoBoletaId', String(dialogData.id));
-      this.http.get<any>(`http://localhost:8080/usuarios/${dialogData.id}`)
+      this.http.get<any>(`${environment.apiUrl}/usuarios/${dialogData.id}`)
         .subscribe(resp => {
           this.data = resp;
           this.isLoading = false;

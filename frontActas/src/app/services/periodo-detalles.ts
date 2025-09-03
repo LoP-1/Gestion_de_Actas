@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../enviroments/enviroment';
 
 export interface PeriodoDTO {
   id: number;
@@ -11,7 +12,7 @@ export interface PeriodoDTO {
   providedIn: 'root'
 })
 export class PeriodoDetallesService {
-  private apiUrl = 'http://localhost:8080/usuarios/periodos';
+  private apiUrl = `${environment.apiUrl}/usuarios/periodos`;
 
   constructor(private http: HttpClient) {}
 

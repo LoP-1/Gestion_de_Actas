@@ -1,11 +1,8 @@
 package com.gestion_actas.gestion.de.actas.repository;
 
 import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
-import com.gestion_actas.gestion.de.actas.model.DTO.ActasUsuarioDTO;
-import com.gestion_actas.gestion.de.actas.model.DTO.DetalleActasDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
