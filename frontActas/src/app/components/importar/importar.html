@@ -12,13 +12,19 @@
     <mat-icon class="cloud">cloud_upload</mat-icon>
     <p>Arrastra y suelta tu archivo CSV aquí</p>
     <span class="or">o</span>
-    <label class="select-btn">
-      <input type="file" accept=".csv,text/csv" (change)="onFileSelected($event)" hidden>
-      <button mat-raised-button color="primary" type="button">
-        <mat-icon>attach_file</mat-icon>
-        Seleccionar CSV
-      </button>
-    </label>
+
+    <!-- Input oculto y botón que lo dispara -->
+    <input
+      #fileInput
+      type="file"
+      accept=".csv,text/csv"
+      (change)="onFileSelected($event)"
+      hidden
+    />
+    <button mat-raised-button color="primary" type="button" (click)="openFilePicker(fileInput)">
+      <mat-icon>attach_file</mat-icon>
+      Seleccionar CSV
+    </button>
 
     <div class="file-info" *ngIf="selectedFile">
       <mat-icon>description</mat-icon>

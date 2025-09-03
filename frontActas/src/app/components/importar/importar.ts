@@ -35,12 +35,20 @@ export class ImportarCsvComponent {
 
   constructor(private http: HttpClient, private snack: MatSnackBar) {}
 
+  // Abre el selector de archivos (soluciona que el botón no dispare el input dentro de label)
+  openFilePicker(inputEl: HTMLInputElement) {
+    if (this.uploading) return;
+    // Permite re-seleccionar el mismo archivo
+    inputEl.value = '';
+    inputEl.click();
+  }
+
   // Selección por input
   onFileSelected(ev: Event) {
     const input = ev.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
     this.setFile(input.files[0]);
-    // Permite re-seleccionar el mismo archivo
+    // Limpia para permitir re-seleccionar el mismo archivo
     input.value = '';
   }
 
@@ -115,19 +123,19 @@ export class ImportarCsvComponent {
         }
       },
       error: (err: HttpErrorResponse) => {
-  this.uploading = false;
-  let msg = 'Error desconocido';
-  if (err.error) {
-    if (typeof err.error === 'string') {
-      msg = err.error;
-    } else if (typeof err.error === 'object') {
-      msg = err.error.message || err.error.error || JSON.stringify(err.error);
-    }
-  } else if (err.message) {
-    msg = err.message;
-  }
-  this.fail(`Error al subir el archivo: ${msg}`);
-}
+        this.uploading = false;
+        let msg = 'Error desconocido';
+        if (err.error) {
+          if (typeof err.error === 'string') {
+            msg = err.error;
+          } else if (typeof err.error === 'object') {
+            msg = err.error.message || (err.error.error as string) || JSON.stringify(err.error);
+          }
+        } else if (err.message) {
+          msg = err.message;
+        }
+        this.fail(`Error al subir el archivo: ${msg}`);
+      }
     });
   }
 

@@ -177,3 +177,35 @@ mat-sidenav-container {
   border-radius: 16px !important;
   padding: 0 !important;
 }
+/* Imprimir exclusivamente el contenido de #print-area */
+@media print {
+  body * { visibility: hidden !important; }
+
+  /* Muestra #print-area y su contenido */
+  #print-area, #print-area * {
+    visibility: visible !important;
+  }
+
+  /* Deja a #print-area en flujo normal; evita width/posiciones que provoquen recorte */
+  #print-area {
+    position: static !important;
+    width: auto !important;
+    height: 294mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Normaliza contenedores de layout para que no limiten el ancho */
+  mat-sidenav, .mat-sidenav { display: none !important; }
+  mat-sidenav-container, mat-sidenav-content,
+  .main-container, .main-content {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+}

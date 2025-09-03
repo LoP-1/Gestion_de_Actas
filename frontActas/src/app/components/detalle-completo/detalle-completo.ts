@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -12,18 +12,18 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, MatTableModule, MatProgressSpinnerModule, MatCardModule, MatIconModule],
   templateUrl: './detalle-completo.html',
-  styleUrl: './detalle-completo.css'
+  styleUrls: ['./detalle-completo.css']
 })
-export class DetalleCompletoComponent implements OnInit {
+export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestroy {
   id!: number;
   data: any = null;
-  isLoading: boolean = true;
+  isLoading = true;
   public today: Date = new Date();
 
   ingresos: Array<{ concepto: string, monto: number }> = [];
   egresos: Array<{ concepto: string, monto: number }> = [];
-  totalIngresos: number = 0;
-  totalEgresos: number = 0;
+  totalIngresos = 0;
+  totalEgresos = 0;
 
   ingresosMap: { [key: string]: string } = {
     rmsCesfa: 'RMS.C.ESFA', ruralCont: 'Rural Cont.', rmsEes: 'RMS_EES', rimsEes: 'RIMS_EES',
@@ -54,10 +54,13 @@ export class DetalleCompletoComponent implements OnInit {
   ingresosDisplayedColumns: string[] = ['concepto', 'monto'];
   egresosDisplayedColumns: string[] = ['concepto', 'monto'];
 
-    constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  private beforePrintHandler = () => this.preparePrintScale();
+  private afterPrintHandler = () => this.resetPrintScale();
+  private mql?: MediaQueryList;
+
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    // Usamos observable para que detecte cambios en el parámetro id
     this.route.paramMap.subscribe(params => {
       this.id = Number(params.get('id') || '1');
       localStorage.setItem('ultimoBoletaId', String(this.id));
@@ -65,26 +68,111 @@ export class DetalleCompletoComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    window.addEventListener('beforeprint', this.beforePrintHandler);
+    window.addEventListener('afterprint', this.afterPrintHandler);
+
+    this.mql = window.matchMedia('print');
+    const mqlRef = this.mql;
+    if (mqlRef.addEventListener) {
+      mqlRef.addEventListener('change', (e) => e.matches ? this.preparePrintScale() : this.resetPrintScale());
+    } else if ((mqlRef as any).addListener) {
+      (mqlRef as any).addListener((e: MediaQueryListEvent) => e.matches ? this.preparePrintScale() : this.resetPrintScale());
+    }
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('beforeprint', this.beforePrintHandler);
+    window.removeEventListener('afterprint', this.afterPrintHandler);
+    // no-op for removing mql listener (not critical)
+  }
+
   cargarDatos() {
     this.isLoading = true;
     this.http.get<any>(`http://localhost:8080/usuarios/${this.id}`).subscribe(resp => {
       this.data = resp;
       this.isLoading = false;
+
       this.ingresos = Object.entries(this.ingresosMap)
         .filter(([key]) => resp[key] && Number(resp[key]) > 0)
         .map(([key, label]) => ({ concepto: label, monto: Number(resp[key]) }));
+
       this.egresos = Object.entries(this.egresosMap)
         .filter(([key]) => resp[key] && Number(resp[key]) > 0)
         .map(([key, label]) => ({ concepto: label, monto: Number(resp[key]) }));
+
       this.totalIngresos = this.ingresos.reduce((acc, cur) => acc + cur.monto, 0);
       this.totalEgresos = this.egresos.reduce((acc, cur) => acc + cur.monto, 0);
-    }, err => {
+    }, _err => {
       this.isLoading = false;
       this.data = null;
     });
   }
 
+  private mmToPx(mm: number): number {
+    return (mm / 25.4) * 96;
+  }
+
+  private preparePrintScale(): void {
+    const sheet = document.querySelector('.print-sheet.a4') as HTMLElement | null;
+    const inner = document.querySelector('.print-inner') as HTMLElement | null;
+    if (!sheet || !inner) return;
+
+    // Asegura estado base sin escala
+    sheet.style.removeProperty('--print-scale');
+
+    // Medidas reales del contenido (sin escala)
+    const contentWidth = inner.scrollWidth;
+    const contentHeight = inner.scrollHeight;
+
+    const availWidth = this.mmToPx(210);
+    const availHeight = this.mmToPx(297);
+
+    const scaleX = availWidth / contentWidth;
+    const scaleY = availHeight / contentHeight;
+
+    // Factor seguro (ligeramente menor para prevenir desbordes por redondeo)
+    const scale = Math.min(1, scaleX, scaleY) * 0.995;
+
+    sheet.style.setProperty('--print-scale', String(scale));
+  }
+
+  private resetPrintScale(): void {
+    const sheet = document.querySelector('.print-sheet.a4') as HTMLElement | null;
+    if (!sheet) return;
+    sheet.style.removeProperty('--print-scale');
+  }
+
   imprimir() {
-  window.print();
-}
+    // Espera a que el DOM pinte y aplica escala
+    requestAnimationFrame(() => {
+      this.preparePrintScale();
+      setTimeout(() => window.print(), 60);
+    });
+  }
+
+  // Por si quieres probar impresión aislada en popup
+  imprimirEnPopup() {
+    const area = document.getElementById('print-area');
+    if (!area) return;
+    const w = window.open('', '_blank', 'width=1024,height=768');
+    if (!w) return;
+    w.document.open();
+    w.document.write(`
+      <html>
+        <head>
+          <title>Detalle de Boleta</title>
+          <link rel="stylesheet" href="styles.css">
+        </head>
+        <body>${area.innerHTML}
+          <script>
+            window.addEventListener('load', function(){
+              setTimeout(function(){ window.print(); }, 200);
+            });
+          <\/script>
+        </body>
+      </html>
+    `);
+    w.document.close();
+  }
 }
