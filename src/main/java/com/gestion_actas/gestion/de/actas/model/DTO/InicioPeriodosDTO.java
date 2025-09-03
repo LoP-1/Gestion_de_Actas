@@ -1,5 +1,7 @@
 package com.gestion_actas.gestion.de.actas.model.DTO;
 
+
+//estructura de respuesta para muestra de periodos
 public class InicioPeriodosDTO {
     private String PeriodoPago;
     private String Month;
@@ -23,7 +25,7 @@ public class InicioPeriodosDTO {
             this.Month = getMonthName(Integer.parseInt(monthStr));
         }
     }
-
+    //asignar valores textuales a los numeros del mes
     private String getMonthName(int month) {
         String[] months = {
                 "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -35,7 +37,7 @@ public class InicioPeriodosDTO {
         return "Mes inválido";
     }
 
-    // Getters para uso posterior
+    // Getters para obtener datos (no se usan por ahora...)
     public String getPeriodoPago() { return PeriodoPago; }
     public String getMonth() { return Month; }
     public int getYear() { return Year; }

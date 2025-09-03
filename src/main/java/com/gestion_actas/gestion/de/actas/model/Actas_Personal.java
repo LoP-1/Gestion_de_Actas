@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+//segunda version del modelo actas personal, utiliza json en la base de datos para mantener estructuras de datos variables
+//para cambiar datos recomiendo revisar los servicios o duplicar antes de modificar
 @Entity
 @Table(name = "Actas_Personal")
 public class Actas_Personal {

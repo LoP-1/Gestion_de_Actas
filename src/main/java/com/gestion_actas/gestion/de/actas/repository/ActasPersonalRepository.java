@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ActasPersonalRepository extends JpaRepository<Actas_Personal, Long> {
 
-
+    //consulta sql para obtener Las actas usando el numero de documento
     @Query(
             value = "SELECT id, periodo_pago, codigo_modular, total_remuneracion, " +
                     "JSON_UNQUOTE(JSON_EXTRACT(ingresos_json, '$.\"Sueldo Base\"')) AS sueldo_base " +
@@ -44,7 +44,7 @@ public interface ActasPersonalRepository extends JpaRepository<Actas_Personal, L
     List<Object[]> ListarUsuariosPorPeriodo(String periodoPago);
 
 
-
+    //consulta grande para conseguir los datos de usuarios
     @Query(
             value = "SELECT " +
                     "`codigo modular`, " +
@@ -93,11 +93,7 @@ public interface ActasPersonalRepository extends JpaRepository<Actas_Personal, L
 
 
 
-    /**
-     * Consulta para listar todos los usuarios únicos por DNI.
-     * Devuelve el id, nro_documento (DNI), nombres, apellidos y código modular,
-     * sin repetir usuarios por DNI.
-     */
+    //obtener los usuarios, evitando duplicados y usando dni para realizar la busqueda
     @Query(
             value = "SELECT MIN(id) as id, nro_documento as dni, nombres, CONCAT(ape_paterno, ' ', ape_materno) as apellido, `codigo modular` " +
                     "FROM actas_personal " +
@@ -107,11 +103,7 @@ public interface ActasPersonalRepository extends JpaRepository<Actas_Personal, L
     )
     List<Object[]> listarUsuariosUnicosPorDni();
 
-    /**
-     * Consulta para obtener todos los periodos de pago e id de registros
-     * en los que aparece un DNI específico.
-     * Devuelve el id y el periodo_pago por cada aparición del DNI.
-     */
+    //lista todos los periodos de cada usuario
     @Query(
             value = "SELECT id, periodo_pago FROM actas_personal WHERE nro_documento = ?1 ORDER BY periodo_pago DESC",
             nativeQuery = true

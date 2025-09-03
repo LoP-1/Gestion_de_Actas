@@ -18,18 +18,19 @@ public class ActasController {
         @Autowired
         private ActasService actasService;
 
-        //Obtener detalles
-        @GetMapping("/usuarios/{id}")
-        public Actas_Personal obtenerUsuario(@PathVariable Long id) {
+    //Obtener detalles
+    @GetMapping("/usuarios/{id}")
+    public Actas_Personal obtenerUsuario(@PathVariable Long id) {
         return actasService.obtenerPorId(id);
     }
 
+    //Obtiene los detalles de un usuario al enviar el DNI
     @GetMapping("/usuarios/detalles")
     public List<DetalleActasDTO> obtenerDetallesSimples(@RequestParam String nroDocumento) {
         return actasService.getActasPorNroDocumento(nroDocumento);
     }
 
-
+    //Tambien saca los detalles del usuario con DNI
     @GetMapping("usuarios/detalle/{dni}")
     public ResponseEntity<UsuarioDetalleDTO> obtenerPorDni(@PathVariable String dni) {
         UsuarioDetalleDTO dto = actasService.obtenerFormularioPorDni(dni);
@@ -39,27 +40,25 @@ public class ActasController {
         return ResponseEntity.ok(dto);
     }
 
-    //devolver el json de periodos
+    //devuelve un json de todos los periodos activos
     @GetMapping("/periodo")
     public List<InicioPeriodosDTO> listarPeriodos() {
         return actasService.listarPeriodos();
     }
 
-    //obtener los usuarios por cada periodo
+    //obtener los usuarios usando los periodos como filtro
     @GetMapping("/periodo/{periodoPago}")
     public List<UsuarioResumenDTO> listarUsuariosPorPeriodo(@PathVariable String periodoPago) {
         return actasService.obtenerUsuariosPorPeriodo(periodoPago);
     }
+
+    //lista los usuarios utilizando el DNI , evita mostrar repetidos
     @GetMapping("/usuarios/lista-unicos")
     public List<ListaUsuariosDTO> listarUsuariosUnicosPorDni() {
         return actasService.listarUsuariosUnicosPorDni();
     }
 
-    /**
-     * Endpoint para obtener todos los periodos de pago y id por un DNI.
-     * GET /usuarios/periodos/{dni}
-     * Devuelve los periodos de pago y el id de cada registro donde aparece el DNI.
-     */
+    //Obtiene la lista de periodos e id de cada usuario , usando el DNI como campo par realizar la busqueda
     @GetMapping("/usuarios/periodos/{dni}")
     public List<PeriodosDTO> listarPeriodosPorDni(@PathVariable String dni) {
         return actasService.listarPeriodosPorDni(dni);

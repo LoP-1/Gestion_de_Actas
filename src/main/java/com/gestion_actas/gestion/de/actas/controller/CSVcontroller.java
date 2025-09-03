@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CSVcontroller {
 
+    //implementacion del servicio CSV
     @Autowired
     private CSVservice licenciaPersonalService;
 
-
+    //habilita la url /upload para subir csv
     @PostMapping("/upload")
     public ResponseEntity<List<Actas_Personal>> importarCsv(@RequestParam("file") MultipartFile file) {
         try {
+            //utiliza el metodo del servicio "LicenciaPersonalService"
             List<Actas_Personal> lista = licenciaPersonalService.importarCsv(file);
             return ResponseEntity.ok(lista);
         } catch (IOException | CsvException e) {

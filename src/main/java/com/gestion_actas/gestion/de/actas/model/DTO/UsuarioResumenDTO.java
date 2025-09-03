@@ -1,5 +1,6 @@
 package com.gestion_actas.gestion.de.actas.model.DTO;
 
+//datos reducidos de usuarios
 public class UsuarioResumenDTO {
     private Long id;
     private String codigoModular;
@@ -38,6 +39,8 @@ public class UsuarioResumenDTO {
         this.tPlanilla = tPlanilla;
         this.region = region;
     }
+
+    //getters y setters
 
     public Long getId() {
         return id;

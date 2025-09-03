@@ -1,5 +1,8 @@
 package com.gestion_actas.gestion.de.actas.model.DTO;
 
+
+//Estructura del JSON para respuesta de detalles
+//4 campos mapeados
 public class DetalleActasDTO {
     private Long id;
     private String periodoPago;
@@ -13,7 +16,8 @@ public class DetalleActasDTO {
         this.totalRemuneracion = totalRemuneracion;
     }
 
-    // Getters y setters
+
+    // Getters y setters autogenerados
     public Long getId() {
         return id;
     }

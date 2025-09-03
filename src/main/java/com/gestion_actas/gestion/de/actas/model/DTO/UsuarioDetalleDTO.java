@@ -2,6 +2,7 @@ package com.gestion_actas.gestion.de.actas.model.DTO;
 
 import java.time.LocalDate;
 
+//formato extenso para datos completos de usuarios
 public class UsuarioDetalleDTO {
     private String codigoModular;         // codigo modular
     private String cargo;                 // cargo
@@ -35,6 +36,8 @@ public class UsuarioDetalleDTO {
     private String modoPago;              // modo_pago
     private String leyendaPermanente;     // leyenda_permanente
     private String ctaCte;
+
+    //getters y setters
 
     public String getCtaCte() {
         return ctaCte;

@@ -9,6 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer() {
+
+        //Permitir peticiones de las siguientes IP, seran las del frontend
+        //Codigo CORS
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {

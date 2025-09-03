@@ -1,5 +1,6 @@
 package com.gestion_actas.gestion.de.actas.model.DTO;
 
+//formato de respuesta para mostrar usuarios
 public class ListaUsuariosDTO {
     private Long id;
     private String dni;
@@ -15,7 +16,9 @@ public class ListaUsuariosDTO {
         this.nombres = nombres;
         this.apellido = apellido;
         this.codigoModular = codigoModular;
-    }   
+    }
+
+    //getters y setters
 
     public Long getId() {
         return id;

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//logica para todas las consultas de usuarios en la base de datos
 @Service
 public class ActasService {
 
@@ -35,7 +36,7 @@ public class ActasService {
         return actasRepository.findById(id).orElse(null);
     }
 
-
+    //Obtener todos los usuarios por periodos
     public List<UsuarioResumenDTO> obtenerUsuariosPorPeriodo(String periodoPago) {
         List<Object[]> resultados = actasRepository.ListarUsuariosPorPeriodo(periodoPago);
         List<UsuarioResumenDTO> lista = new ArrayList<>();
@@ -58,9 +59,7 @@ public class ActasService {
         return lista;
     }
 
-
-
-
+    //obtener los datos de usuario usando el dni
     public UsuarioDetalleDTO obtenerFormularioPorDni(String dni) {
         // Cambia el repositorio para retornar una lista:
         List<Object[]> filas = actasRepository.findEmpleadoFormularioPorDni(dni);
