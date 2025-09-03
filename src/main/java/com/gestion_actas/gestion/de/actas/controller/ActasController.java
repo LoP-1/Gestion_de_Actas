@@ -1,6 +1,6 @@
 package com.gestion_actas.gestion.de.actas.controller;
 
-import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
+import com.gestion_actas.gestion.de.actas.model.Actas_Personal;
 import com.gestion_actas.gestion.de.actas.model.DTO.*;
 import com.gestion_actas.gestion.de.actas.services.ActasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ActasController {
 
         //Obtener detalles
         @GetMapping("/usuarios/{id}")
-        public ActasPersonal obtenerUsuario(@PathVariable Long id) {
+        public Actas_Personal obtenerUsuario(@PathVariable Long id) {
         return actasService.obtenerPorId(id);
     }
 

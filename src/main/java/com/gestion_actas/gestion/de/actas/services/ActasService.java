@@ -1,8 +1,9 @@
 package com.gestion_actas.gestion.de.actas.services;
 
-import com.gestion_actas.gestion.de.actas.model.ActasPersonal;
+import com.gestion_actas.gestion.de.actas.model.Actas_Personal;
 import com.gestion_actas.gestion.de.actas.model.DTO.*;
-import com.gestion_actas.gestion.de.actas.repository.ActasRepository;
+import com.gestion_actas.gestion.de.actas.repository.ActasPersonalRepository;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class ActasService {
 
     @Autowired
-    private ActasRepository actasRepository;
+    private ActasPersonalRepository actasRepository;
 
     //cargar detalles basicos para la segunda ventana
     public List<DetalleActasDTO> getActasPorNroDocumento(String nroDocumento) {
@@ -30,7 +31,7 @@ public class ActasService {
     }
 
     // Obtener por ID
-    public ActasPersonal obtenerPorId(Long id) {
+    public Actas_Personal obtenerPorId(Long id) {
         return actasRepository.findById(id).orElse(null);
     }
 

@@ -1,8 +1,8 @@
-<mat-sidenav-container class="main-container">
+<!-- Si NO estás en /login, muestra el layout completo; si estás en /login, solo muestra el login -->
+<mat-sidenav-container class="main-container" *ngIf="!isLoginPage(); else soloLogin">
   <!-- Sidebar izquierdo (menú) -->
   <mat-sidenav mode="side" opened class="sidebar">
     <h2 class="sidebar-title">Menú</h2>
-
     <mat-nav-list>
       <!-- Seleccionar Periodo (con submenú) -->
       <a mat-list-item (click)="togglePeriodoMenu()" [class.active]="isSeleccionarPeriodoActive()">
@@ -11,40 +11,31 @@
         <span class="spacer"></span>
         <mat-icon class="chevron" [class.open]="periodoMenuOpen">expand_more</mat-icon>
       </a>
-
       <div class="submenu" *ngIf="periodoMenuOpen">
-        <a mat-list-item routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a mat-list-item routerLink="/periodos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <mat-icon>event_available</mat-icon>
           <span>Seleccionar Periodo</span>
         </a>
-
         <a mat-list-item routerLink="/usuarios-periodo" routerLinkActive="active">
           <mat-icon>group</mat-icon>
           <span>Empleados del periodo</span>
         </a>
       </div>
-
-      
-
       <!-- Buscador Usuarios -->
       <a mat-list-item [routerLink]="['/buscador-usuarios']" routerLinkActive="active">
         <mat-icon>search</mat-icon>
         <span>Buscador Usuarios</span>
       </a>
-
       <!-- Detalles Completos -->
       <a mat-list-item [routerLink]="['/detalles-completos', ultimoBoletaId ]" routerLinkActive="active">
         <mat-icon>print</mat-icon>
         <span>Detalles Completos</span>
       </a>
-<!-- Importar CSV -->
+      <!-- Importar CSV -->
       <a mat-list-item [routerLink]="['/importar']" routerLinkActive="active">
         <mat-icon>description</mat-icon>
         <span>Importar CSV</span>
       </a>
-
-
-      
     </mat-nav-list>
   </mat-sidenav>
 
@@ -55,7 +46,6 @@
       <mat-icon>info</mat-icon>
       <span>No hay boletas agregadas.</span>
     </div>
-
     <div class="carrito-list">
       <div class="carrito-item" *ngFor="let boleta of carritoBoletas">
         <div class="carrito-item-info">
@@ -81,3 +71,10 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- Solo Login: Ocupa todo el espacio cuando estás en /login -->
+<ng-template #soloLogin>
+  <div class="login-fullscreen">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>

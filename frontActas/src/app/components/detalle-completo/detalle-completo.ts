@@ -26,30 +26,75 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
   totalIngresos = 0;
   totalEgresos = 0;
 
-  ingresosMap: { [key: string]: string } = {
-    rmsCesfa: 'RMS.C.ESFA', ruralCont: 'Rural Cont.', rmsEes: 'RMS_EES', rimsEes: 'RIMS_EES',
-    bExtTranVari: 'B.Ext.Tran.Vari', bExtTranFijo: 'B.Ext.Tran.Fijo', asgVra30512: 'Asg. VRA 30512',
-    asgRural30512: 'Asg. Rural 30512', montUniCons: 'Mont. Uni. Cons', rms30512: 'RMS 30512',
-    aCargEspLrm: 'A.carg Esp LRM', remTransiEsfa: 'Rem. Transi ESFA', rims: 'RIMS',
-    aCargDirGes: 'A.carg Dir Ges', palmasMagMaes: 'Palmas Mag Maes', jorTrabAdLrm: 'Jor Trab Ad LRM',
-    aCargDirLrm: 'A.carg Dir LRM', rimLey29944: 'RIM Ley 29944', ley29702: 'Ley 29702',
-    ds0652003Ef: 'DS065-2003-EF', du01199: 'D.U.011-99', reintManNoAf: 'Reint Man No Af',
-    reintgManual: 'Reintg. Manual', du07397: 'D.U.073-97', dl26504: 'D.L.26504',
-    ds01193Ed: 'DS011-93-ED', difPensionable: 'Dif Pensionable', ds26191EfIgv: 'DS261-91-EF IGV',
-    reunificada: 'Reunificada', bonEspecial: 'Bon. Especial', aguinaldo: 'Aguinaldo',
-    cvidDs15491Ef: 'CVid.DS154-91EF', dse02192Pcm: 'DSE 021-92-PCM', ds01994Pcm: 'DS.019-94-PCM',
-    bonDu9096: 'Bon. D.U.90-96', refrigMov: 'Refrig. y Mov.', du08094: 'D.U.080-94',
-    asigDs081: 'Asig. D.S.081', asigDl25671: 'Asig.D.L.25671', sueldoBase: 'Sueldo Base'
+  ingresosLabels: { [key: string]: string } = {
+    "RMS.C.ESFA": "Remuneración Mensual por Servicio en ESFA",
+    "rural_cont": "Rural Continúa",
+    "RMS_EES": "Remuneración Mensual por Servicio en EES",
+    "RIMS_EES": "Remuneración por Incentivos en EES",
+    "B_Ext_Tran_Vari": "Bonif. Ext. Transf. Variable",
+    "B_Ext_Tran_Fijo": "Bonif. Ext. Transf. Fija",
+    "asg_vra_30512": "Asignación VRA 30512",
+    "asg_rural_30512": "Asignación Rural 30512",
+    "Mont_Uni_Cons": "Monto Único de Consumo",
+    "RMS_30512": "Remuneración Mensual 30512",
+    "A.carg_esp_LRM": "A cargo Especial LRM",
+    "Rem.Transi.ESFA": "Remuneración Transitoria ESFA",
+    "RIMS": "Remuneración por Incentivos",
+    "A.carg_dir_Ges_": "A cargo Dirección Gestión",
+    "Palmas MagMaes": "Palmas Magisteriales Maestros",
+    "Jor_Trab.Ad_lrm": "Jornada Trabajo Adicional LRM",
+    "A.carg_dir_LRM": "A cargo Dirección LRM",
+    "RIM_Ley 29944": "RIM Ley 29944",
+    "Ley29702": "Ley 29702",
+    "DS065-2003-EF": "DS065-2003-EF",
+    "D.U.011-99": "D.U. 011-99",
+    "Reint Man No Af": "Reintegro Manual No Afiliado",
+    "Reintg. Manual": "Reintegro Manual",
+    "D.U.073-97": "D.U. 073-97",
+    "D.L. 26504": "D.L. 26504",
+    "DS011-93-ED": "DS011-93-ED",
+    "Dif Pensionable": "Diferencia Pensionable",
+    "DS261-91-EF IGV": "DS261-91-EF IGV",
+    "Reunificada": "Remuneración Unificada",
+    "Bon. Especial": "Bonificación Especial",
+    "aguinaldo": "Aguinaldo",
+    "CVid.DS154-91EF": "Compensación Vida DS154-91EF",
+    "DSE 021-92-PCM": "DSE 021-92-PCM",
+    "DS. 019-94-PCM": "DS. 019-94-PCM",
+    "Bon. D.U. 90-96": "Bonificación D.U. 90-96",
+    "Refrig. y Mov.": "Refrigerio y Movilidad",
+    "D.U. 080-94": "D.U. 080-94",
+    "Asig. D.S.081": "Asignación D.S.081",
+    "Asig.D.L. 25671": "Asignación D.L. 25671",
+    "Sueldo Base": "Sueldo Base"
   };
 
-  egresosMap: { [key: string]: string } = {
-    dl19990Snp: 'DL19990 SNP', dsctoJudicial: 'Dscto. Judicial', derrMagisteria: 'Derr Magisteria',
-    coopCapacYupa: 'Coop Capac Yupa', ipssvida: 'IPSSVIDA', tardanzas: 'Tardanzas',
-    dl25897Afp: 'D.L.25897 AFP', pagindnoaf: 'Pagindnoaf', quintacat: 'Quintacat',
-    segrimac: 'Segrimac', cmcusco: 'CMCusco', cmarequipa: 'CMArequipa', interbank: 'Interbank',
-    cmhuancayo: 'CMHuancayo', prderrmag: 'Prderrmag', idg: 'IDG', fentase: 'Fentase',
-    inasistencias: 'Inasistencias', aeherme: 'AEHERME', bripley: 'BRIPLEY', craccentro: 'CRACCENTRO',
-    bcoPichincha: 'Bco. Pichincha', gproeducar: 'GPROEDUCAR', constante: 'Constante', subcafae: 'SUBCAFAE'
+  egresosLabels: { [key: string]: string } = {
+    "DL19990 SNP": "Descuento SNP DL19990",
+    "Dscto. Judicial": "Descuento Judicial",
+    "Derr Magisteria": "Derrama Magisterial",
+    "Coop Capac Yupa": "Coop. Capac Yupa",
+    "IPSSVIDA": "Descuento IPSS Vida",
+    "Tardanzas": "Descuento por Tardanzas",
+    "D.L. 25897 AFP": "Descuento AFP D.L. 25897",
+    "pagindnoaf": "Pago Ind. No Afiliado",
+    "quintacat": "Quinta Categoría",
+    "segrimac": "Seguro Rimac",
+    "cmcusco": "Caja Municipal Cusco",
+    "cmarequipa": "Caja Municipal Arequipa",
+    "interbank": "Descuento Interbank",
+    "cmhuancayo": "Caja Municipal Huancayo",
+    "prderrmag": "Préstamo Derrama Magisterial",
+    "idg": "IDG",
+    "fentase": "FENTASE",
+    "Inasistencias": "Descuento por Inasistencias",
+    "AEHERME": "AEHERME",
+    "BRIPLEY": "BRIPLEY",
+    "CRACCENTRO": "CRACCENTRO",
+    "Bco.Pichincha": "Banco Pichincha",
+    "GPROEDUCAR": "GPROEDUCAR",
+    "CONSTANTE": "Constante",
+    "SUBCAFAE": "SUBCAFAE"
   };
 
   ingresosDisplayedColumns: string[] = ['concepto', 'monto'];
@@ -95,13 +140,37 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
       this.data = resp;
       this.isLoading = false;
 
-      this.ingresos = Object.entries(this.ingresosMap)
-        .filter(([key]) => resp[key] && Number(resp[key]) > 0)
-        .map(([key, label]) => ({ concepto: label, monto: Number(resp[key]) }));
+      // INGRESOS JSON amigables
+      this.ingresos = [];
+      if (resp.ingresosJson) {
+        try {
+          const ingresosObj = JSON.parse(resp.ingresosJson);
+          this.ingresos = Object.entries(ingresosObj)
+            .filter(([concepto, monto]) => Number(monto) !== 0)
+            .map(([concepto, monto]) => ({
+              concepto: this.ingresosLabels[concepto] || concepto,
+              monto: Number(monto)
+            }));
+        } catch (e) {
+          console.error("Error parsing ingresosJson", e);
+        }
+      }
 
-      this.egresos = Object.entries(this.egresosMap)
-        .filter(([key]) => resp[key] && Number(resp[key]) > 0)
-        .map(([key, label]) => ({ concepto: label, monto: Number(resp[key]) }));
+      // EGRESOS JSON amigables
+      this.egresos = [];
+      if (resp.egresosJson) {
+        try {
+          const egresosObj = JSON.parse(resp.egresosJson);
+          this.egresos = Object.entries(egresosObj)
+            .filter(([concepto, monto]) => Number(monto) !== 0)
+            .map(([concepto, monto]) => ({
+              concepto: this.egresosLabels[concepto] || concepto,
+              monto: Number(monto)
+            }));
+        } catch (e) {
+          console.error("Error parsing egresosJson", e);
+        }
+      }
 
       this.totalIngresos = this.ingresos.reduce((acc, cur) => acc + cur.monto, 0);
       this.totalEgresos = this.egresos.reduce((acc, cur) => acc + cur.monto, 0);
@@ -146,14 +215,12 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   imprimir() {
-    // Espera a que el DOM pinte y aplica escala
     requestAnimationFrame(() => {
       this.preparePrintScale();
       setTimeout(() => window.print(), 60);
     });
   }
 
-  // Por si quieres probar impresión aislada en popup
   imprimirEnPopup() {
     const area = document.getElementById('print-area');
     if (!area) return;
