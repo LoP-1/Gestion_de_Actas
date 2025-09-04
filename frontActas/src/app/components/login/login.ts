@@ -1,14 +1,18 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router'; // <-- IMPORTANTE
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../enviroments/enviroment';
 
 @Component({
   selector: 'app-login',
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -17,24 +21,34 @@ import { Router } from '@angular/router'; // <-- IMPORTANTE
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-  ],
-  templateUrl: './login.html',
-  styleUrls: ['./login.css'],
+    HttpClientModule
+  ]
 })
 export class LoginComponent {
-  form;
+  private apiUrl = `${environment.apiUrl}/auth/login`;
+  form: FormGroup;
+  error: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
     this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      dni: ['', Validators.required],
+      contrasena: ['', Validators.required]
     });
   }
 
   login() {
-    if (this.form.valid) {
-      // Redirige a /inicio
-      this.router.navigate(['/inicio']);
-    }
-  }
+  if (this.form.invalid) return;
+  this.error = '';
+  this.http.post<{ token: string, rol: string }>(this.apiUrl, this.form.value)
+    .subscribe({
+      next: (resp) => {
+        localStorage.setItem('token', resp.token);
+        localStorage.setItem('rol', resp.rol);
+        this.router.navigate(['/inicio']);
+      },
+      error: () => {
+        this.error = 'Usuario o contraseña incorrectos';
+      }
+    });
+}
 }

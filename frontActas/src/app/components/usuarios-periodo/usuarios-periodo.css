@@ -1,14 +1,22 @@
-/* Paleta del dashboard, en línea con el navbar */
+/* Paleta tomada de :root en styles.css
+   --brand-green: #00d084 (principal)
+   --brand-navy:  #00286a
+   --brand-orange:#ff6900
+*/
+
+/* Variables locales del módulo (con fallback si no existieran en :root) */
 .dashboard-table-container {
-  --nav-1: #263043;   /* header/nav oscuro */
-  --nav-2: #202738;   /* gradiente */
-  --ink: #263043;     /* texto principal */
-  --muted: #6b7280;   /* texto suave */
-  --paper: #ffffff;   /* tarjetas blancas */
-  --bg: #f5f6fa;      /* fondo dashboard */
-  --divider: #e7ebf3; /* separadores */
-  --accent: #4fc3f7;  /* acento celeste */
-  --primary: #1976d2; /* primario */
+  --nav-1: var(--brand-navy, #00286a);
+  --nav-2: color-mix(in srgb, var(--brand-navy, #00286a) 80%, #000 0%); /* sutil */
+  --ink: #263043;
+  --muted: #6b7280;
+  --paper: #ffffff;
+  --bg: #f5f6fa;
+  --divider: #e7ebf3;
+  --accent: var(--brand-orange, #ff6900); /* acento */
+  --primary: var(--brand-green, #00d084); /* principal verde */
+  --primary-700: #00b874; /* tono un poco más oscuro para gradientes */
+  --primary-600: #00c97c;
 }
 
 /* Contenedor “card” ancho */
@@ -20,12 +28,10 @@
   margin: 22px auto;
   max-width: 98vw;
   overflow-x: auto;
-  border: 0px solid rgba(35, 43, 62, 0.06);
+  border: 0 solid rgba(35, 43, 62, 0.06);
 }
 
-.dashboard-table-container.wide {
-  max-width: 1450px;
-}
+.dashboard-table-container.wide { max-width: 1450px; }
 
 .dashboard-table-container h2 {
   font-size: 1.16rem;
@@ -54,13 +60,26 @@
   box-shadow: 0 2px 8px rgba(25,49,83,0.05);
 }
 
+/* Bordes/estado del form-field al foco con verde principal (MDC) */
+.dashboard-table-filters .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.dashboard-table-filters .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.dashboard-table-filters .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--primary) !important;
+}
+.dashboard-table-filters .mat-mdc-form-field.mat-focused .mdc-text-field--outlined .mdc-floating-label {
+  color: var(--primary) !important;
+}
+
+/* Botón de filtros */
 .dashboard-btn {
   font-weight: 600;
   border-radius: 10px !important;
   min-width: 120px;
   padding: 8px 16px;
   margin-bottom: 8px;
-  box-shadow: 0 3px 10px rgba(30,64,175,0.12);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  background: var(--primary) !important;
+  color: #fff !important;
 }
 
 /* Tabla dashboard */
@@ -72,17 +91,14 @@
   box-shadow: 0 4px 14px rgba(25,49,83,0.08);
   border: 1px solid var(--divider);
 }
+.wide-table { min-width: 1100px; }
 
-.wide-table {
-  min-width: 1100px;
-}
-
-/* Header sticky con colores del navbar */
+/* Header sticky con verde principal + navy */
 .dashboard-table th.mat-header-cell {
-  background: linear-gradient(90deg, var(--nav-1) 0%, var(--nav-2) 100%);
+  background: linear-gradient(90deg, var(--primary-700) 0%, var(--nav-1) 100%);
   color: #fff;
   font-weight: 700;
-  border-bottom: 2px solid rgba(79,195,247,0.18);
+  border-bottom: 2px solid color-mix(in srgb, var(--primary) 40%, #fff 60%);
   font-size: 0.98rem;
   letter-spacing: 0.02em;
   padding: 12px 10px;
@@ -98,39 +114,33 @@
 }
 
 /* Rayado tipo zebra */
-.dashboard-table tr.mat-row:nth-child(even) td.mat-cell {
-  background: #f6f8fd;
-}
+.dashboard-table tr.mat-row:nth-child(even) td.mat-cell { background: #f6f8fd; }
 
-/* Hover suave */
+/* Hover suave (ligero tinte verde) */
 .dashboard-table tr.mat-row:hover td.mat-cell {
-  background: #edf3ff;
+  background: color-mix(in srgb, var(--primary) 8%, #edf3ff 92%);
 }
 
-/* Bordes redondeados visuales en primera y última fila (cuando no hay sticky footer) */
-.dashboard-table tr.mat-row:first-of-type td.mat-cell {
-  border-top: 1px solid var(--divider);
-}
+/* Borde superior en primera fila */
+.dashboard-table tr.mat-row:first-of-type td.mat-cell { border-top: 1px solid var(--divider); }
 
-/* Columna de acciones centrada */
+/* Columna acciones centrada */
 .dashboard-table td.mat-cell:last-child,
-.dashboard-table th.mat-header-cell:last-child {
-  text-align: center;
-}
+.dashboard-table th.mat-header-cell:last-child { text-align: center; }
 
-/* Botón Detalle tipo píldora */
+/* Botón Detalle tipo píldora en verde */
 .pill-btn {
   min-width: 96px;
   font-size: 0.95rem !important;
   border-radius: 999px !important;
   padding: 4px 14px !important;
-  box-shadow: 0 4px 12px rgba(79,195,247,0.18) !important;
-  background: linear-gradient(90deg, #1e88e5 0%, #42a5f5 100%) !important;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 25%, #000 0%) !important;
+  background: linear-gradient(90deg, var(--primary-700) 0%, var(--primary) 100%) !important;
   color: #fff !important;
   border: 1px solid rgba(255,255,255,0.35) !important;
 }
 
-/* Paginador acorde al tema (compatibilidad MDC/legacy) */
+/* Paginador acorde al tema */
 .mat-mdc-paginator, .mat-paginator {
   background: transparent;
   border-radius: 10px;
@@ -140,13 +150,11 @@
   box-shadow: 0 2px 10px rgba(25,49,83,0.07);
   border: 1px solid var(--divider);
 }
-
 .mat-mdc-paginator .mat-mdc-select-value,
 .mat-paginator .mat-select-value {
   color: var(--primary);
   font-weight: 600;
 }
-
 .mat-mdc-paginator .mat-mdc-icon-button,
 .mat-paginator .mat-icon-button {
   color: var(--primary);
@@ -158,22 +166,12 @@
     max-width: 98vw;
     padding: 12px 2vw 18px 2vw;
   }
-  .dashboard-table {
-    min-width: 900px;
-  }
+  .dashboard-table { min-width: 900px; }
 }
-
 @media (max-width: 900px) {
-  .dashboard-table-container {
-    padding: 10px 2vw 14px 2vw;
-  }
+  .dashboard-table-container { padding: 10px 2vw 14px 2vw; }
   .dashboard-table-filters {
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
+    flex-direction: column; gap: 10px; align-items: stretch;
   }
-  .dashboard-table {
-    min-width: 640px;
-    font-size: 0.92rem;
-  }
+  .dashboard-table { min-width: 640px; font-size: 0.92rem; }
 }

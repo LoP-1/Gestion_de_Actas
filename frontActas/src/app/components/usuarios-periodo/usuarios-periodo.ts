@@ -55,7 +55,7 @@ export class UsuariosPeriodoComponent implements OnInit, AfterViewInit {
       if (ultimo) {
         this.router.navigate(['/usuarios-periodo', ultimo]);
       } else {
-        this.router.navigate(['/']);
+        this.router.navigate(['/usuarios-periodo']);
       }
       return;
     }

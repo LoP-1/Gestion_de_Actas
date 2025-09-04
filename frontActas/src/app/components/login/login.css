@@ -1,14 +1,162 @@
+/* Usa la paleta global (definida en :root de styles.css):
+   --brand-navy  #00286a
+   --brand-green #00d084
+   --brand-orange #ff6900
+*/
+
+/* Lienzo del login */
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eef1f7;
+  padding: 16px;
+}
+
+/* Tarjeta principal con banda izquierda */
 .login-card {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 32px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  /* ancho/alto */
+  width: min(980px, 92vw);
+  min-height: 420px;
+
+  /* layout del contenido (título + form) a la derecha */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+
+  /* espacio para la banda izquierda + padding derecho */
+  --left-band: clamp(280px, 42%, 420px);
+  padding: 40px 56px 36px calc(var(--left-band) + 48px);
+
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+  overflow: hidden;
+  background: #fff;
 }
-.full-width {
+
+/* Banda izquierda (gradiente navy → green con borde ondulado) */
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--left-band);
+  background: linear-gradient(160deg, var(--brand-navy) 0%, #0b4a8b 40%, var(--brand-green) 100%);
+  border-top-right-radius: 120px 140px;
+  border-bottom-right-radius: 120px 140px;
+  box-shadow: inset -10px 0 24px rgba(0,0,0,0.08);
+}
+
+/* Eliminado el circulito naranja de la esquina */
+/* (Antes usábamos ::after. Ya no se renderiza nada aquí.) */
+
+/* Título (lado derecho) */
+.login-card h2 {
+  margin: 0 0 6px 0;
+  width: min(360px, 90%);
+  align-self: flex-end;
+  color: var(--brand-navy);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+/* Formulario (lado derecho) */
+.login-form {
+  width: min(360px, 90%);
+  align-self: flex-end;
+}
+
+/* Campos tipo píldora con sombra suave */
+.login-card .mat-mdc-form-field.full-width {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
-h2 {
+
+/* Wrapper del input */
+.login-card .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.10);
+}
+
+/* Borde redondeado del outlined (tres piezas) */
+.login-card .mdc-notched-outline,
+.login-card .mdc-notched-outline__leading,
+.login-card .mdc-notched-outline__trailing {
+  border-radius: 999px !important;
+}
+
+/* Colores del outline y label (MDC) */
+.login-card .mat-mdc-form-field {
+  --mdc-outlined-text-field-outline-color: #d7deea;
+  --mdc-outlined-text-field-hover-outline-color: #c4ccda;
+  --mdc-outlined-text-field-focus-outline-color: var(--brand-green);
+  --mdc-outlined-text-field-label-text-color: #7a8597;
+  --mdc-outlined-text-field-focus-label-text-color: var(--brand-green);
+}
+
+/* Alto y padding interno */
+.login-card .mat-mdc-form-field-infix {
+  padding: 10px 18px !important;
+}
+.login-card .mat-mdc-input-element {
+  height: 44px;
+  line-height: 44px;
+  padding: 0 6px;
+  font-size: 0.98rem;
+}
+
+/* Botón principal (green → orange) tipo píldora */
+.login-btn {
+  border-radius: 999px !important;
+  height: 46px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(90deg, var(--brand-green) 0%, var(--brand-orange) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 20px rgba(0, 208, 132, 0.25), 0 6px 16px rgba(255, 105, 0, 0.18) !important;
+  transition: filter .18s ease, transform .12s ease;
+}
+.login-btn:hover { filter: brightness(0.97); }
+.login-btn:active { transform: translateY(1px); }
+
+/* Mensaje de error */
+.error {
+  margin-top: 10px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 600;
   text-align: center;
-  margin-bottom: 24px;
 }
+
+/* Responsive: la banda pasa arriba y el contenido se centra */
+@media (max-width: 760px) {
+  .login-card {
+    align-items: center;
+    padding: 28px 16px 20px;
+    padding-top: calc(200px + 20px); /* espacio para la banda */
+  }
+  .login-card::before {
+    width: 100%;
+    height: 200px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 60% 40%;
+    border-bottom-left-radius: 60% 40%;
+  }
+  .login-card h2,
+  .login-form {
+    width: 100%;
+    max-width: 420px;
+    align-self: center;
+  }
+}
+
+/* Utilidad */
+.full-width { width: 100%; }

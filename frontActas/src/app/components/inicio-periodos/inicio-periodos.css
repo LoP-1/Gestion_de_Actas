@@ -1,3 +1,5 @@
+/* Usa la paleta global de :root */
+
 .contenedor-periodos {
   text-align: center;
   margin-top: 32px;
@@ -7,7 +9,7 @@
 .titulo-periodos {
   font-size: 1.35rem;
   font-weight: 700;
-  color: #263043;
+  color: var(--brand-navy);
   margin-bottom: 26px;
   letter-spacing: 0.01em;
 }
@@ -30,7 +32,7 @@
   margin-bottom: 18px;
 }
 
-/* Botones de colores combinados tipo dashboard */
+/* Botones */
 .btn-periodo {
   padding: 1rem 2.4rem;
   border: none;
@@ -39,24 +41,24 @@
   font-size: 1.07rem;
   font-weight: 500;
   color: #fff;
-  box-shadow: 0 4px 18px 0 rgba(25,49,83,0.07);
-  transition: background 0.22s, box-shadow 0.18s;
+  box-shadow: 0 4px 18px 0 rgba(25, 49, 83, 0.07);
+  transition: background 0.22s, box-shadow 0.18s, filter 0.18s;
 }
 
-/* Colores tipo dashboard */
-.color-periodo-0 { background: #1976d2; } /* Azul dashboard */
-.color-periodo-1 { background: #e53935; } /* Rojo dashboard */
-.color-periodo-2 { background: #ffb300; color: #263043; } /* Amarillo naranja, texto oscuro */
-.color-periodo-3 { background: #8e24aa; } /* Violeta dashboard */
-.color-periodo-4 { background: #43a047; } /* Verde dashboard */
+/* Rotando los tres tonos de la paleta */
+.color-periodo-0 { background: var(--brand-navy); }
+.color-periodo-1 { background: var(--brand-orange); }
+.color-periodo-2 { background: var(--brand-green); color: #063d2a; } /* contraste */
+.color-periodo-3 { background: var(--brand-navy); }
+.color-periodo-4 { background: var(--brand-orange); }
 
 .btn-periodo:hover,
 .btn-periodo:focus {
   filter: brightness(0.92);
-  box-shadow: 0 6px 24px 0 rgba(25,49,83,0.14);
+  box-shadow: 0 6px 24px 0 rgba(25, 49, 83, 0.14);
 }
 
-/* Responsive: botones verticales en pantallas chicas */
+/* Responsive */
 @media (max-width: 600px) {
   .botones-periodos {
     flex-direction: column;

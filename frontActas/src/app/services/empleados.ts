@@ -55,8 +55,8 @@ export interface EmpleadoDetalle {
 
 @Injectable({ providedIn: 'root' })
 export class EmpleadosService {
-  private apiUrl = 'http://localhost:8080/usuarios/por-dni-unicos';
-  private detalleUrl = 'http://localhost:8080/usuarios/detalle';
+  private apiUrl = `${environment.apiUrl}/usuarios/por-dni-unicos`;
+  private detalleUrl = `${environment.apiUrl}/usuarios/detalle`;
 
   constructor(private http: HttpClient) {}
 

@@ -1,0 +1,247 @@
+/* Paleta global ya definida en :root de styles.css
+   --brand-navy:  #00286a
+   --brand-green: #00d084
+   --brand-orange:#ff6900
+*/
+
+/* Layout principal del dashboard (sin tocar mat-sidenav-container global) */
+.main-container {
+  height: 100vh;
+  min-height: 100vh;
+  width: 100vw;
+  background: #f5f6fa;
+}
+
+/* Sidebar izquierdo */
+.sidebar,
+mat-sidenav.sidebar {
+  min-width: 220px;
+  width: 250px;
+  background: var(--brand-navy) !important;
+  border-right: 1.5px solid var(--brand-navy);
+  box-shadow: 2px 0 7px rgba(0, 0, 0, 0.09);
+  padding-top: 18px;
+  overflow: auto;
+  color: #fff;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+
+  /* OVERRIDES de Angular Material (MDC) para listas dentro del sidebar */
+  --mdc-list-list-item-label-text-color: #fff;
+  --mdc-list-list-item-supporting-text-color: rgba(255, 255, 255, 0.85);
+  --mdc-list-list-item-leading-icon-color: #fff;
+  --mdc-list-list-item-trailing-icon-color: #fff;
+  --mdc-list-list-item-activated-label-text-color: #fff;
+  --mdc-list-list-item-hover-label-text-color: #fff;
+
+  --mdc-list-list-item-hover-state-layer-color: rgba(255, 255, 255, 0.12);
+  --mdc-list-list-item-focus-state-layer-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Título del sidebar */
+.sidebar-title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 6px 14px 18px;
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px #151c25;
+}
+
+/* Ítems del menú dentro del sidebar */
+.sidebar .mat-mdc-list-item,
+.sidebar .mat-list-item {
+  border-radius: 8px !important;
+  margin: 6px 10px;
+  background: transparent !important;
+  font-size: 1.02rem;
+  min-height: 44px;
+  font-weight: 500;
+  padding: 0 10px 0 12px;
+  display: flex;
+  align-items: center;
+  transition: background 0.13s, color 0.13s;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+/* Texto e iconos en blanco (respaldo) */
+.sidebar .mat-mdc-list-item .mdc-list-item__primary-text,
+.sidebar .mat-list-item .mdc-list-item__primary-text,
+.sidebar .mat-mdc-list-item .mdc-list-item__secondary-text,
+.sidebar .mat-list-item .mdc-list-item__secondary-text {
+  color: #fff !important;
+}
+
+.sidebar .mat-mdc-list-item .mat-icon,
+.sidebar .mat-list-item .mat-icon {
+  font-size: 20px !important;
+  margin-right: 12px;
+  color: #fff !important;
+  transition: transform 0.2s, color 0.2s;
+}
+
+/* Hover */
+.sidebar .mat-mdc-list-item:hover,
+.sidebar .mat-list-item:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 40, 106, 0.75) 0%,
+    rgba(0, 40, 106, 0.92) 100%
+  ) !important;
+  color: #fff !important;
+}
+
+/* Activo: fondo translúcido y texto/ícono en blanco */
+.sidebar .mat-mdc-list-item.active,
+.sidebar .mat-list-item.active {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px 0 rgba(0, 40, 106, 0.12);
+  border-left: 4px solid var(--brand-green);
+}
+.sidebar .mat-mdc-list-item.active .mdc-list-item__primary-text,
+.sidebar .mat-mdc-list-item.active .mdc-list-item__secondary-text,
+.sidebar .mat-list-item.active .mdc-list-item__primary-text,
+.sidebar .mat-list-item.active .mdc-list-item__secondary-text,
+.sidebar .mat-mdc-list-item.active .mat-icon,
+.sidebar .mat-list-item.active .mat-icon {
+  color: #fff !important;
+}
+
+/* Submenú */
+.submenu {
+  margin: 4px 6px 10px 20px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(255, 255, 255, 0.18);
+}
+.submenu .mat-mdc-list-item,
+.submenu .mat-list-item {
+  margin: 4px 0;
+  min-height: 40px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+  background: transparent !important;
+}
+.submenu .mat-mdc-list-item .mat-icon,
+.submenu .mat-list-item .mat-icon {
+  font-size: 18px !important;
+  margin-right: 10px;
+}
+
+/* Chevron del item con submenú */
+.spacer { flex: 1 1 auto; }
+.chevron { transition: transform 0.2s ease, color 0.2s ease; }
+.chevron.open { transform: rotate(180deg); color: var(--brand-orange); }
+
+/* ========================= */
+/* Sidenav derecho (carrito) */
+/* ========================= */
+.carrito-sidebar,
+mat-sidenav.carrito-sidebar {
+  min-width: 260px;
+  width: 300px;
+  /* Fondo con leve tinte naranja para no cansar la vista */
+  background: linear-gradient(180deg, rgba(255,105,0,0.06) 0%, rgba(255,105,0,0.03) 100%);
+  border-left: 1.5px solid rgba(255,105,0,0.35);
+  box-shadow: -2px 0 7px rgba(25, 49, 83, 0.03);
+  padding: 16px 14px;
+  overflow: auto;
+  color: #263043;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+
+  /* Ajustes de botones (MDC variables locales) */
+  --mdc-filled-button-container-color: var(--brand-orange);
+  --mdc-filled-button-label-text-color: #fff;
+  --mdc-outlined-button-label-text-color: var(--brand-navy);
+  --mdc-outlined-button-outline-color: var(--brand-navy);
+  --mdc-fab-container-color: var(--brand-orange);
+  --mdc-fab-icon-color: #fff;
+}
+
+.carrito-title {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--brand-orange);
+}
+
+/* Estado vacío */
+.carrito-empty { display: flex; align-items: center; gap: 8px; color: #6b7280; margin-bottom: 12px; }
+.carrito-empty .mat-icon { color: var(--brand-orange); }
+
+/* Lista del carrito */
+.carrito-list { display: grid; gap: 10px; }
+.carrito-item {
+  background: #fff;
+  border: 1px solid #ffe1cc; /* borde naranja suave */
+  border-left: 4px solid var(--brand-orange);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(17, 25, 40, 0.05);
+  transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+}
+.carrito-item:hover {
+  box-shadow: 0 6px 16px rgba(255,105,0,0.16);
+  border-color: #ffc9a3;
+}
+.carrito-item-info { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.carrito-item-name { font-weight: 600; color: var(--brand-navy); }
+.carrito-item-periodo { color: #6b7280; font-size: 0.92rem; }
+
+/* Acciones */
+.carrito-item-actions { margin-top: 8px; display: flex; gap: 8px; }
+
+/* Botón "Ver Detalle" (color=primary) en naranja */
+.carrito-sidebar .mat-mdc-unelevated-button.mat-primary,
+.carrito-sidebar .mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(90deg, #ff8a26 0%, var(--brand-orange) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(255,105,0,0.22) !important;
+}
+.carrito-sidebar .mat-mdc-unelevated-button.mat-primary:hover,
+.carrito-sidebar .mat-mdc-raised-button.mat-primary:hover {
+  filter: brightness(0.95);
+}
+
+/* Botón "Quitar" (color=warn) con navy como acento */
+.carrito-sidebar .mat-mdc-outlined-button.mat-warn {
+  color: var(--brand-navy) !important;
+  border-color: var(--brand-navy) !important;
+}
+.carrito-sidebar .mat-mdc-outlined-button.mat-warn .mat-icon {
+  color: var(--brand-navy) !important;
+}
+
+/* FAB de cerrar sesión en naranja, con halo verde al enfoque */
+.logout-fab { position: absolute; right: 16px; bottom: 16px; z-index: 10; }
+.carrito-sidebar .mat-mdc-fab.mat-warn,
+.carrito-sidebar .mat-mdc-mini-fab.mat-warn {
+  background: var(--brand-orange) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(255,105,0,0.25) !important;
+}
+.carrito-sidebar .mat-mdc-fab.mat-warn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-green) 40%, #fff 60%);
+  outline-offset: 2px;
+}
+
+/* Contenido principal (scope solo por clase) */
+.main-content { padding: 16px 18px; }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .sidebar,
+  mat-sidenav.sidebar { width: 180px; min-width: 160px; }
+  .carrito-sidebar,
+  mat-sidenav.carrito-sidebar { width: 220px; min-width: 200px; padding: 12px 10px; }
+  .main-content { padding: 12px; }
+}
+
+/* Refuerzo de color blanco para texto/íconos del menú izquierdo por si un tema global pisa */
+:host ::ng-deep .sidebar .mdc-list-item__primary-text,
+:host ::ng-deep .sidebar .mdc-list-item__secondary-text,
+:host ::ng-deep .sidebar .mat-icon {
+  color: #fff !important;
+}
