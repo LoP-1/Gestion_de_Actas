@@ -1,0 +1,96 @@
+<section class="descuentos-panel mat-elevation-z2">
+  <header class="header">
+    <div class="search">
+      <label class="label">Buscar por DNI</label>
+      <div class="search-row">
+        <input matInput placeholder="DNI (ej. 12345678)" [formControl]="dni" (keyup.enter)="searchByDni()" />
+        <button mat-flat-button color="primary" (click)="searchByDni()">
+          <mat-icon>search</mat-icon>
+          Buscar
+        </button>
+      </div>
+      <div class="error" *ngIf="dni.invalid && dni.touched">DNI inválido — ingresa 6 a 8 dígitos.</div>
+    </div>
+
+    <div class="quick-controls">
+      <button mat-stroked-button color="primary" (click)="selectYear(selectedYear ?? years[0])" *ngIf="years.length">
+        <mat-icon>calendar_today</mat-icon>
+        Año: {{ selectedYear ?? 'Todos' }}
+      </button>
+    </div>
+  </header>
+
+  <mat-divider></mat-divider>
+
+  <!-- Years bar simple (usa tu versión preferida) -->
+  <div class="years-row" *ngIf="years.length">
+    <span class="years-label">Años:</span>
+    <div class="chips" role="list">
+      <button
+        role="listitem"
+        class="chip"
+        *ngFor="let y of years"
+        (click)="selectYear(y)"
+        [class.selected]="selectedYear === y"
+        type="button"
+      >
+        {{ y }}
+      </button>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <main class="content">
+    <div class="egresos-header">
+      <h3>Egresos</h3>
+      <div class="total">Total: <strong>{{ totalEgresos | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+    </div>
+
+    <div class="egresos-list" *ngIf="loaded; else loading">
+      <div class="egreso-row" *ngFor="let e of egresos; trackBy: trackByEgreso">
+        <!-- fila click-toggle -->
+        <button class="egreso-button" (click)="toggleExpand(e)" type="button" aria-expanded="{{e.expanded}}">
+          <div class="row-main">
+            <div class="concepto">{{ e.concepto }}</div>
+            <div class="monto">{{ e.monto | currency:'USD':'symbol':'1.2-2' }}</div>
+          </div>
+          <div class="chev">
+            <mat-icon>{{ e.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </div>
+        </button>
+
+        <!-- Detalle mensual -->
+        <div class="row-details" *ngIf="e.expanded">
+          <div class="months-grid">
+            <!-- encabezados de meses -->
+            <div class="month-header" *ngFor="let m of months; let i = index">
+              {{ m }}
+            </div>
+            <!-- valores de meses (solo mostrar 0 como '-' o el número) -->
+            <div class="month-value" *ngFor="let _ of months; let i = index">
+              <span *ngIf="e.monthly && e.monthly[i] > 0; else dash">
+                {{ e.monthly[i] | currency:'USD':'symbol':'1.2-2' }}
+              </span>
+              <ng-template #dash> - </ng-template>
+            </div>
+          </div>
+
+          <!-- resumen: suma y nota si hay diferencia -->
+          <div class="monthly-summary">
+            <div>Subtotal meses: <strong>{{ monthlySum(e) | currency:'USD':'symbol':'1.2-2' }}</strong></div>
+            <div *ngIf="(monthlySum(e) | number:'1.2-2') !== (e.monto | number:'1.2-2')" class="warn">
+              Nota: el total por meses no coincide exactamente con el monto (posible redondeo).
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty" *ngIf="egresos.length === 0">No hay egresos para mostrar.</div>
+    </div>
+
+    <ng-template #loading>
+      <div class="loading">Cargando...</div>
+    </ng-template>
+  </main>
+</section>

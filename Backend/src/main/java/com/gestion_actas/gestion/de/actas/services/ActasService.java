@@ -154,4 +154,14 @@ public class ActasService {
                 )).collect(Collectors.toList());
     }
 
+    public List<DescuentosDTO> getPeriodosEgresosByNroDocumento(String nroDocumento) {
+        List<Object[]> rows = actasRepository.descuentosPorPeriodoUsuario(nroDocumento);
+
+        List<DescuentosDTO> all = rows.stream()
+                .map(DescuentosDTO::fromRow)
+                .filter(dto -> dto != null && dto.getPeriodoPago() != null)
+                .collect(Collectors.toList());
+    }
+
+
 }

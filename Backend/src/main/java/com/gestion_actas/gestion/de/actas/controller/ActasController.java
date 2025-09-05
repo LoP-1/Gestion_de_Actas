@@ -63,5 +63,15 @@ public class ActasController {
     public List<PeriodosDTO> listarPeriodosPorDni(@PathVariable String dni) {
         return actasService.listarPeriodosPorDni(dni);
     }
+    @GetMapping("/descuentos")
+    public ResponseEntity<List<DescuentosDTO>> getPeriodosEgresos(
+            @RequestParam("nro_documento") String nroDocumento
+    ) {
+        if (nroDocumento == null || nroDocumento.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        List<DescuentosDTO> result = actasService.getPeriodosEgresosByNroDocumento(nroDocumento);
+        return ResponseEntity.ok(result);
+    }
 
 }

@@ -9,6 +9,7 @@ import { ImportarCsvComponent } from './components/importar/importar';
 import { Registrar } from './components/registrar/registrar';
 import { AuthGuard } from './auth/auth';
 import { RoleGuard } from './auth/role';
+import { DescuentosComponent } from './components/descuentos/descuentos';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     children: [
       { path: 'inicio', component: InicioPeriodosComponent },
       { path: 'periodos', component: InicioPeriodosComponent },
+      { path: 'descuentos', component: DescuentosComponent },
       { path: 'usuarios-periodo', component: UsuariosPeriodoComponent },
       { path: 'usuarios-periodo/:periodoPago', component: UsuariosPeriodoComponent },
       { path: 'detalles-completos/:id', component: DetalleCompletoComponent },

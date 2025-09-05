@@ -24,9 +24,9 @@
           <div class="user-row"><strong>Código Modular:</strong> <span>{{data?.codigoModular}}</span></div>
           <div class="user-row"><strong>Proceso:</strong> <span>{{data?.tipoServidor}}</span></div>
           <div class="user-row"><strong>Días trabajados:</strong> <span>{{data?.diasTrabajados}}</span></div>
-          <div class="user-row"><strong>Total Remuneración:</strong> <span>{{data?.totalRemuneracion | currency:'PEN'}}</span></div>
-          <div class="user-row"><strong>Total Tributable:</strong> <span>{{data?.tributable | currency:'PEN'}}</span></div>
-          <div class="user-row"><strong>Total Líquido:</strong> <span>{{data?.totalLiquido | currency:'PEN'}}</span></div>
+          <div class="user-row"><strong>Total Remuneración:</strong> <span>{{data?.totalRemuneracion | currency:'S/.'}}</span></div>
+          <div class="user-row"><strong>Total Tributable:</strong> <span>{{data?.tributable | currency:'S/.'}}</span></div>
+          <div class="user-row"><strong>Total Líquido:</strong> <span>{{data?.totalLiquido | currency:'S/.'}}</span></div>
         </mat-card-content>
       </mat-card>
 
@@ -42,7 +42,7 @@
               </ng-container>
               <ng-container matColumnDef="monto">
                 <th mat-header-cell *matHeaderCellDef> Monto </th>
-                <td mat-cell *matCellDef="let i"> {{i.monto | currency:'PEN'}} </td>
+                <td mat-cell *matCellDef="let i"> {{i.monto | currency:'S/.'}} </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="ingresosDisplayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: ingresosDisplayedColumns;"></tr>
@@ -51,7 +51,7 @@
               </tr>
             </table>
             <div class="boleta-totales">
-              <strong>Total Ingresos:</strong> {{totalIngresos | currency:'PEN'}}
+              <strong>Total Ingresos:</strong> {{totalIngresos | currency:'S/.'}}
             </div>
           </mat-card-content>
         </mat-card>
@@ -66,7 +66,7 @@
               </ng-container>
               <ng-container matColumnDef="monto">
                 <th mat-header-cell *matHeaderCellDef> Monto </th>
-                <td mat-cell *matCellDef="let e"> {{e.monto | currency:'PEN'}} </td>
+                <td mat-cell *matCellDef="let e"> {{e.monto | currency:'S/.'}} </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="egresosDisplayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: egresosDisplayedColumns;"></tr>
@@ -74,8 +74,8 @@
                 <td colspan="2">Sin egresos</td>
               </tr>
             </table>
-            <div class="boleta-totales"><strong>Total Egresos:</strong> {{totalEgresos | currency:'PEN'}}</div>
-            <div class="boleta-totales saldo-neto"><strong>Saldo Neto:</strong> {{(totalIngresos - totalEgresos) | currency:'PEN'}}</div>
+            <div class="boleta-totales"><strong>Total Egresos:</strong> {{totalEgresos | currency:'S/.'}}</div>
+            <div class="boleta-totales saldo-neto"><strong>Saldo Neto:</strong> {{(totalIngresos - totalEgresos) | currency:'S/.'}}</div>
           </mat-card-content>
         </mat-card>
       </div>

@@ -110,6 +110,14 @@ public interface ActasPersonalRepository extends JpaRepository<Actas_Personal, L
     )
     List<Object[]> listarPeriodosPorDni(String dni);
 
-
+    //devuelve periodo_pago y egresos_json para un nro_documento dado
+    @Query(
+            value = "SELECT periodo_pago, egresos_json " +
+                    "FROM actas_personal " +
+                    "WHERE nro_documento = ?1 " +
+                    "ORDER BY periodo_pago DESC",
+            nativeQuery = true
+    )
+    List<Object[]> descuentosPorPeriodoUsuario(String nroDocumento);
 
 }

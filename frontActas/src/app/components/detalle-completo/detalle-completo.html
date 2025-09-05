@@ -161,9 +161,9 @@
                 </tr>
                 <tr>
                   <td><strong>Total Remuneración:</strong></td>
-                  <td>{{data.totalRemuneracion | currency:'PEN'}}</td>
+                  <td>{{data.totalRemuneracion | currency:'S/.'}}</td>
                   <td><strong>Total Líquido:</strong></td>
-                  <td>{{data.totalLiquido | currency:'PEN'}}</td>
+                  <td>{{data.totalLiquido | currency:'S/.'}}</td>
                 </tr>
                 <tr>
                   <td><strong>Situación:</strong></td>
@@ -193,13 +193,13 @@
                   <td mat-cell *matCellDef="let i"> {{i.concepto}} </td>
                 </ng-container>
                 <ng-container matColumnDef="monto">
-                  <th mat-header-cell *matHeaderCellDef> Monto (PEN) </th>
+                  <th mat-header-cell *matHeaderCellDef> Monto (S/.) </th>
                   <td mat-cell *matCellDef="let i"> {{i.monto | number:'1.2-2'}} </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="ingresosDisplayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: ingresosDisplayedColumns;"></tr>
               </table>
-              <div class="doc-total"><strong>Total Ingresos:</strong> {{totalIngresos | currency:'PEN'}}</div>
+              <div class="doc-total"><strong>Total Ingresos:</strong> {{totalIngresos | currency:'S/.'}}</div>
             </mat-card-content>
           </mat-card>
 
@@ -212,14 +212,14 @@
                   <td mat-cell *matCellDef="let e"> {{e.concepto}} </td>
                 </ng-container>
                 <ng-container matColumnDef="monto">
-                  <th mat-header-cell *matHeaderCellDef> Monto (PEN) </th>
+                  <th mat-header-cell *matHeaderCellDef> Monto (S/.) </th>
                   <td mat-cell *matCellDef="let e"> {{e.monto | number:'1.2-2'}} </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="egresosDisplayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: egresosDisplayedColumns;"></tr>
               </table>
-              <div class="doc-total"><strong>Total Egresos:</strong> {{totalEgresos | currency:'PEN'}}</div>
-              <div class="doc-total neto">Saldo Neto: {{(totalIngresos - totalEgresos) | currency:'PEN'}}</div>
+              <div class="doc-total"><strong>Total Egresos:</strong> {{totalEgresos | currency:'S/.'}}</div>
+              <div class="doc-total neto">Saldo Neto: {{(totalIngresos - totalEgresos) | currency:'S/.'}}</div>
             </mat-card-content>
           </mat-card>
         </aside>

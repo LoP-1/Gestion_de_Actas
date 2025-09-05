@@ -34,6 +34,12 @@
         <span>Detalles Completos</span>
       </a>
 
+      <!-- Descuentos -->
+      <a mat-list-item [routerLink]="['/descuentos']" routerLinkActive="active">
+        <mat-icon>dolar</mat-icon>
+        <span>Descuentos</span>
+      </a>
+
       <!-- Importar CSV (solo ADMIN) -->
       <a mat-list-item [routerLink]="['/importar']" routerLinkActive="active" *ngIf="isAdmin">
         <mat-icon>description</mat-icon>
