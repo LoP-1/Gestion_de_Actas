@@ -1,9 +1,4 @@
-/* Usa la paleta global (definida en :root de styles.css):
-   --brand-navy  #00286a
-   --brand-green #00d084
-   --brand-orange #ff6900
-*/
-
+/* Hoja de estilos CSS - Pestaña de Login */
 /* Lienzo del login */
 .login-wrapper {
   min-height: 100vh;

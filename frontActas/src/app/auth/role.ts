@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
+// Guardia para proteger rutas según roles de usuario
 @Injectable({ providedIn: 'root' })
 export class RoleGuard implements CanActivate {
   constructor(private router: Router) {}

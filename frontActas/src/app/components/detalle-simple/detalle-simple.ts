@@ -19,6 +19,7 @@ import { environment } from '../../../enviroments/enviroment';
   templateUrl: './detalle-simple.html',
   styleUrls: ['./detalle-simple.css']
 })
+// Muestra el detalle simple de una boleta en un diálogo
 export class DetalleSimpleComponent {
   data: any = null;
   isLoading: boolean = true;
@@ -43,6 +44,7 @@ export class DetalleSimpleComponent {
     }
   }
 
+  // Carga los datos del usuario y procesa ingresos y egresos
   private loadData(id: number) {
     this.isLoading = true;
     this.http.get<any>(`${environment.apiUrl}/usuarios/${id}`)
@@ -90,6 +92,7 @@ export class DetalleSimpleComponent {
       });
   }
 
+  // Agrega la boleta actual al carrito en localStorage
   agregarADetalles() {
     if (!this.data) return;
 

@@ -1,4 +1,6 @@
+/* Hoja de estilos CSS - Pestaña de detalles y estilos para impresion */
 /* Paleta sobria (coincide con dashboard) */
+
 :host {
   --ink: #222;
   --muted: #536071;

@@ -11,6 +11,7 @@ import { AuthGuard } from './auth/auth';
 import { RoleGuard } from './auth/role';
 import { DescuentosComponent } from './components/descuentos/descuentos';
 
+// Define las rutas de la aplicación
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -19,9 +20,11 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard], // exige estar logueado
     children: [
+      // Rutas hijas del dashboard
       { path: 'inicio', component: InicioPeriodosComponent },
-      { path: 'periodos', component: InicioPeriodosComponent },
+      { path: 'periodos', component: InicioPeriodosComponent }, 
       { path: 'descuentos', component: DescuentosComponent },
+      { path: 'descuentos/:dni', component: DescuentosComponent },
       { path: 'usuarios-periodo', component: UsuariosPeriodoComponent },
       { path: 'usuarios-periodo/:periodoPago', component: UsuariosPeriodoComponent },
       { path: 'detalles-completos/:id', component: DetalleCompletoComponent },

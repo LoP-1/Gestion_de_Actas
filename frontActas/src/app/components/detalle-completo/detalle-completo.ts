@@ -15,6 +15,9 @@ import { environment } from '../../../enviroments/enviroment';
   templateUrl: './detalle-completo.html',
   styleUrls: ['./detalle-completo.css']
 })
+
+// Mapea las claves de ingresos y egresos a descripciones legibles
+// Actualmente NO se usan estan ahi porsiacaso
 export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestroy {
   id!: number;
   data: any = null;
@@ -26,7 +29,6 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
   totalIngresos = 0;
   totalEgresos = 0;
 
-  // Conservamos los mapas por si en el futuro querés mapear, pero actualmente NO se usan.
   ingresosLabels: { [key: string]: string } = { /* ... */ };
   egresosLabels: { [key: string]: string } = { /* ... */ };
 
@@ -47,6 +49,7 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
     });
   }
 
+  // Ajusta la escala de impresión para que el contenido quepa en una hoja A4
   ngAfterViewInit(): void {
     window.addEventListener('beforeprint', this.beforePrintHandler);
     window.addEventListener('afterprint', this.afterPrintHandler);
@@ -60,20 +63,20 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
+  // Limpia los event listeners
   ngOnDestroy(): void {
     window.removeEventListener('beforeprint', this.beforePrintHandler);
     window.removeEventListener('afterprint', this.afterPrintHandler);
-    // no-op for removing mql listener (not critical)
   }
 
+  // Carga los datos del usuario y procesa ingresos y egresos
   cargarDatos() {
     const url = `${environment.apiUrl}/usuarios/${this.id}`;
     this.isLoading = true;
     this.http.get<any>(url).subscribe(resp => {
       this.data = resp;
       this.isLoading = false;
-
-      // INGRESOS: tomar clave tal cual viene en el JSON (no mapear)
+      // INGRESOS: mostrar la clave tal cual viene en el JSON
       this.ingresos = [];
       if (resp && resp.ingresosJson) {
         try {

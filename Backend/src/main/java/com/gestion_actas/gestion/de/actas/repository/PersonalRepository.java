@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+//repositorio para el login y una busqueda por DNI
 @Repository
 public interface PersonalRepository extends JpaRepository<Personal, Long> {
     Optional<Personal> findByDni(String dni);

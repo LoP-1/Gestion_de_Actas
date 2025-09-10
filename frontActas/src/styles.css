@@ -1,5 +1,3 @@
-/* Global mínimo para no interferir con Angular Material y estilos de componentes */
-
 /* Paleta global disponible para todos los componentes */
 :root {
   --brand-navy: #00286a;   /* primario */

@@ -2,6 +2,7 @@ package com.gestion_actas.gestion.de.actas.model;
 
 import jakarta.persistence.*;
 
+//modelo de la entidad "usuario"
 @Entity
 @Table(name = "usuarios")
 public class Personal {

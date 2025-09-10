@@ -1,26 +1,17 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTableModule } from '@angular/material/table';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-
 import { UsuarioService } from '../../services/usuario';
 import { PeriodoDetallesService, PeriodoDTO } from '../../services/periodo-detalles';
 import { UsuarioUnico } from '../../models/usuario-unico';
-
-
-// Si ya no necesitas UsuarioPeriodo aquí, puedes remover esta import
-// import { UsuarioPeriodo } from '../../models/usuario-periodo';
 import { DetalleSimpleComponent } from '../detalle-simple/detalle-simple';
 
 @Component({
@@ -113,7 +104,6 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
 
   // Obtiene el id del periodo; ajusta las claves según tu DTO real
   private getPeriodoId(periodo: PeriodoDTO): number | string {
-    // Cambia 'id' por 'periodoId' o la clave real si difiere
     return (periodo as any).id ?? (periodo as any).periodoId ?? (periodo as any).idPeriodo;
   }
 
@@ -132,18 +122,13 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
 
   // Renderiza la fila de detalle solo para la fila expandida
   isExpandedRow = (_index: number, row: UsuarioUnico) => this.expandedElement === row;
-
-  // Abre el diálogo recibiendo directamente el id
   abrirDetalle(id: number | string) {
   this.dialog.open(DetalleSimpleComponent, {
     data: { id },
     panelClass: 'boleta-dialog-panel',
-    // Ocupa casi toda la ventana
     width: '96vw',
     height: '92vh',
     maxWidth: '100vw',
-    // Opcional: si quieres que no se cierre clickeando afuera
-    // disableClose: true
   });
 }
 }

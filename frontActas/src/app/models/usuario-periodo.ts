@@ -1,3 +1,4 @@
+// Define la interfaz UsuarioPeriodo
 export interface UsuarioPeriodo {
   id: number;
   codigoModular: string;

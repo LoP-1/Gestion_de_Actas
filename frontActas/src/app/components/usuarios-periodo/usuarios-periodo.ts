@@ -14,11 +14,13 @@ import { DetalleSimpleComponent } from '../detalle-simple/detalle-simple';
 import { UsuariosPeriodoService } from '../../services/usuario-periodo';
 import { UsuarioPeriodo } from '../../models/usuario-periodo';
 
+// Componente para mostrar usuarios de un periodo específico
 @Component({
   selector: 'app-usuarios-periodo',
   standalone: true,
   templateUrl: './usuarios-periodo.html',
   styleUrls: ['./usuarios-periodo.css'],
+  //importar los modulos necesarios
   imports: [
     CommonModule,
     MatTableModule,
@@ -41,13 +43,15 @@ export class UsuariosPeriodoComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  // Inyecta servicios necesarios
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private usuariosPeriodoService: UsuariosPeriodoService,
-    private dialog: MatDialog // <-- ¡Inyecta MatDialog!
+    private dialog: MatDialog 
   ) {}
 
+  // Inicializa el componente cargando los usuarios del periodo
   ngOnInit(): void {
     this.periodoPago = this.route.snapshot.paramMap.get('periodoPago') || '';
     if (!this.periodoPago) {
@@ -66,6 +70,7 @@ export class UsuariosPeriodoComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Configura el paginador después de que la vista se ha inicializado
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -86,16 +91,14 @@ export class UsuariosPeriodoComponent implements OnInit, AfterViewInit {
     this.filtrar();
   }
 
+  // Abre el diálogo con el detalle completo del usuario
   abrirDetalle(id: number | string) {
   this.dialog.open(DetalleSimpleComponent, {
     data: { id },
     panelClass: 'boleta-dialog-panel',
-    // Ocupa casi toda la ventana
     width: '96vw',
     height: '92vh',
     maxWidth: '100vw',
-    // Opcional: si quieres que no se cierre clickeando afuera
-    // disableClose: true
   });
 }
 }

@@ -1,3 +1,4 @@
+// Define la interfaz Personal
 export interface Personal {
   id?: number;
   nombre: string;

@@ -1,3 +1,10 @@
+/* Hoja de estilos CSS - Pestaña de descuentos */
+:root {
+  --brand-navy: #00286a;   /* */
+  --brand-green: #00d084;  /* */
+  --brand-orange: #ff6900; /* */
+}
+
 :host { display: block; padding: 16px; }
 
 .descuentos-panel {
@@ -56,6 +63,9 @@
 /* summary */
 .monthly-summary { margin-top:10px; display:flex; gap:12px; align-items:center; color:#334155; }
 .monthly-summary .warn { color: var(--brand-orange); font-size:12px; }
+.monthly-summary .info-inline { color:#475569; font-size:12px; }
 
-/* misc */
+/* info blocks */
+.info { margin:8px 0; padding:8px 12px; border-left:4px solid var(--brand-green); background:#f6fffb; color:#0f172a; border-radius:6px; }
+.info-all { background:#f6fffb; }
 .loading, .empty { padding:18px; color:#94a3b8; text-align:center; }

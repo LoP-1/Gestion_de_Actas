@@ -11,6 +11,7 @@ import { Periodo } from '../../models/periodo';
   templateUrl: './inicio-periodos.html',
   styleUrls: ['./inicio-periodos.css']
 })
+// Componente para mostrar y seleccionar periodos
 export class InicioPeriodosComponent implements OnInit {
   periodos: Periodo[] = [];
   loading: boolean = true;
@@ -34,6 +35,7 @@ export class InicioPeriodosComponent implements OnInit {
     });
   }
 
+  // Navega a la vista de usuarios para el periodo seleccionado
   seleccionarPeriodo(periodo: Periodo) {
   localStorage.setItem('ultimoPeriodo', periodo.periodoPago);
   this.router.navigate(['/usuarios-periodo', periodo.periodoPago]);

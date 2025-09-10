@@ -15,6 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+//configuracion de cors y seguridad
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -33,11 +34,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
 
-                        // Escoge UNA:
-                        // Solo ADMIN:
                         .requestMatchers(HttpMethod.POST, "/upload").permitAll()
-                        // Ó, si prefieres, cualquier autenticado:
-                        // .requestMatchers(HttpMethod.POST, "/upload").authenticated()
 
                         .anyRequest().authenticated()
                 )

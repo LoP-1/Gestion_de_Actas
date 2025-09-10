@@ -154,6 +154,8 @@ public class ActasService {
                 )).collect(Collectors.toList());
     }
 
+
+    //Obtiene los periodos "201023"; y un json de egresos
     public List<DescuentosDTO> getPeriodosEgresosByNroDocumento(String nroDocumento) {
         List<Object[]> rows = actasRepository.descuentosPorPeriodoUsuario(nroDocumento);
 
@@ -161,6 +163,7 @@ public class ActasService {
                 .map(DescuentosDTO::fromRow)
                 .filter(dto -> dto != null && dto.getPeriodoPago() != null)
                 .collect(Collectors.toList());
+        return all;
     }
 
 

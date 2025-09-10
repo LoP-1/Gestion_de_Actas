@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+//controlador del login
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -21,7 +22,7 @@ public class AuthController {
     private PersonalService personalService;
     @Autowired
     private JwtUtil jwtUtil;
-
+    //ruta para hacer login
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Personal usuario) {
         return personalService.login(usuario.getDni(), usuario.getContrasena())
@@ -39,7 +40,7 @@ public class AuthController {
                     return ResponseEntity.status(401).body(error);
                 });
     }
-
+    //ruta para registrarse
     @PostMapping("/register")
     public ResponseEntity<?> registrar(@RequestBody Personal usuario) {
         if (personalService.buscarPorDni(usuario.getDni()).isPresent()) {

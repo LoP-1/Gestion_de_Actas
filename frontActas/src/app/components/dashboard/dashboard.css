@@ -1,9 +1,5 @@
-/* Paleta global ya definida en :root de styles.css
-   --brand-navy:  #00286a
-   --brand-green: #00d084
-   --brand-orange:#ff6900
-*/
 
+/* Hoja de estilos CSS - Dashboard del sistema */
 /* Layout principal del dashboard (sin tocar mat-sidenav-container global) */
 .main-container {
   height: 100vh;
@@ -134,9 +130,6 @@ mat-sidenav.sidebar {
 .chevron { transition: transform 0.2s ease, color 0.2s ease; }
 .chevron.open { transform: rotate(180deg); color: var(--brand-orange); }
 
-/* ========================= */
-/* Sidenav derecho (carrito) */
-/* ========================= */
 .carrito-sidebar,
 mat-sidenav.carrito-sidebar {
   min-width: 260px;

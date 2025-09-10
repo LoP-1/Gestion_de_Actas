@@ -12,6 +12,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth';
 import { Personal } from '../../models/personal';
 
+// Componente para registrar nuevos usuarios
 @Component({
   selector: 'app-registrar',
   standalone: true,
@@ -29,6 +30,7 @@ import { Personal } from '../../models/personal';
   templateUrl: './registrar.html',
   styleUrl: './registrar.css'
 })
+// Clase del componente Registrar
 export class Registrar {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);

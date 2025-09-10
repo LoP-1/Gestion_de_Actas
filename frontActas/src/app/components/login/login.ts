@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,7 @@ import { environment } from '../../../enviroments/enviroment';
     HttpClientModule
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private apiUrl = `${environment.apiUrl}/auth/login`;
   form: FormGroup;
   error: string = '';
@@ -36,19 +36,59 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (token && this.isTokenValid(token)) {
+      // Si el token es válido, redirige al inicio
+      this.router.navigate(['/inicio'], { replaceUrl: true });
+    } else if (token) {
+      // Si el token existe pero está inválido/expirado se limpia
+      localStorage.removeItem('token');
+      localStorage.removeItem('rol');
+    }
+  }
+  // Maneja el envío del formulario de login
   login() {
-  if (this.form.invalid) return;
-  this.error = '';
-  this.http.post<{ token: string, rol: string }>(this.apiUrl, this.form.value)
-    .subscribe({
-      next: (resp) => {
-        localStorage.setItem('token', resp.token);
-        localStorage.setItem('rol', resp.rol);
-        this.router.navigate(['/inicio']);
-      },
-      error: () => {
-        this.error = 'Usuario o contraseña incorrectos';
+    if (this.form.invalid) return;
+    this.error = '';
+    this.http.post<{ token: string, rol: string }>(this.apiUrl, this.form.value)
+      .subscribe({
+        next: (resp) => {
+          // Guarda el token y rol en localStorage y navega al inicio
+          localStorage.setItem('token', resp.token);
+          localStorage.setItem('rol', resp.rol);
+          this.router.navigate(['/inicio'], { replaceUrl: true });
+        },
+        error: () => {
+          this.error = 'Usuario o contraseña incorrectos';
+        }
+      });
+  }
+
+  // Valida un JWT de manera sencilla: que tenga formato y que no esté expirado
+  private isTokenValid(token: string): boolean {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return false;
+      const payloadJson = this.base64UrlDecode(parts[1]);
+      const payload = JSON.parse(payloadJson);
+      if (payload && typeof payload.exp === 'number') {
+        const nowSec = Math.floor(Date.now() / 1000);
+        return payload.exp > nowSec;
       }
-    });
-}
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  // Decodifica base64url (JWT) ... el token trae el payload en base64url
+  private base64UrlDecode(str: string): string {
+    let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = base64.length % 4;
+    if (pad) {
+      base64 += '='.repeat(4 - pad);
+    }
+    return atob(base64);
+  }
 }
