@@ -174,6 +174,7 @@ public class Actas_Personal {
     @Column(name = "EgresosJson", columnDefinition = "json")
     private String egresosJson;
 
+    //getters y setters
 
     public Long getId() {
         return id;
