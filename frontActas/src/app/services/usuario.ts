@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { UsuarioUnico } from '../models/usuario-unico';
 import { environment } from '../../enviroments/enviroment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UsuarioService {
   private apiUrl = `${environment.apiUrl}/usuarios/lista-unicos`;
 

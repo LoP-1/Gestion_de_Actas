@@ -1,7 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+
 // Interceptor para añadir el token JWT a las solicitudes HTTP
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  if (req.url.includes('/auth/login')) {
+  // Endpoints públicos
+  if (req.url.includes('/auth/login') || req.url.includes('/upload')) {
     return next(req);
   }
 
@@ -13,6 +15,5 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authReq = req.clone({
     setHeaders: { Authorization: `Bearer ${token}` }
   });
-
   return next(authReq);
 };

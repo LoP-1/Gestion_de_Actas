@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Personal } from '../models/personal';
+import { environment } from '../../enviroments/enviroment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Ajusta si usas environments
-  private api = 'http://localhost:8080';
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +22,6 @@ export class AuthService {
   }
 
   register(usuario: Personal): Observable<Personal> {
-    // El backend devuelve el objeto Personal con id y contrasena hasheada
     return this.http.post<Personal>(`${this.api}/auth/register`, usuario);
   }
 
