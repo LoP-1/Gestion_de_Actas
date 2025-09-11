@@ -84,21 +84,21 @@
 
   <!-- Acciones fijas al fondo -->
   <div class="boleta-actions">
-    <button mat-raised-button color="primary" mat-dialog-close>
-      <mat-icon>close</mat-icon>
-      Cerrar
-    </button>
-    <button mat-raised-button color="accent" (click)="agregarADetalles()">
-      <mat-icon>playlist_add</mat-icon>
-      Agregar a detalles
-    </button>
-    <button mat-button color="primary" [routerLink]="['/detalles-completos', dialogData.id]">
-      <mat-icon>open_in_new</mat-icon>
-      Ver Detalle Completo
-    </button>
-    <button mat-button color="primary" [routerLink]="['/descuentos',data?.nroDocumento]">
-      <mat-icon>open_in_new</mat-icon>
-      Ver Descuentos
-    </button>
-  </div>
+  <button mat-raised-button color="primary" (click)="cerrarDialogo()">
+    <mat-icon>close</mat-icon>
+    Cerrar
+  </button>
+  <button mat-raised-button color="accent" (click)="agregarADetalles(); cerrarDialogo()">
+    <mat-icon>playlist_add</mat-icon>
+    Agregar a detalles
+  </button>
+  <button mat-button color="primary" (click)="verDetalleCompleto()">
+    <mat-icon>open_in_new</mat-icon>
+    Ver Detalle Completo
+  </button>
+  <button mat-button color="primary" (click)="verDescuentos()">
+    <mat-icon>open_in_new</mat-icon>
+    Ver Descuentos
+  </button>
+</div>
 </mat-card>

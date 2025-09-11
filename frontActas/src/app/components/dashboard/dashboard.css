@@ -238,3 +238,112 @@ mat-sidenav.carrito-sidebar {
 :host ::ng-deep .sidebar .mat-icon {
   color: #fff !important;
 }
+
+/* Acciones del carrito - Layout mejorado para 3 botones */
+.carrito-item-actions {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+/* Botón "Quitar" (color warn) - Navy como acento */
+.carrito-sidebar .btn-quitar.mat-mdc-outlined-button {
+  color: var(--brand-navy) !important;
+  border-color: var(--brand-navy) !important;
+  font-size: 0.85rem;
+  min-height: 36px;
+  transition: all 0.2s ease;
+}
+.carrito-sidebar .btn-quitar:hover {
+  background: rgba(25, 49, 83, 0.08) !important;
+  border-color: var(--brand-navy) !important;
+}
+.carrito-sidebar .btn-quitar .mat-icon {
+  color: var(--brand-navy) !important;
+  font-size: 18px;
+}
+
+/* Botón "Ver Detalle" (color primary) - Naranja gradiente */
+.carrito-sidebar .btn-detalle.mat-mdc-unelevated-button {
+  background: linear-gradient(90deg, #ff8a26 0%, var(--brand-orange) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 8px rgba(255,105,0,0.25) !important;
+  font-size: 0.85rem;
+  min-height: 36px;
+  transition: all 0.2s ease;
+}
+.carrito-sidebar .btn-detalle:hover {
+  filter: brightness(0.95);
+  box-shadow: 0 4px 12px rgba(255,105,0,0.35) !important;
+}
+
+/* Botón "Ver Descuentos" (color accent) - Verde característico */
+.carrito-sidebar .btn-descuentos.mat-mdc-unelevated-button {
+  background: linear-gradient(90deg, #22c55e 0%, var(--brand-green) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 8px rgba(34, 197, 94, 0.25) !important;
+  font-size: 0.85rem;
+  min-height: 36px;
+  transition: all 0.2s ease;
+}
+.carrito-sidebar .btn-descuentos:hover {
+  filter: brightness(0.95);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35) !important;
+}
+
+/* Iconos de todos los botones */
+.carrito-item-actions .mat-icon {
+  font-size: 18px !important;
+  margin-right: 6px;
+}
+
+/* Texto de botones - responsive */
+.btn-text {
+  font-weight: 500;
+}
+
+/* Para pantallas medianas - botones en 2 filas */
+@media (max-width: 1400px) {
+  .carrito-item-actions {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 6px;
+  }
+  
+  .btn-quitar {
+    grid-column: 1 / -1; /* Ocupa toda la primera fila */
+  }
+  
+  .btn-detalle {
+    grid-column: 1;
+  }
+  
+  .btn-descuentos {
+    grid-column: 2;
+  }
+}
+
+/* Para pantallas pequeñas - solo iconos */
+@media (max-width: 1200px) {
+  .carrito-item-actions {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 4px;
+  }
+  
+  .btn-quitar {
+    grid-column: 1;
+  }
+  
+  .btn-text {
+    display: none; /* Ocultar texto, solo mostrar iconos */
+  }
+  
+  .carrito-item-actions .mat-mdc-button,
+  .carrito-item-actions .mat-mdc-unelevated-button,
+  .carrito-item-actions .mat-mdc-outlined-button {
+    min-width: auto;
+    padding: 0 8px;
+  }
+}

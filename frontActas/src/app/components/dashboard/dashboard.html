@@ -67,14 +67,24 @@
           <strong class="carrito-item-name">{{ boleta.nombre }}</strong>
           <span class="carrito-item-periodo">Periodo: {{ boleta.periodo }}</span>
         </div>
+        <!-- Acciones del carrito item (3 botones organizados) -->
         <div class="carrito-item-actions">
-          <button mat-stroked-button color="warn" (click)="removerBoleta(boleta.id)">
+          <!-- Botón Quitar (color warn/navy) -->
+          <button mat-stroked-button color="warn" (click)="removerBoleta(boleta.id)" class="btn-quitar">
             <mat-icon>delete</mat-icon>
-            Quitar
+            <span class="btn-text">Quitar</span>
           </button>
-          <button mat-flat-button color="primary" [routerLink]="['/detalles-completos', boleta.id]">
-            <mat-icon>open_in_new</mat-icon>
-            Ver Detalle
+
+          <!-- Botón Ver Detalle (color primary/orange) -->
+          <button mat-flat-button color="primary" [routerLink]="['/detalles-completos', boleta.id]" class="btn-detalle">
+            <mat-icon>description</mat-icon>
+            <span class="btn-text">Ver Detalle</span>
+          </button>
+
+          <!-- Botón Ver Descuentos (color accent/green) -->
+          <button mat-flat-button color="accent" [routerLink]="['/descuentos', boleta.dni]" class="btn-descuentos">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <span class="btn-text">Ver Descuentos</span>
           </button>
         </div>
       </div>

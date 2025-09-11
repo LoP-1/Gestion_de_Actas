@@ -181,4 +181,26 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
     `);
     w.document.close();
   }
+
+  formatearAFP(afpCode: string): string {
+  const afpMap: { [key: string]: string } = {
+    '15': 'HABITAD',
+    '14': 'HABITAD',
+    '5': 'PROFUTURO',
+    '12': 'PROFUTURO',
+    '2': 'INTEGRA',
+    '11': 'INTEGRA',
+    '9': 'PRIMA',
+    '13': 'PRIMA'
+  };
+  return afpMap[afpCode] || afpCode;
+}
+  formatearSexo(sexoCode: string): string {
+    const sexoMap: { [key: string]: string } = {
+      '0': 'Masculino',
+      '1': 'Femenino'
+    };
+    return sexoMap[sexoCode] || sexoCode;
+}
+
 }

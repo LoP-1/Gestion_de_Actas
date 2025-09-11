@@ -87,4 +87,5 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('rol');
     this.router.navigate(['/login']);
   }
+  
 }

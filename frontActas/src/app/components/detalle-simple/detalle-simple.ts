@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
@@ -33,18 +33,18 @@ export class DetalleSimpleComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    private http: HttpClient
+    private http: HttpClient,
+    private dialogRef: MatDialogRef<DetalleSimpleComponent>,
+    private router: Router
   ) {
     if (dialogData?.id) {
       localStorage.setItem('ultimoBoletaId', String(dialogData.id));
       this.loadData(dialogData.id);
     } else {
-      // Si no hay id, termina el loading para evitar spinner infinito
       this.isLoading = false;
     }
   }
 
-  // Carga los datos del usuario y procesa ingresos y egresos
   private loadData(id: number) {
     this.isLoading = true;
     this.http.get<any>(`${environment.apiUrl}/usuarios/${id}`)
@@ -52,7 +52,6 @@ export class DetalleSimpleComponent {
         this.data = resp;
         this.isLoading = false;
 
-        // Parsear ingresos JSON y mostrar las claves tal cual vienen
         this.ingresos = [];
         if (resp && resp.ingresosJson) {
           try {
@@ -60,7 +59,7 @@ export class DetalleSimpleComponent {
             this.ingresos = Object.entries(ingresosObj)
               .filter(([_, monto]) => Number(monto) !== 0)
               .map(([concepto, monto]) => ({
-                concepto: String(concepto), // ahora mostramos la clave cruda
+                concepto: String(concepto),
                 monto: Number(monto)
               }));
           } catch (e) {
@@ -68,7 +67,6 @@ export class DetalleSimpleComponent {
           }
         }
 
-        // Parsear egresos JSON y mostrar las claves tal cual vienen
         this.egresos = [];
         if (resp && resp.egresosJson) {
           try {
@@ -92,14 +90,14 @@ export class DetalleSimpleComponent {
       });
   }
 
-  // Agrega la boleta actual al carrito en localStorage
   agregarADetalles() {
     if (!this.data) return;
 
     const boleta = {
       id: this.data.id,
       nombre: `${this.data.nombres} ${this.data.apePaterno} ${this.data.apeMaterno}`,
-      periodo: this.data.periodoPago
+      periodo: this.data.periodoPago,
+      dni: this.data.nroDocumento
     };
 
     let carrito: any[] = JSON.parse(localStorage.getItem('carritoBoletas') || '[]');
@@ -108,5 +106,21 @@ export class DetalleSimpleComponent {
       localStorage.setItem('carritoBoletas', JSON.stringify(carrito));
       window.dispatchEvent(new Event('carritoActualizado'));
     }
+  }
+
+  cerrarDialogo() {
+    this.dialogRef.close();
+  }
+
+  verDetalleCompleto() {
+    this.agregarADetalles();
+    this.cerrarDialogo();
+    this.router.navigate(['/detalles-completos', this.dialogData.id]);
+  }
+
+  verDescuentos() {
+    this.agregarADetalles();
+    this.cerrarDialogo();
+    this.router.navigate(['/descuentos', this.data?.nroDocumento]);
   }
 }

@@ -49,7 +49,7 @@
                   <td><strong>Fecha Nacimiento:</strong></td>
                   <td>{{data.fechaNacimiento || '-'}}</td>
                   <td><strong>Sexo:</strong></td>
-                  <td>{{data.sexo || '-'}}</td>
+                  <td>{{ formatearSexo(data.sexo) }}</td>
                 </tr>
                 <tr>
                   <td><strong>Cargo Orig:</strong></td>
@@ -97,7 +97,7 @@
                   <td><strong>Reg. Pensionario:</strong></td>
                   <td>{{data.regPensionario}}</td>
                   <td><strong>AFP:</strong></td>
-                  <td>{{data.afp}}</td>
+                  <td>{{ formatearAFP(data.afp) }}</td>
                 </tr>
                 <tr>
                   <td><strong>CUSPP:</strong></td>
