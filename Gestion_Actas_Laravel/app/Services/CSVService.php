@@ -136,7 +136,14 @@ class CSVService
                 }
                 $p['egresos_json'] = $egresosMap;
 
-                $model = ActasPersonal::create($p);
+                $model = ActasPersonal::updateOrCreate(
+    [
+        'periodo_pago'        => $p['periodo_pago'],
+        'nro_documento'       => $p['nro_documento'],
+        'cod_establecimiento' => $p['cod_establecimiento'],
+    ],
+    $p
+);
                 $inserted++;
 
                 if (count($preview) < 3) {
