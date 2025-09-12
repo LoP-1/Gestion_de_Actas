@@ -14,9 +14,8 @@ type FileStatus = 'pending' | 'uploading' | 'done' | 'error' | 'canceled';
 
 interface QueueItem {
   file: File;
-  progress: number; // 0-100
+  progress: number;
   status: FileStatus;
-  // no mostramos el body en la UI; guardamos detalles sólo para logs/dev
   errorDetail?: any;
   sub?: Subscription | null;
 }

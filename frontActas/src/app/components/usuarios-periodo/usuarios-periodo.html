@@ -1,94 +1,150 @@
 <div class="dashboard-table-container wide">
+
   <h2>EMPLEADOS DEL PERIODO {{periodoPago}}</h2>
 
   <div class="dashboard-table-filters">
     <mat-form-field appearance="outline">
-      <mat-label>Buscar por Nombre</mat-label>
-      <input matInput [(ngModel)]="filter.nombre" (input)="filtrar()" placeholder="Nombre">
+      <mat-label>Buscar Nombre</mat-label>
+      <input matInput [(ngModel)]="filter.nombre" (input)="filtrar()">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Buscar por Apellido</mat-label>
-      <input matInput [(ngModel)]="filter.apellido" (input)="filtrar()" placeholder="Apellido">
+      <mat-label>Buscar Apellido</mat-label>
+      <input matInput [(ngModel)]="filter.apellido" (input)="filtrar()">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Buscar por DNI</mat-label>
-      <input matInput [(ngModel)]="filter.dni" (input)="filtrar()" placeholder="DNI">
+      <mat-label>Buscar DNI</mat-label>
+      <input matInput [(ngModel)]="filter.dni" (input)="filtrar()">
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Buscar por Cód. Modular</mat-label>
-      <input matInput [(ngModel)]="filter.modular" (input)="filtrar()" placeholder="Código Modular">
+      <mat-label>Cód. Modular</mat-label>
+      <input matInput [(ngModel)]="filter.modular" (input)="filtrar()">
     </mat-form-field>
     <button mat-raised-button color="primary" class="dashboard-btn" (click)="limpiarFiltros()">Limpiar</button>
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 dashboard-table wide-table">
+  <!-- Tabla (solo si no es móvil) -->
+  <table *ngIf="!isMobile"
+         mat-table
+         [dataSource]="dataSource"
+         class="mat-elevation-z0 dashboard-table wide-table">
+
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <th mat-header-cell *matHeaderCellDef>ID</th>
       <td mat-cell *matCellDef="let emp">{{emp.id}}</td>
     </ng-container>
 
     <ng-container matColumnDef="codigoModular">
-      <th mat-header-cell *matHeaderCellDef> C. Modular </th>
+      <th mat-header-cell *matHeaderCellDef>C. Modular</th>
       <td mat-cell *matCellDef="let emp">{{emp.codigoModular}}</td>
     </ng-container>
 
     <ng-container matColumnDef="dni">
-      <th mat-header-cell *matHeaderCellDef> DNI </th>
+      <th mat-header-cell *matHeaderCellDef>DNI</th>
       <td mat-cell *matCellDef="let emp">{{emp.dni}}</td>
     </ng-container>
 
     <ng-container matColumnDef="apellidos">
-      <th mat-header-cell *matHeaderCellDef> Apellidos </th>
+      <th mat-header-cell *matHeaderCellDef>Apellidos</th>
       <td mat-cell *matCellDef="let emp">{{emp.apellidos}}</td>
     </ng-container>
 
     <ng-container matColumnDef="nombres">
-      <th mat-header-cell *matHeaderCellDef> Nombres </th>
+      <th mat-header-cell *matHeaderCellDef>Nombres</th>
       <td mat-cell *matCellDef="let emp">{{emp.nombres}}</td>
     </ng-container>
 
     <ng-container matColumnDef="cargo">
-      <th mat-header-cell *matHeaderCellDef> Cargo </th>
+      <th mat-header-cell *matHeaderCellDef>Cargo</th>
       <td mat-cell *matCellDef="let emp">{{emp.cargo}}</td>
     </ng-container>
 
     <ng-container matColumnDef="cargoOrig">
-      <th mat-header-cell *matHeaderCellDef> Cargo Original </th>
+      <th mat-header-cell *matHeaderCellDef>Cargo Orig.</th>
       <td mat-cell *matCellDef="let emp">{{emp.cargoOrig}}</td>
     </ng-container>
 
     <ng-container matColumnDef="codEstablecimiento">
-      <th mat-header-cell *matHeaderCellDef> C. Establecimiento </th>
+      <th mat-header-cell *matHeaderCellDef>C. Establec.</th>
       <td mat-cell *matCellDef="let emp">{{emp.codEstablecimiento}}</td>
     </ng-container>
 
     <ng-container matColumnDef="situacion">
-      <th mat-header-cell *matHeaderCellDef> Situación </th>
+      <th mat-header-cell *matHeaderCellDef>Situación</th>
       <td mat-cell *matCellDef="let emp">{{emp.situacion}}</td>
     </ng-container>
 
     <ng-container matColumnDef="tPlanilla">
-      <th mat-header-cell *matHeaderCellDef> IT. Planilla </th>
+      <th mat-header-cell *matHeaderCellDef>IT. Planilla</th>
       <td mat-cell *matCellDef="let emp">{{emp.tPlanilla}}</td>
     </ng-container>
 
     <ng-container matColumnDef="region">
-      <th mat-header-cell *matHeaderCellDef> Región </th>
+      <th mat-header-cell *matHeaderCellDef>Región</th>
       <td mat-cell *matCellDef="let emp">{{emp.region}}</td>
     </ng-container>
 
     <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let emp">
-        <!-- agregado: clase pill-btn -->
-        <button mat-raised-button color="primary" class="pill-btn" (click)="abrirDetalle(emp.id)">Detalle</button>
+        <button mat-raised-button color="primary" class="pill-btn" (click)="abrirDetalle(emp.id)">
+          Detalle
+        </button>
       </td>
     </ng-container>
 
-    <!-- agregado: sticky header -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+  <!-- Vista Cards / Mobile -->
+  <div *ngIf="isMobile" class="mobile-cards-view">
+    <div *ngFor="let emp of dataSource.filteredData" class="employee-card">
+      <div class="card-header">
+        <div class="employee-name">
+          <h3>{{ emp.apellidos }}, {{ emp.nombres }}</h3>
+          <p>DNI: {{ emp.dni }}</p>
+        </div>
+        <div class="employee-id">{{ emp.codigoModular || '—' }}</div>
+      </div>
+
+      <div class="card-info-grid">
+        <div class="info-item" *ngIf="emp.cargo">
+          <span class="info-label">Cargo</span>
+            <span class="info-value">{{ emp.cargo }}</span>
+        </div>
+        <div class="info-item" *ngIf="emp.region">
+          <span class="info-label">Región</span>
+          <span class="info-value">{{ emp.region }}</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button mat-stroked-button class="toggle-info-btn"
+                (click)="toggleExtendedInfo(emp)">
+          {{ isExtended(emp) ? 'Menos' : 'Más' }}
+        </button>
+        <button mat-raised-button class="card-detail-btn"
+                (click)="abrirDetalle(emp.id)">
+          Detalle
+        </button>
+      </div>
+
+      <div class="extended-info" [class.show]="isExtended(emp)">
+        <div class="info-item" *ngIf="emp.cargoOrig">
+          <span class="info-label">Cargo Original</span>
+          <span class="info-value">{{ emp.cargoOrig }}</span>
+        </div>
+        <div class="info-item" *ngIf="emp.situacion">
+          <span class="info-label">Situación</span>
+          <span class="info-value">{{ emp.situacion }}</span>
+        </div>
+        <div class="info-item" *ngIf="emp.tPlanilla">
+          <span class="info-label">IT. Planilla</span>
+          <span class="info-value">{{ emp.tPlanilla }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[10,20,50]" showFirstLastButtons></mat-paginator>
 </div>

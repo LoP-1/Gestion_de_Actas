@@ -1,4 +1,3 @@
-
 /* Hoja de estilos CSS - Dashboard del sistema */
 /* Layout principal del dashboard (sin tocar mat-sidenav-container global) */
 .main-container {
@@ -223,22 +222,6 @@ mat-sidenav.carrito-sidebar {
 /* Contenido principal (scope solo por clase) */
 .main-content { padding: 16px 18px; }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .sidebar,
-  mat-sidenav.sidebar { width: 180px; min-width: 160px; }
-  .carrito-sidebar,
-  mat-sidenav.carrito-sidebar { width: 220px; min-width: 200px; padding: 12px 10px; }
-  .main-content { padding: 12px; }
-}
-
-/* Refuerzo de color blanco para texto/íconos del menú izquierdo por si un tema global pisa */
-:host ::ng-deep .sidebar .mdc-list-item__primary-text,
-:host ::ng-deep .sidebar .mdc-list-item__secondary-text,
-:host ::ng-deep .sidebar .mat-icon {
-  color: #fff !important;
-}
-
 /* Acciones del carrito - Layout mejorado para 3 botones */
 .carrito-item-actions {
   margin-top: 12px;
@@ -303,7 +286,58 @@ mat-sidenav.carrito-sidebar {
   font-weight: 500;
 }
 
-/* Para pantallas medianas - botones en 2 filas */
+/* ================================= */
+/* TOOLBAR MÓVIL (NUEVO) */
+/* ================================= */
+.mobile-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--brand-navy);
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-toolbar .toolbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+}
+
+.mobile-toolbar .mat-mdc-icon-button {
+  color: white !important;
+}
+
+/* Badge para el carrito */
+.cart-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--brand-orange);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* ================================= */
+/* RESPONSIVE BREAKPOINTS */
+/* ================================= */
+
+/* Tablets medianas */
 @media (max-width: 1400px) {
   .carrito-item-actions {
     grid-template-columns: 1fr 1fr;
@@ -324,8 +358,23 @@ mat-sidenav.carrito-sidebar {
   }
 }
 
-/* Para pantallas pequeñas - solo iconos */
+/* Tablets pequeñas */
 @media (max-width: 1200px) {
+  .sidebar,
+  mat-sidenav.sidebar { 
+    width: 180px; 
+    min-width: 160px; 
+  }
+  .carrito-sidebar,
+  mat-sidenav.carrito-sidebar { 
+    width: 220px; 
+    min-width: 200px; 
+    padding: 12px 10px; 
+  }
+  .main-content { 
+    padding: 12px; 
+  }
+  
   .carrito-item-actions {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto;
@@ -345,5 +394,188 @@ mat-sidenav.carrito-sidebar {
   .carrito-item-actions .mat-mdc-outlined-button {
     min-width: auto;
     padding: 0 8px;
+  }
+}
+
+/* ================================= */
+/* MODO MÓVIL (< 768px) */
+/* ================================= */
+@media (max-width: 768px) {
+  /* Mostrar toolbar móvil */
+  .mobile-toolbar {
+    display: flex !important;
+  }
+
+  /* Ajustar contenedor principal */
+  .main-container {
+    padding-top: 56px; /* Espacio para toolbar fijo */
+  }
+
+  /* Sidebars en modo overlay (emergente) */
+  .sidebar,
+  mat-sidenav.sidebar {
+    width: 280px !important;
+    min-width: 280px !important;
+  }
+
+  .carrito-sidebar,
+  mat-sidenav.carrito-sidebar {
+    width: 320px !important;
+    min-width: 320px !important;
+    padding: 20px 16px !important;
+  }
+
+  /* Contenido principal ocupa todo el ancho */
+  .main-content {
+    padding: 12px 16px;
+  }
+
+  /* Backdrop más oscuro para los overlays */
+  .mat-sidenav-backdrop {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Carrito más compacto en móvil */
+  .carrito-item {
+    padding: 12px;
+  }
+
+  .carrito-item-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .carrito-item-actions {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .carrito-item-actions .mat-mdc-button,
+  .carrito-item-actions .mat-mdc-unelevated-button,
+  .carrito-item-actions .mat-mdc-outlined-button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 8px 12px;
+  }
+
+  .btn-text {
+    display: inline !important; /* Mostrar texto en móvil */
+  }
+
+  /* Logout FAB más pequeño */
+  .logout-fab {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .logout-fab .mat-mdc-fab {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+/* ================================= */
+/* MÓVIL PEQUEÑO (< 480px) */
+/* ================================= */
+@media (max-width: 480px) {
+  /* Sidebars ocupan casi todo el ancho */
+  .sidebar,
+  mat-sidenav.sidebar {
+    width: calc(100vw - 32px) !important;
+    max-width: 300px !important;
+  }
+
+  .carrito-sidebar,
+  mat-sidenav.carrito-sidebar {
+    width: calc(100vw - 32px) !important;
+    max-width: 320px !important;
+    padding: 16px 12px !important;
+  }
+
+  /* Título del sidebar más pequeño */
+  .sidebar-title {
+    font-size: 1.1rem;
+    margin: 4px 8px 12px;
+  }
+
+  /* Items del menú más compactos */
+  .sidebar .mat-mdc-list-item,
+  .sidebar .mat-list-item {
+    margin: 4px 6px;
+    min-height: 40px;
+    font-size: 0.95rem;
+  }
+
+  /* Contenido principal más compacto */
+  .main-content {
+    padding: 8px 12px;
+  }
+
+  /* Carrito items más compactos */
+  .carrito-item {
+    padding: 10px;
+  }
+
+  .carrito-item-name {
+    font-size: 0.95rem;
+  }
+
+  .carrito-item-periodo {
+    font-size: 0.85rem;
+  }
+}
+
+/* Refuerzo de color blanco para texto/íconos del menú izquierdo por si un tema global pisa */
+:host ::ng-deep .sidebar .mdc-list-item__primary-text,
+:host ::ng-deep .sidebar .mdc-list-item__secondary-text,
+:host ::ng-deep .sidebar .mat-icon {
+  color: #fff !important;
+}
+
+/* Imprimir exclusivamente el contenido de #print-area */
+@media print {
+  /* Ocultar toolbar móvil al imprimir */
+  .mobile-toolbar {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Muestra #print-area y su contenido */
+  #print-area,
+  #print-area * {
+    visibility: visible !important;
+  }
+
+  /* Deja a #print-area en flujo normal; evita width/posiciones que provoquen recorte */
+  #print-area {
+    position: static !important;
+    width: auto !important;
+    height: 294mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Oculta los sidenavs al imprimir */
+  mat-sidenav,
+  .mat-sidenav {
+    display: none !important;
+  }
+
+  /* Normaliza contenedores al imprimir (scope a tus clases) */
+  .main-container,
+  .main-content {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
   }
 }

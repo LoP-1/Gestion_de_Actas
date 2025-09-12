@@ -1,30 +1,38 @@
-<!-- Buscador -->
-<section class="descuentos-panel mat-elevation-z2">
+<section class="descuentos-panel mat-elevation-z3">
+  <!-- Header responsivo -->
   <header class="header">
     <div class="search">
       <label class="label">Buscar por DNI</label>
       <div class="search-row">
-        <input matInput placeholder="DNI (ej. 12345678)" [formControl]="dni" (keyup.enter)="searchByDni()" />
+        <input matInput 
+               placeholder="DNI (ej. 12345678)" 
+               [formControl]="dni" 
+               (keyup.enter)="searchByDni()" />
         <button mat-flat-button color="primary" (click)="searchByDni()">
           <mat-icon>search</mat-icon>
-          Buscar
+          <span class="desktop-only">Buscar</span>
         </button>
       </div>
-      <div class="error" *ngIf="dni.invalid && dni.touched">DNI inválido — ingresa 6 a 8 dígitos.</div>
+      <div class="error" *ngIf="dni.invalid && dni.touched">
+        DNI inválido — ingresa 6 a 8 dígitos.
+      </div>
       <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
     </div>
 
     <div class="quick-controls">
-      <button mat-stroked-button color="primary" (click)="selectYear(selectedYear ?? years[0])" *ngIf="years.length">
+      <button mat-stroked-button 
+              color="primary" 
+              (click)="selectYear(selectedYear ?? years[0])" 
+              *ngIf="years.length">
         <mat-icon>calendar_today</mat-icon>
-        Año: {{ selectedYear ?? 'Todos' }}
+        <span>Año: {{ selectedYear ?? 'Todos' }}</span>
       </button>
     </div>
   </header>
 
   <mat-divider></mat-divider>
 
-  <!-- Barra de años dinámica basada en los periodos devueltos -->
+  <!-- Chips de años responsivos -->
   <div class="years-row" *ngIf="years.length">
     <span class="years-label">Años:</span>
     <div class="chips" role="list">
@@ -41,26 +49,32 @@
     </div>
   </div>
 
-  <!-- Aviso cuando están seleccionados "Todos" los años -->
+  <!-- Info para todos los años -->
   <div class="info info-all" *ngIf="isAllYearsSelected && years.length">
-    Mostrando sumatoria de todos los años disponibles. Los valores mensuales también están agregados por mes (Ene–Dic) sumando todos los años.
+    <strong>Vista completa:</strong> Mostrando sumatoria de todos los años disponibles. 
+    Los valores mensuales están agregados por mes (Ene–Dic) sumando todos los años.
   </div>
 
   <mat-divider></mat-divider>
 
+  <!-- Contenido principal -->
   <main class="content">
     <div class="egresos-header">
       <h3>Egresos</h3>
       <div class="total">
-        {{ isAllYearsSelected ? 'Total (Todos los años):' : 'Total:' }}
+        <span class="desktop-only">{{ isAllYearsSelected ? 'Total (Todos los años):' : 'Total:' }}</span>
+        <span class="mobile-only">Total:</span>
         <strong>{{ totalEgresos | currency:'S/.':'symbol':'1.2-2' }}</strong>
       </div>
     </div>
 
     <div class="egresos-list" *ngIf="loaded; else loading">
       <div class="egreso-row" *ngFor="let e of egresos; trackBy: trackByEgreso">
-        <!-- fila click-toggle -->
-        <button class="egreso-button" (click)="toggleExpand(e)" type="button" [attr.aria-expanded]="e.expanded">
+        <!-- Botón principal -->
+        <button class="egreso-button" 
+                (click)="toggleExpand(e)" 
+                type="button" 
+                [attr.aria-expanded]="e.expanded">
           <div class="row-main">
             <div class="concepto">{{ e.concepto }}</div>
             <div class="monto">{{ e.monto | currency:'S/.':'symbol':'1.2-2' }}</div>
@@ -70,30 +84,52 @@
           </div>
         </button>
 
-        <!-- Detalle mensual -->
+        <!-- Detalles expandidos -->
         <div class="row-details" *ngIf="e.expanded">
-          <div class="months-grid">
-            <!-- encabezados de meses -->
-            <div class="month-header" *ngFor="let m of months; let i = index">
-              {{ m }}
-            </div>
-            <!-- valores de meses (solo mostrar 0 como '-' o el número) -->
-            <div class="month-value" *ngFor="let _ of months; let i = index">
-              <span *ngIf="e.monthly && e.monthly[i] > 0; else dash">
-                {{ e.monthly[i] | currency:'S/.':'symbol':'1.2-2' }}
-              </span>
-              <ng-template #dash> - </ng-template>
+          
+          <!-- Vista Desktop: Grid 12 columnas -->
+          <div class="desktop-only">
+            <div class="months-grid">
+              <!-- Headers -->
+              <div class="month-header" *ngFor="let m of months; let i = index">
+                {{ m }}
+              </div>
+              <!-- Values -->
+              <div class="month-value" *ngFor="let _ of months; let i = index">
+                <span *ngIf="e.monthly && e.monthly[i] > 0; else dash">
+                  {{ e.monthly[i] | currency:'S/.':'symbol':'1.2-2' }}
+                </span>
+                <ng-template #dash> - </ng-template>
+              </div>
             </div>
           </div>
 
-          <!-- resumen: suma y nota si hay diferencia -->
+          <!-- Vista Móvil: Tarjetas -->
+          <div class="mobile-only">
+            <div class="mobile-months">
+              <div class="mobile-month-card" 
+                   *ngFor="let m of months; let i = index"
+                   [class.has-value]="e.monthly && e.monthly[i] > 0">
+                <div class="month-name">{{ m }}</div>
+                <div class="month-amount">
+                  <span *ngIf="e.monthly && e.monthly[i] > 0; else mobileDash">
+                    {{ e.monthly[i] | currency:'S/.':'symbol':'1.2-2' }}
+                  </span>
+                  <ng-template #mobileDash>-</ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resumen mensual -->
           <div class="monthly-summary">
             <div>
-              Subtotal meses:
-              <strong>{{ monthlySum(e) | currency:'S/.':'symbol':'1.2-2' }}</strong>
+              <strong>Subtotal meses:</strong>
+              {{ monthlySum(e) | currency:'S/.':'symbol':'1.2-2' }}
             </div>
-            <div *ngIf="(monthlySum(e) | number:'1.2-2') !== (e.monto | number:'1.2-2')" class="warn">
-              Nota: el total por meses no coincide exactamente con el monto (posible redondeo).
+            <div *ngIf="(monthlySum(e) | number:'1.2-2') !== (e.monto | number:'1.2-2')" 
+                 class="warn">
+              ⚠️ El total por meses no coincide exactamente con el monto (posible redondeo).
             </div>
             <div class="info-inline" *ngIf="isAllYearsSelected">
               Montos agregados de todos los años.
@@ -102,11 +138,15 @@
         </div>
       </div>
 
-      <div class="empty" *ngIf="egresos.length === 0">No hay egresos para mostrar.</div>
+      <!-- Estado vacío -->
+      <div class="empty" *ngIf="egresos.length === 0">
+        No hay egresos para mostrar.
+      </div>
     </div>
 
+    <!-- Loading state -->
     <ng-template #loading>
-      <div class="loading">Cargando...</div>
+      <div class="loading">Cargando datos...</div>
     </ng-template>
   </main>
 </section>

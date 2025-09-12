@@ -203,4 +203,11 @@ export class DetalleCompletoComponent implements OnInit, AfterViewInit, OnDestro
     return sexoMap[sexoCode] || sexoCode;
 }
 
+  formatearTipoPlanilla(tipoPlanillaCode: string): string {
+    const tipoPlanillaMap: { [key: string]: string } = {
+      '1': 'Activo',
+      '2': 'Cesante',
+    };
+    return tipoPlanillaMap[tipoPlanillaCode] || tipoPlanillaCode;
+}
 }

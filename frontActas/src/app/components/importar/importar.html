@@ -1,87 +1,156 @@
 <mat-card class="import-card">
+  <!-- Header -->
   <div class="header">
     <div class="title">
-      <mat-icon>file_upload</mat-icon>
+      <mat-icon>cloud_upload</mat-icon>
       <h2>Importar CSV</h2>
     </div>
-    <div class="hint">Sube uno o varios archivos CSV; se subirán en cola, uno a uno.</div>
+    <div class="hint">
+      Sube uno o varios archivos CSV. Se procesarán en cola automáticamente, uno a uno.
+    </div>
   </div>
 
-  <!-- Zona Drag & Drop: click en la zona abre el file picker -->
-  <div class="dropzone" [class.active]="dragActive" (click)="fileInput.click()">
+  <!-- Dropzone mejorada -->
+  <div class="dropzone" 
+       [class.active]="dragActive" 
+       (click)="fileInput.click()"
+       (dragover)="onDragOver($event)"
+       (dragleave)="onDragLeave($event)"
+       (drop)="onDrop($event)">
+    
     <mat-icon class="cloud">cloud_upload</mat-icon>
     <p>Arrastra y suelta tus archivos CSV aquí</p>
     <span class="or">o</span>
 
-    <!-- Input oculto y botón que lo dispara -->
+    <!-- Input oculto -->
     <input
       #fileInput
-      id="fileInput"
       type="file"
       accept=".csv,text/csv"
       (change)="onFilesSelected($event)"
       multiple
       hidden
     />
-    <!-- STOP PROPAGATION en el botón para evitar que el click burbujee al padre -->
-    <button mat-raised-button color="primary" type="button" (click)="openFilePicker(fileInput); $event.stopPropagation()">
-      <mat-icon>attach_file</mat-icon>
-      Seleccionar CSV(s)
-    </button>
+    
+    <!-- Botón de selección -->
+    <div class="select-btn">
+      <button mat-raised-button 
+              color="primary" 
+              type="button" 
+              (click)="openFilePicker(fileInput); $event.stopPropagation()">
+        <mat-icon>attach_file</mat-icon>
+        Seleccionar CSV(s)
+      </button>
+    </div>
   </div>
 
-  <!-- Lista de archivos en cola -->
+  <!-- Cola de archivos -->
   <div class="queue-list" *ngIf="filesQueue.length > 0">
     <div class="queue-item" *ngFor="let item of filesQueue; let i = index">
+      
+      <!-- Info del archivo -->
       <div class="info">
-        <strong>{{ item.file.name }}</strong>
-        <span class="size"> — {{ (item.file.size / 1024) | number:'1.0-0' }} KB</span>
-        <span class="status">
+        <div>
+          <strong>{{ item.file.name }}</strong>
+          <span class="size">{{ (item.file.size / 1024) | number:'1.0-0' }} KB</span>
+        </div>
+        
+        <div class="status">
           <ng-container [ngSwitch]="item.status">
-            <span *ngSwitchCase="'pending'">[Pendiente]</span>
-            <span *ngSwitchCase="'uploading'">[Subiendo]</span>
-            <span *ngSwitchCase="'done'"> <mat-icon color="primary" inline>check_circle</mat-icon> Completado</span>
-            <span *ngSwitchCase="'error'"> <mat-icon color="warn" inline>error</mat-icon> Falló</span>
-            <span *ngSwitchCase="'canceled'">[Cancelado]</span>
+            <span *ngSwitchCase="'pending'" style="color: #6b7280;">
+              <mat-icon inline style="font-size: 1rem;">schedule</mat-icon>
+              Pendiente
+            </span>
+            <span *ngSwitchCase="'uploading'" style="color: var(--brand-green);">
+              <mat-icon inline style="font-size: 1rem;">cloud_upload</mat-icon>
+              Subiendo
+            </span>
+            <span *ngSwitchCase="'done'" style="color: var(--brand-green);">
+              <mat-icon inline style="font-size: 1rem;">check_circle</mat-icon>
+              Completado
+            </span>
+            <span *ngSwitchCase="'error'" style="color: var(--brand-orange);">
+              <mat-icon inline style="font-size: 1rem;">error</mat-icon>
+              Error
+            </span>
+            <span *ngSwitchCase="'canceled'" style="color: #6b7280;">
+              <mat-icon inline style="font-size: 1rem;">cancel</mat-icon>
+              Cancelado
+            </span>
           </ng-container>
-        </span>
+        </div>
       </div>
 
+      <!-- Barra de progreso -->
       <mat-progress-bar mode="determinate" [value]="item.progress"></mat-progress-bar>
 
+      <!-- Acciones del archivo -->
       <div class="actions">
-        <button mat-button color="primary" (click)="retryItem(i)" *ngIf="item.status==='error'">Reintentar</button>
-        <button mat-button color="warn" (click)="removeFromQueue(i)">Remover</button>
-        <button mat-button (click)="cancelCurrent()" *ngIf="item.status==='uploading'">Cancelar actual</button>
+        <button mat-stroked-button 
+                color="primary" 
+                (click)="retryItem(i)" 
+                *ngIf="item.status === 'error'">
+          <mat-icon>refresh</mat-icon>
+          <span>Reintentar</span>
+        </button>
+        
+        <button mat-stroked-button 
+                color="warn" 
+                (click)="removeFromQueue(i)">
+          <mat-icon>delete</mat-icon>
+          <span>Remover</span>
+        </button>
+        
+        <button mat-stroked-button 
+                (click)="cancelCurrent()" 
+                *ngIf="item.status === 'uploading'">
+          <mat-icon>stop</mat-icon>
+          <span>Cancelar</span>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Progreso global -->
-  <div *ngIf="filesQueue.length > 0" class="global-progress">
+  <div class="global-progress" *ngIf="filesQueue.length > 0">
     <p>Progreso global: {{ overallProgress }}%</p>
     <mat-progress-bar mode="determinate" [value]="overallProgress"></mat-progress-bar>
   </div>
 
-  <!-- Acciones de cola -->
+  <!-- Acciones principales -->
   <div class="actions">
-    <button mat-flat-button color="primary" (click)="startUploadQueue()" [disabled]="uploading || filesQueue.length === 0">
+    <button mat-flat-button 
+            color="primary" 
+            (click)="startUploadQueue()" 
+            [disabled]="uploading || filesQueue.length === 0">
       <mat-icon>cloud_done</mat-icon>
-      Subir cola
+      <span>Subir Cola ({{ filesQueue.length }})</span>
     </button>
-    <button mat-stroked-button color="warn" (click)="cancelCurrent()" [disabled]="!uploading">
+    
+    <button mat-stroked-button 
+            color="warn" 
+            (click)="cancelCurrent()" 
+            [disabled]="!uploading">
       <mat-icon>cancel</mat-icon>
-      Cancelar actual
+      <span>Cancelar Actual</span>
     </button>
-    <button mat-stroked-button (click)="clearQueue()" [disabled]="filesQueue.length === 0 && !uploading">
-      <mat-icon>delete</mat-icon>
-      Limpiar cola
+    
+    <button mat-stroked-button 
+            (click)="clearQueue()" 
+            [disabled]="filesQueue.length === 0 && !uploading">
+      <mat-icon>delete_sweep</mat-icon>
+      <span>Limpiar Todo</span>
     </button>
   </div>
 
-  <!-- Mensajes generales / tips -->
+  <!-- Tips informativos -->
   <div class="tips">
     <mat-icon>info</mat-icon>
-    <span>Tamaño máximo por archivo: 10 MB. Puedes agregar varios archivos y se subirán uno a uno.</span>
+    <div>
+      <strong>💡 Consejos:</strong><br>
+      • Tamaño máximo por archivo: <strong>10 MB</strong><br>
+      • Formatos aceptados: <strong>.csv</strong><br>
+      • Los archivos se procesan secuencialmente para evitar sobrecarga del servidor
+    </div>
   </div>
 </mat-card>

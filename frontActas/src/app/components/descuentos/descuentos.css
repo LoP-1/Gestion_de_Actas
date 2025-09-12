@@ -1,71 +1,648 @@
-/* Hoja de estilos CSS - Pestaña de descuentos */
+/* Variables de la marca */
 :root {
-  --brand-navy: #00286a;   /* */
-  --brand-green: #00d084;  /* */
-  --brand-orange: #ff6900; /* */
+  --brand-navy: #00286a;
+  --brand-green: #00d084;
+  --brand-orange: #ff6900;
+  --brand-green-light: #e6faf5;
+  --brand-navy-light: #f0f4fb;
 }
 
-:host { display: block; padding: 16px; }
+:host { 
+  display: block; 
+  padding: 16px; 
+}
 
+
+
+/* ================================= */
+/* CONTENEDOR PRINCIPAL */
+/* ================================= */
 .descuentos-panel {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
+  background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  padding: 24px;
   color: var(--brand-navy);
+  box-shadow: 0 8px 24px rgba(0, 40, 106, 0.08);
+  border: 1px solid rgba(0, 40, 106, 0.06);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* header */
-.header { display:flex; gap:16px; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
-.search { flex:1 1 auto; min-width:200px; }
-.search-row { display:flex; gap:8px; align-items:center; }
-.search-row input[matInput] { flex:1 1 auto; padding:10px; border-radius:8px; border:1px solid #e6e9ef; }
+/* ================================= */
+/* HEADER RESPONSIVO */
+/* ================================= */
+.header { 
+  display: flex; 
+  gap: 20px; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
 
-/* chips */
-.chips { display:flex; gap:8px; flex-wrap:wrap; }
-.chip { background:#f1f5f9; color:var(--brand-navy); padding:6px 12px; border-radius:999px; cursor:pointer; font-weight:600; border:1px solid transparent; }
-.chip.selected { background:var(--brand-green); color:#fff; }
+.search { 
+  flex: 1 1 300px; 
+  min-width: 280px;
+}
 
-/* egresos list */
-.egresos-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.egresos-list { border-top:1px solid #eef2f6; }
+.label {
+  display: block;
+  font-weight: 600;
+  color: var(--brand-navy);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
 
-/* fila principal como botón para accesibilidad */
-.egreso-row { border-bottom:1px solid #eef2f6; padding: 8px 0; }
+.search-row { 
+  display: flex; 
+  gap: 12px; 
+  align-items: stretch;
+}
+
+.search-row input[matInput] { 
+  flex: 1 1 auto; 
+  padding: 12px 16px; 
+  border-radius: 12px; 
+  border: 2px solid #e2e8f0;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.search-row input[matInput]:focus {
+  border-color: var(--brand-green);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 208, 132, 0.1);
+}
+
+.search-row button {
+  padding: 12px 20px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(45deg, var(--brand-green) 0%, #00c97c 100%) !important;
+  box-shadow: 0 4px 12px rgba(0, 208, 132, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+.search-row button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 208, 132, 0.35) !important;
+}
+
+.quick-controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.quick-controls button {
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  border: 2px solid var(--brand-green) !important;
+  color: var(--brand-green) !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+.quick-controls button:hover {
+  background: var(--brand-green-light) !important;
+  transform: translateY(-1px);
+}
+
+/* Mensajes de error */
+.error {
+  color: var(--brand-orange);
+  font-size: 0.85rem;
+  margin-top: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.error::before {
+  content: "⚠️";
+  font-size: 0.9rem;
+}
+
+/* ================================= */
+/* AÑOS CHIPS RESPONSIVOS */
+/* ================================= */
+.years-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.years-label {
+  font-weight: 700;
+  color: var(--brand-navy);
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.chips { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.chip { 
+  background: #f8fafc; 
+  color: var(--brand-navy); 
+  padding: 10px 18px; 
+  border-radius: 25px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  border: 2px solid #e2e8f0;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.chip:hover {
+  background: var(--brand-green-light);
+  border-color: var(--brand-green);
+  transform: translateY(-1px);
+}
+
+.chip.selected { 
+  background: linear-gradient(45deg, var(--brand-green) 0%, #00c97c 100%); 
+  color: #fff;
+  border-color: var(--brand-green);
+  box-shadow: 0 4px 12px rgba(0, 208, 132, 0.25);
+}
+
+/* ================================= */
+/* INFO BLOCKS */
+/* ================================= */
+.info { 
+  margin: 16px 0; 
+  padding: 16px 20px; 
+  border-left: 5px solid var(--brand-green); 
+  background: var(--brand-green-light); 
+  color: var(--brand-navy); 
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.info-all { 
+  background: var(--brand-green-light);
+  border-left-color: var(--brand-orange);
+}
+
+/* ================================= */
+/* EGRESOS SECTION */
+/* ================================= */
+.egresos-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.egresos-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-navy);
+  margin: 0;
+}
+
+.total {
+  font-size: 1rem;
+  color: var(--brand-navy);
+  background: var(--brand-navy-light);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.total strong {
+  color: var(--brand-green);
+  font-size: 1.1rem;
+}
+
+.egresos-list { 
+  border-top: 2px solid #f1f5f9;
+  margin-top: 16px;
+}
+
+/* ================================= */
+/* EGRESO ROWS RESPONSIVAS */
+/* ================================= */
+.egreso-row { 
+  border-bottom: 1px solid #f1f5f9; 
+  padding: 0;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 40, 106, 0.04);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.egreso-row:hover {
+  box-shadow: 0 4px 16px rgba(0, 208, 132, 0.1);
+  transform: translateY(-1px);
+}
+
 .egreso-button {
-  width:100%;
-  background:transparent;
-  border:none;
-  text-align:left;
-  padding:8px 12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.egreso-button:hover { background:#fbfdff; }
 
-/* main row */
-.row-main { display:flex; justify-content:space-between; align-items:center; width:100%; gap:16px; }
-.concepto { font-weight:600; color:var(--brand-navy); }
-.monto { color:#344054; }
+.egreso-button:hover { 
+  background: var(--brand-green-light);
+}
 
-/* detalles mensuales: grid 12 columnas */
-.row-details { padding:12px 18px; background:#fcfffb; border-radius:8px; margin:8px 12px 12px 12px; }
+.row-main { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%; 
+  gap: 16px;
+}
+
+.concepto { 
+  font-weight: 700; 
+  color: var(--brand-navy);
+  font-size: 1rem;
+  flex: 1;
+}
+
+.monto { 
+  color: var(--brand-green);
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.chev {
+  color: var(--brand-orange);
+  transition: transform 0.2s ease;
+}
+
+/* ================================= */
+/* DETALLES MENSUALES RESPONSIVOS */
+/* ================================= */
+.row-details { 
+  padding: 20px 24px; 
+  background: linear-gradient(135deg, #fcfffe 0%, #f0fdf4 100%); 
+  border-radius: 0;
+  margin: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Grid Desktop */
 .months-grid {
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap:6px;
-  align-items:center;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
 }
-.month-header { font-size:12px; color:#475569; text-align:center; font-weight:700; }
-.month-value { font-size:13px; text-align:center; color:#0f172a; }
 
-/* summary */
-.monthly-summary { margin-top:10px; display:flex; gap:12px; align-items:center; color:#334155; }
-.monthly-summary .warn { color: var(--brand-orange); font-size:12px; }
-.monthly-summary .info-inline { color:#475569; font-size:12px; }
+.month-header { 
+  font-size: 0.75rem; 
+  color: var(--brand-navy); 
+  text-align: center; 
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 8px 4px;
+  background: var(--brand-navy-light);
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
 
-/* info blocks */
-.info { margin:8px 0; padding:8px 12px; border-left:4px solid var(--brand-green); background:#f6fffb; color:#0f172a; border-radius:6px; }
-.info-all { background:#f6fffb; }
-.loading, .empty { padding:18px; color:#94a3b8; text-align:center; }
+.month-value { 
+  font-size: 0.8rem; 
+  text-align: center; 
+  color: var(--brand-green);
+  font-weight: 600;
+  padding: 4px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #f1f5f9;
+}
+
+.monthly-summary { 
+  margin-top: 16px; 
+  display: flex; 
+  gap: 16px; 
+  align-items: center; 
+  color: var(--brand-navy);
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.monthly-summary .warn { 
+  color: var(--brand-orange); 
+  font-size: 0.85rem;
+  background: rgba(255, 105, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.monthly-summary .info-inline { 
+  color: #64748b; 
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ================================= */
+/* ESTADOS */
+/* ================================= */
+.loading, .empty { 
+  padding: 40px 20px; 
+  color: #64748b; 
+  text-align: center;
+  font-size: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.loading::before {
+  content: "⏳";
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.empty::before {
+  content: "📊";
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* ================================= */
+/* RESPONSIVE BREAKPOINTS */
+/* ================================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .descuentos-panel {
+    padding: 20px;
+  }
+  
+  .header {
+    gap: 16px;
+  }
+  
+  .search {
+    min-width: 250px;
+  }
+  
+  .months-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+  
+  .month-header, .month-value {
+    font-size: 0.7rem;
+  }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+  :host {
+    padding: 8px;
+  }
+
+  .descuentos-panel {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .search {
+    min-width: auto;
+  }
+  
+  .search-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .search-row input[matInput] {
+    padding: 14px;
+    font-size: 1rem;
+  }
+  
+  .search-row button {
+    padding: 14px 20px !important;
+    align-self: stretch;
+  }
+  
+  .quick-controls {
+    justify-content: center;
+  }
+  
+  .years-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .chips {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .chip {
+    padding: 12px 16px;
+    min-width: 50px;
+  }
+  
+  .egresos-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .total {
+    text-align: center;
+    padding: 12px;
+  }
+  
+  /* Vista de tarjetas en móvil para detalles mensuales */
+  .months-grid {
+    display: none; /* Ocultar grid en móvil */
+  }
+  
+  /* Mostrar vista de tarjetas mensuales */
+  .mobile-months {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+  }
+  
+  .mobile-month-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .mobile-month-card .month-name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--brand-navy);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  
+  .mobile-month-card .month-amount {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--brand-green);
+  }
+  
+  .row-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .monto {
+    align-self: flex-end;
+    font-size: 1.1rem;
+  }
+  
+  .monthly-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .descuentos-panel {
+    padding: 12px;
+  }
+  
+  .mobile-months {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 6px;
+  }
+  
+  .concepto {
+    font-size: 0.9rem;
+  }
+  
+  .monto {
+    font-size: 1rem;
+  }
+  
+  .chips {
+    gap: 6px;
+  }
+  
+  .chip {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ================================= */
+/* UTILIDADES PARA VISTA MÓVIL */
+/* ================================= */
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: block;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px !important;
+  }
+
+  .search {
+    flex: none !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-row {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-row input[matInput] {
+    margin: 0 !important;
+  }
+
+  .search-row button {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  .search .error {
+    margin: 4px 0 0 0 !important;
+  }
+
+  .quick-controls {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .quick-controls button {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  .search > *:last-child {
+    margin-bottom: 0 !important;
+  }
+}

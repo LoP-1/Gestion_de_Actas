@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,8 +21,6 @@ import { DetalleSimpleComponent } from '../detalle-simple/detalle-simple';
     CommonModule,
     FormsModule,
     MatDialogModule,
-
-    // Angular Material
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
@@ -34,7 +32,7 @@ import { DetalleSimpleComponent } from '../detalle-simple/detalle-simple';
   styleUrls: ['./buscador-usuarios.css']
 })
 export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['id', 'dni', 'nombres', 'apellido', 'codigoModular', 'expand'];
+  displayedColumns: string[] = ['id', 'dni', 'nombres', 'apellido', 'codigoModular'];
   dataSource = new MatTableDataSource<UsuarioUnico>();
 
   filtroDni = '';
@@ -42,13 +40,13 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
   filtroApellido = '';
 
   expandedElement: UsuarioUnico | null = null;
-
-  // undefined = aún cargando
   periodosPorUsuario: { [dni: string]: PeriodoDTO[] | undefined } = {};
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 50];
+
+  isMobile = false;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -65,6 +63,7 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.checkScreenSize();
     this.usuarioService.listarUsuariosUnicos().subscribe(data => {
       this.dataSource.data = data;
       if (this.paginator) {
@@ -75,6 +74,15 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: UIEvent) {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   aplicarFiltro(): void {
@@ -102,7 +110,6 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Obtiene el id del periodo; ajusta las claves según tu DTO real
   private getPeriodoId(periodo: PeriodoDTO): number | string {
     return (periodo as any).id ?? (periodo as any).periodoId ?? (periodo as any).idPeriodo;
   }
@@ -120,15 +127,26 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
     this.expandedElement = null;
   }
 
-  // Renderiza la fila de detalle solo para la fila expandida
-  isExpandedRow = (_index: number, row: UsuarioUnico) => this.expandedElement === row;
   abrirDetalle(id: number | string) {
-  this.dialog.open(DetalleSimpleComponent, {
-    data: { id },
-    panelClass: 'boleta-dialog-panel',
-    width: '96vw',
-    height: '92vh',
-    maxWidth: '100vw',
-  });
-}
+    this.dialog.open(DetalleSimpleComponent, {
+      data: { id },
+      panelClass: 'boleta-dialog-panel',
+      width: '96vw',
+      height: '92vh',
+      maxWidth: '100vw',
+    });
+  }
+
+  // ✅ Método para obtener datos paginados (CORREGIDO)
+  getPaginatedData(): UsuarioUnico[] {
+    if (!this.paginator) {
+      return this.dataSource.filteredData;
+    }
+    
+    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+    const endIndex = startIndex + this.paginator.pageSize;
+    return this.dataSource.filteredData.slice(startIndex, endIndex);
+  }
+
+  isExpandedRow = (_index: number, row: UsuarioUnico) => this.expandedElement === row;
 }

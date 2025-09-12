@@ -1,53 +1,75 @@
-<!-- Si NO estás en /login, muestra el layout completo; si estás en /login, solo muestra el login -->
+<!-- Toolbar móvil (solo visible en móviles) -->
+<div class="mobile-toolbar">
+  <button mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <span class="toolbar-title">{{ panelTitle }}</span>
+  
+  <button mat-icon-button (click)="toggleCarrito()" style="position: relative;">
+    <mat-icon>shopping_cart</mat-icon>
+    <span class="cart-badge" *ngIf="carritoBoletas.length > 0">
+      {{ carritoBoletas.length }}
+    </span>
+  </button>
+</div>
+
+<!-- Container principal -->
 <mat-sidenav-container class="main-container">
   <!-- Sidebar izquierdo (menú) -->
-  <mat-sidenav mode="side" opened class="sidebar">
+  <mat-sidenav 
+    #menuSidenav
+    mode="side" 
+    [opened]="isDesktop" 
+    [mode]="isDesktop ? 'side' : 'over'"
+    class="sidebar">
+    
     <h2 class="sidebar-title">{{ panelTitle }}</h2>
     <mat-nav-list>
       <!-- Seleccionar Periodo (con submenú) -->
-      <a mat-list-item (click)="togglePeriodoMenu()" [class.active]="isSeleccionarPeriodoActive()">
+      <a mat-list-item (click)="togglePeriodoMenu(); closeSidebarOnMobile()" [class.active]="isSeleccionarPeriodoActive()">
         <mat-icon>search</mat-icon>
         <span>Buscador por Periodo</span>
         <span class="spacer"></span>
         <mat-icon class="chevron" [class.open]="periodoMenuOpen">expand_more</mat-icon>
       </a>
       <div class="submenu" *ngIf="periodoMenuOpen">
-        <a mat-list-item routerLink="/periodos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a mat-list-item routerLink="/periodos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebarOnMobile()">
           <mat-icon>event_available</mat-icon>
           <span>Seleccionar Periodo</span>
         </a>
-        <a mat-list-item routerLink="/usuarios-periodo" routerLinkActive="active">
+        <a mat-list-item routerLink="/usuarios-periodo" routerLinkActive="active" (click)="closeSidebarOnMobile()">
           <mat-icon>group</mat-icon>
           <span>Empleados del periodo</span>
         </a>
       </div>
 
       <!-- Buscador Usuarios -->
-      <a mat-list-item [routerLink]="['/buscador-usuarios']" routerLinkActive="active">
+      <a mat-list-item [routerLink]="['/buscador-usuarios']" routerLinkActive="active" (click)="closeSidebarOnMobile()">
         <mat-icon>search</mat-icon>
         <span>Buscador Usuarios</span>
       </a>
 
       <!-- Detalles Completos -->
-      <a mat-list-item [routerLink]="['/detalles-completos', ultimoBoletaId ]" routerLinkActive="active">
+      <a mat-list-item [routerLink]="['/detalles-completos', ultimoBoletaId ]" routerLinkActive="active" (click)="closeSidebarOnMobile()">
         <mat-icon>print</mat-icon>
         <span>Detalles Completos</span>
       </a>
 
       <!-- Descuentos -->
-      <a mat-list-item [routerLink]="['/descuentos']" routerLinkActive="active">
+      <a mat-list-item [routerLink]="['/descuentos']" routerLinkActive="active" (click)="closeSidebarOnMobile()">
         <mat-icon>account_balance_wallet</mat-icon>
         <span>Descuentos</span>
       </a>
 
       <!-- Importar CSV (solo ADMIN) -->
-      <a mat-list-item [routerLink]="['/importar']" routerLinkActive="active" *ngIf="isAdmin">
+      <a mat-list-item [routerLink]="['/importar']" routerLinkActive="active" *ngIf="isAdmin" (click)="closeSidebarOnMobile()">
         <mat-icon>description</mat-icon>
         <span>Importar CSV</span>
       </a>
 
       <!-- Registrar Usuarios (solo ADMIN) -->
-      <a mat-list-item [routerLink]="['/registrar']" routerLinkActive="active" *ngIf="isAdmin">
+      <a mat-list-item [routerLink]="['/registrar']" routerLinkActive="active" *ngIf="isAdmin" (click)="closeSidebarOnMobile()">
         <mat-icon>group_add</mat-icon>
         <span>Registrar Usuario</span>
       </a>
@@ -55,7 +77,14 @@
   </mat-sidenav>
 
   <!-- Sidebar derecho (carrito) -->
-  <mat-sidenav position="end" mode="side" opened class="carrito-sidebar">
+  <mat-sidenav 
+    #carritoSidenav
+    position="end" 
+    mode="side" 
+    [opened]="isDesktop" 
+    [mode]="isDesktop ? 'side' : 'over'"
+    class="carrito-sidebar">
+    
     <h2 class="carrito-title">Lista de Boletas</h2>
     <div class="carrito-empty" *ngIf="carritoBoletas.length === 0">
       <mat-icon>info</mat-icon>
@@ -76,13 +105,13 @@
           </button>
 
           <!-- Botón Ver Detalle (color primary/orange) -->
-          <button mat-flat-button color="primary" [routerLink]="['/detalles-completos', boleta.id]" class="btn-detalle">
+          <button mat-flat-button color="primary" [routerLink]="['/detalles-completos', boleta.id]" class="btn-detalle" (click)="closeCarritoOnMobile()">
             <mat-icon>description</mat-icon>
             <span class="btn-text">Ver Detalle</span>
           </button>
 
           <!-- Botón Ver Descuentos (color accent/green) -->
-          <button mat-flat-button color="accent" [routerLink]="['/descuentos', boleta.dni]" class="btn-descuentos">
+          <button mat-flat-button color="accent" [routerLink]="['/descuentos', boleta.dni]" class="btn-descuentos" (click)="closeCarritoOnMobile()">
             <mat-icon>account_balance_wallet</mat-icon>
             <span class="btn-text">Ver Descuentos</span>
           </button>

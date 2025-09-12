@@ -175,3 +175,52 @@
   }
   .dashboard-table { min-width: 640px; font-size: 0.92rem; }
 }
+
+@media (max-width: 900px) {
+  /* Oculta las columnas no críticas si por alguna razón todavía existen */
+  .mat-column-id,
+  .mat-column-cargo,
+  .mat-column-cargoOrig,
+  .mat-column-codEstablecimiento,
+  .mat-column-situacion,
+  .mat-column-tPlanilla,
+  .mat-column-region,
+  .mat-column-codigoModular {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  table.dashboard-table {
+    font-size: 0.78rem;
+  }
+}
+
+/* Cards (ya tenías estilos, mantén/ajusta) */
+.mobile-cards-view {
+  margin-top: 12px;
+}
+
+.employee-card {
+  border-left: 4px solid var(--primary, #00d084);
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+}
+
+.extended-info {
+  display: none;
+  &.show { display: block; margin-top: 10px; }
+}
+
+.card-detail-btn {
+  background: linear-gradient(90deg, #00b874 0%, #00d084 100%) !important;
+  color: #fff !important;
+}
+
+.toggle-info-btn {
+  border-color: var(--primary, #00d084) !important;
+  color: var(--primary, #00d084) !important;
+}
