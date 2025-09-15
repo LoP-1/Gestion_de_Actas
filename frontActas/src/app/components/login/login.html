@@ -1,20 +1,47 @@
 <div class="login-wrapper">
   <mat-card class="login-card">
-    <h2>Iniciar Sesión</h2>
-    <form [formGroup]="form" (ngSubmit)="login()" class="login-form">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>DNI</mat-label>
-        <input matInput formControlName="dni" autocomplete="username" />
-      </mat-form-field>
+    <!-- Banda izquierda con contenido -->
+    <div class="left-panel">
+      <div class="brand-content">
+        <h1 class="brand-title">Sistema de<br>Planillas DREJ</h1>
+        <p class="brand-subtitle">Gestión integral de recursos humanos</p>
+      </div>
+    </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password" formControlName="contrasena" autocomplete="current-password" />
-      </mat-form-field>
+    <!-- Panel derecho con formulario -->
+    <div class="right-panel">
+      <div class="login-content">
+        <h2 class="login-title">Iniciar Sesión</h2>
+        <p class="login-subtitle">Ingresa tus credenciales para continuar</p>
+        
+        <form [formGroup]="form" (ngSubmit)="login()" class="login-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>DNI</mat-label>
+            <input matInput formControlName="dni" autocomplete="username" placeholder="Ingresa tu DNI" />
+            <mat-icon matPrefix>person</mat-icon>
+          </mat-form-field>
 
-      <button mat-flat-button color="primary" type="submit" class="full-width login-btn">Ingresar</button>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="contrasena" autocomplete="current-password" placeholder="Ingresa tu contraseña" />
+            <mat-icon matPrefix>lock</mat-icon>
+          </mat-form-field>
 
-      <div *ngIf="error" class="error">{{ error }}</div>
-    </form>
+          <button mat-flat-button color="primary" type="submit" class="login-btn full-width" [disabled]="form.invalid">
+            <mat-icon>login</mat-icon>
+            Ingresar
+          </button>
+
+          <div *ngIf="error" class="error-message">
+            <mat-icon>error</mat-icon>
+            {{ error }}
+          </div>
+        </form>
+
+        <div class="login-footer">
+          <p>¿Necesitas acceso? <strong>Contacta con un administrador</strong></p>
+        </div>
+      </div>
+    </div>
   </mat-card>
 </div>

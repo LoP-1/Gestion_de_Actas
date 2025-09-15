@@ -27,7 +27,7 @@
     <h2 class="sidebar-title">{{ panelTitle }}</h2>
     <mat-nav-list>
       <!-- Seleccionar Periodo (con submenú) -->
-      <a mat-list-item (click)="togglePeriodoMenu(); closeSidebarOnMobile()" [class.active]="isSeleccionarPeriodoActive()">
+      <a mat-list-item (click)="togglePeriodoMenu();" [class.active]="isSeleccionarPeriodoActive()">
         <mat-icon>search</mat-icon>
         <span>Buscador por Periodo</span>
         <span class="spacer"></span>

@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../enviroments/enviroment';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { environment } from '../../../enviroments/enviroment';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     HttpClientModule
   ]
 })

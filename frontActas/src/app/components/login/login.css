@@ -1,157 +1,285 @@
-/* Hoja de estilos CSS - Pestaña de Login */
-/* Lienzo del login */
+/* Variables de colores (asegúrate de tenerlas definidas globalmente) */
+:root {
+  --brand-navy: #193153;
+  --brand-green: #00d084;
+  --brand-orange: #ff6900;
+}
+
+/* Wrapper principal */
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #eef1f7;
-  padding: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+  padding: 20px;
 }
 
-/* Tarjeta principal con banda izquierda */
+/* Tarjeta principal */
 .login-card {
-  /* ancho/alto */
-  width: min(980px, 92vw);
-  min-height: 420px;
-
-  /* layout del contenido (título + form) a la derecha */
+  width: min(1000px, 95vw);
+  max-width: 1000px;
+  min-height: 600px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 12px;
-
-  /* espacio para la banda izquierda + padding derecho */
-  --left-band: clamp(280px, 42%, 420px);
-  padding: 40px 56px 36px calc(var(--left-band) + 48px);
-
-  position: relative;
-  border-radius: 20px;
-  box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   background: #fff;
+  padding: 0;
 }
 
-/* Banda izquierda (gradiente navy → green con borde ondulado) */
-.login-card::before {
-  content: "";
+/* Panel izquierdo */
+.left-panel {
+  flex: 1;
+  background: linear-gradient(135deg, var(--brand-navy) 0%, #0b4a8b 50%, var(--brand-green) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Patrón de fondo decorativo */
+.left-panel::before {
+  content: '';
   position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--left-band);
-  background: linear-gradient(160deg, var(--brand-navy) 0%, #0b4a8b 40%, var(--brand-green) 100%);
-  border-top-right-radius: 120px 140px;
-  border-bottom-right-radius: 120px 140px;
-  box-shadow: inset -10px 0 24px rgba(0,0,0,0.08);
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="1.5"/></g></svg>') repeat;
+  transform: rotate(15deg);
 }
 
-/* Eliminado el circulito naranja de la esquina */
-/* (Antes usábamos ::after. Ya no se renderiza nada aquí.) */
+/* Contenido de la marca */
+.brand-content {
+  text-align: center;
+  color: white;
+  z-index: 2;
+  position: relative;
+}
 
-/* Título (lado derecho) */
-.login-card h2 {
-  margin: 0 0 6px 0;
-  width: min(360px, 90%);
-  align-self: flex-end;
-  color: var(--brand-navy);
+.brand-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 24px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+.brand-title {
+  font-size: 2.2rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  text-align: left;
+  line-height: 1.2;
+  margin: 0 0 16px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Formulario (lado derecho) */
-.login-form {
-  width: min(360px, 90%);
-  align-self: flex-end;
+.brand-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 300;
+  margin: 0;
+  line-height: 1.4;
 }
 
-/* Campos tipo píldora con sombra suave */
-.login-card .mat-mdc-form-field.full-width {
-  width: 100%;
-  margin-bottom: 14px;
-}
-
-/* Wrapper del input */
-.login-card .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+/* Panel derecho */
+.right-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 50px;
   background: #ffffff;
-  border-radius: 999px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.10);
 }
 
-/* Borde redondeado del outlined (tres piezas) */
-.login-card .mdc-notched-outline,
-.login-card .mdc-notched-outline__leading,
-.login-card .mdc-notched-outline__trailing {
-  border-radius: 999px !important;
+.login-content {
+  width: 100%;
+  max-width: 400px;
 }
 
-/* Colores del outline y label (MDC) */
-.login-card .mat-mdc-form-field {
-  --mdc-outlined-text-field-outline-color: #d7deea;
-  --mdc-outlined-text-field-hover-outline-color: #c4ccda;
-  --mdc-outlined-text-field-focus-outline-color: var(--brand-green);
-  --mdc-outlined-text-field-label-text-color: #7a8597;
-  --mdc-outlined-text-field-focus-label-text-color: var(--brand-green);
-}
-
-/* Alto y padding interno */
-.login-card .mat-mdc-form-field-infix {
-  padding: 10px 18px !important;
-}
-.login-card .mat-mdc-input-element {
-  height: 44px;
-  line-height: 44px;
-  padding: 0 6px;
-  font-size: 0.98rem;
-}
-
-/* Botón principal (green → orange) tipo píldora */
-.login-btn {
-  border-radius: 999px !important;
-  height: 46px;
+.login-title {
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  background: linear-gradient(90deg, var(--brand-green) 0%, var(--brand-orange) 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 10px 20px rgba(0, 208, 132, 0.25), 0 6px 16px rgba(255, 105, 0, 0.18) !important;
-  transition: filter .18s ease, transform .12s ease;
-}
-.login-btn:hover { filter: brightness(0.97); }
-.login-btn:active { transform: translateY(1px); }
-
-/* Mensaje de error */
-.error {
-  margin-top: 10px;
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-weight: 600;
+  color: var(--brand-navy);
+  margin: 0 0 8px 0;
   text-align: center;
 }
 
-/* Responsive: la banda pasa arriba y el contenido se centra */
-@media (max-width: 760px) {
+.login-subtitle {
+  color: #6b7280;
+  text-align: center;
+  margin: 0 0 32px 0;
+  font-size: 0.95rem;
+}
+
+/* Formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Campos de formulario */
+.login-form .mat-mdc-form-field {
+  --mdc-outlined-text-field-outline-color: #e5e7eb;
+  --mdc-outlined-text-field-hover-outline-color: var(--brand-green);
+  --mdc-outlined-text-field-focus-outline-color: var(--brand-green);
+  --mdc-outlined-text-field-label-text-color: #6b7280;
+  --mdc-outlined-text-field-focus-label-text-color: var(--brand-green);
+}
+
+.login-form .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background: #fafafa;
+  border-radius: 12px;
+}
+
+.login-form .mdc-notched-outline,
+.login-form .mdc-notched-outline__leading,
+.login-form .mdc-notched-outline__trailing {
+  border-radius: 12px !important;
+}
+
+.login-form .mat-mdc-form-field-infix {
+  padding: 14px 16px !important;
+}
+
+.login-form .mat-mdc-input-element {
+  height: 48px;
+  line-height: 48px;
+  font-size: 1rem;
+}
+
+/* Iconos de prefijo */
+.login-form .mat-icon[matPrefix] {
+  color: #9ca3af;
+  margin-right: 12px;
+}
+
+/* Botón de login */
+.login-btn {
+  height: 52px;
+  border-radius: 12px !important;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, var(--brand-green) 0%, var(--brand-orange) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgba(0, 208, 132, 0.3) !important;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 208, 132, 0.4) !important;
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-btn .mat-icon {
+  margin-right: 8px;
+}
+
+/* Mensaje de error */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.error-message .mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Footer del login */
+.login-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.login-footer p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.login-footer strong {
+  color: var(--brand-navy);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-wrapper {
+    padding: 16px;
+  }
+
   .login-card {
-    align-items: center;
-    padding: 28px 16px 20px;
-    padding-top: calc(200px + 20px); /* espacio para la banda */
+    flex-direction: column;
+    min-height: auto;
   }
-  .login-card::before {
-    width: 100%;
-    height: 200px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 60% 40%;
-    border-bottom-left-radius: 60% 40%;
+
+  .left-panel {
+    padding: 40px 32px;
   }
-  .login-card h2,
-  .login-form {
-    width: 100%;
-    max-width: 420px;
-    align-self: center;
+
+  .brand-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .brand-title {
+    font-size: 1.8rem;
+  }
+
+  .brand-subtitle {
+    font-size: 1rem;
+  }
+
+  .right-panel {
+    padding: 40px 32px;
+  }
+
+  .login-title {
+    font-size: 1.8rem;
   }
 }
 
-/* Utilidad */
-.full-width { width: 100%; }
+@media (max-width: 480px) {
+  .login-wrapper {
+    padding: 12px;
+  }
+
+  .left-panel,
+  .right-panel {
+    padding: 32px 24px;
+  }
+
+  .brand-title {
+    font-size: 1.6rem;
+  }
+
+  .login-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* Utilidades */
+.full-width {
+  width: 100%;
+}

@@ -423,6 +423,8 @@ mat-sidenav.carrito-sidebar {
     width: 320px !important;
     min-width: 320px !important;
     padding: 20px 16px !important;
+    /* CAMBIO DE FONDO SOLO EN MÓVIL */
+    background: #fafafa !important;
   }
 
   /* Contenido principal ocupa todo el ancho */
@@ -492,6 +494,8 @@ mat-sidenav.carrito-sidebar {
     width: calc(100vw - 32px) !important;
     max-width: 320px !important;
     padding: 16px 12px !important;
+    /* MANTENER EL FONDO GRIS CLARO EN MÓVIL PEQUEÑO TAMBIÉN */
+    background: #fafafa !important;
   }
 
   /* Título del sidebar más pequeño */
