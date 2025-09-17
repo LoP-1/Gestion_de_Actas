@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ActasController;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\BeneficiarioCSVController;
+use App\Http\Controllers\BeneficiarioController;
 
 // Rutas de autenticación (sin middleware)
 Route::prefix('auth')->group(function () {
@@ -37,10 +39,17 @@ Route::middleware('jwt.auth')->group(function () {
     // Por último, la ruta dinámica numérica
     Route::get('/usuarios/{id}', [ActasController::class, 'obtenerUsuario'])
         ->whereNumber('id');
+    //beneficiario
+Route::get('beneficiarios/acta/{acta_personal_id}', [BeneficiarioController::class, 'byActa']);
+Route::get('beneficiarios/{id}', [BeneficiarioController::class, 'show']);
 });
+
 
 // Upload CSV (público)
 Route::post('/upload', [CSVController::class, 'importarCsv']);
+// Upload Beneficiarios CSV (público)
+Route::post('/upload/beneficiario', [BeneficiarioCSVController::class, 'importarCsv']);
+
 
 // Rutas demo por rol (opcionales)
 Route::middleware('jwt.auth:ADMIN')->group(function () {

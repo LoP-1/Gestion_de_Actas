@@ -24,7 +24,6 @@ class ActasService
                 'periodoPago' => $r->periodo_pago,
                 'codigoModular' => $r->codigo_modular,
                 'totalRemuneracion' => $r->total_remuneracion !== null ? (float) $r->total_remuneracion : null,
-                // opcional: 'sueldoBase' => $r->sueldo_base
             ];
         }
         return $list;
