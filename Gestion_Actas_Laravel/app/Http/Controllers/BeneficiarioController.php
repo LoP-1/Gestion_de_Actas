@@ -31,4 +31,19 @@ class BeneficiarioController extends Controller
         }
         return response()->json($beneficiario);
     }
+
+    //GET /api/beneficiarios/periodo/{periodo}
+    public function obtenerBeneficiariosPorPeriodo($periodo)
+    {
+        $beneficiarios = Beneficiario::where('periodo_pago', $periodo)->get();
+        return response()->json($beneficiarios);
+    }
+
+    //GET /api/beneficiarios/dni/{dni}
+    public function obtenerBeneficiariosPorDni($dni)
+    {
+        $beneficiarios = Beneficiario::where('dni_tit', $dni)->get();
+        return response()->json($beneficiarios);
+    }
+
 }

@@ -44,6 +44,12 @@ Route::get('/beneficiarios', [BeneficiarioController::class, 'index']);
 Route::get('/beneficiarios/{id}', [BeneficiarioController::class, 'show']);
 });
 
+// Beneficiarios por periodo
+Route::get('/beneficiarios/periodo/{periodo}', [BeneficiarioController
+::class, 'obtenerBeneficiariosPorPeriodo']);
+// Beneficiarios por dni
+Route::get('/beneficiarios/dni/{dni}', [BeneficiarioController
+::class, 'obtenerBeneficiariosPorDni']);
 
 // Upload CSV (público)
 Route::post('/upload', [CSVController::class, 'importarCsv']);

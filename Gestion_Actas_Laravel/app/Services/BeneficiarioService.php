@@ -20,4 +20,16 @@ class BeneficiarioService
     {
         return Beneficiario::find($id);
     }
+
+    //obtener los periodos por dni
+    public function obtenerPeriodosPorDni($dni)
+    {
+        return Beneficiario::where('dni_tit', $dni)->pluck('periodo_pago');
+    }
+
+    //obtener los beneficiarios por periodo
+    public function obtenerBeneficiariosPorPeriodo($periodo)
+    {
+        return Beneficiario::where('periodo_pago', $periodo)->get();
+    }
 }
