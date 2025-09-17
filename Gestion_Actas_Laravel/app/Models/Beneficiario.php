@@ -46,9 +46,4 @@ class Beneficiario extends Model
         'imponible'        => 'decimal:2',
     ];
 
-    // Relación inversa con ActasPersonal
-    public function actaPersonal()
-    {
-        return $this->belongsTo(ActasPersonal::class, 'acta_personal_id');
-    }
 }

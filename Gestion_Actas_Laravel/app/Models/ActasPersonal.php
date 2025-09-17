@@ -64,10 +64,6 @@ class ActasPersonal extends Model
         'egresos_json',
     ];
 
-    public function beneficiarios()
-    {
-        return $this->hasMany(Beneficiario::class, 'acta_personal_id');
-    }
 
     protected $casts = [
         'ingresos_json' => 'array',

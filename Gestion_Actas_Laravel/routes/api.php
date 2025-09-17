@@ -40,8 +40,8 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/usuarios/{id}', [ActasController::class, 'obtenerUsuario'])
         ->whereNumber('id');
     //beneficiario
-Route::get('beneficiarios/acta/{acta_personal_id}', [BeneficiarioController::class, 'byActa']);
-Route::get('beneficiarios/{id}', [BeneficiarioController::class, 'show']);
+Route::get('/beneficiarios', [BeneficiarioController::class, 'index']);
+Route::get('/beneficiarios/{id}', [BeneficiarioController::class, 'show']);
 });
 
 

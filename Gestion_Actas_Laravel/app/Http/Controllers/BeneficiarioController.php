@@ -7,11 +7,19 @@ use App\Models\Beneficiario;
 
 class BeneficiarioController extends Controller
 {
-    // GET /api/beneficiarios/by-acta/{acta_personal_id}
-    public function byActa($acta_personal_id)
+    public function index(Request $request)
     {
-        $beneficiarios = Beneficiario::where('acta_personal_id', $acta_personal_id)->get();
-        return response()->json($beneficiarios);
+        $q = Beneficiario::query();
+
+        // Filtros opcionales
+        $q->when($request->filled('periodo_pago'), fn($qq) => $qq->where('periodo_pago', $request->string('periodo_pago')));
+        $q->when($request->filled('dni_tit'), fn($qq) => $qq->where('dni_tit', $request->string('dni_tit')));
+        $q->when($request->filled('cod_mod_tit'), fn($qq) => $qq->where('cod_mod_tit', $request->string('cod_mod_tit')));
+        $q->when($request->filled('airshp'), fn($qq) => $qq->where('airshp', $request->string('airshp')));
+
+        // Puedes paginar si quieres:
+        // return response()->json($q->paginate(50));
+        return response()->json($q->get());
     }
 
     // GET /api/beneficiarios/{id}

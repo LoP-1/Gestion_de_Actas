@@ -11,10 +11,6 @@ return new class extends Migration
         Schema::create('beneficiarios', function (Blueprint $table) {
             $table->id();
 
-            // Relación con actas_personal restaurada
-            $table->unsignedBigInteger('acta_personal_id');
-            $table->foreign('acta_personal_id')->references('id')->on('actas_personal')->onDelete('cascade');
-
             $table->string('periodo_pago')->nullable();
             $table->string('cod_mod_tit')->nullable();
             $table->string('cargo_tit')->nullable();
