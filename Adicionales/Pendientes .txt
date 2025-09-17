@@ -1,0 +1,6 @@
+---> mejor opción : nuevo componente detalle simple beneficiario
+---> otro componente nuevo mejor solución arreglaría todo
+---> expandir la parte del buscador de periodos, nuevo componente y queda todo Good xd
+---> expandir la parte de csv para la nueva parte, agregar validación de código modular y dni (backend)
+
+---> extra agregar nuevo botón al carrito de boletas para ver detalles simples(otro componente ?)
