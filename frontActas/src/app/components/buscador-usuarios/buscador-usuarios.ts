@@ -15,7 +15,6 @@ import { UsuarioUnico } from '../../models/usuario-unico';
 import { DetalleSimpleComponent } from '../detalle-simple/detalle-simple';
 import { BeneficiarioDetallesComponent } from '../../components/beneficiario-detalles/beneficiario-detalles';
 
-
 @Component({
   selector: 'app-buscador-usuarios',
   standalone: true,
@@ -51,6 +50,8 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
 
   isMobile = false;
 
+  private static readonly STORAGE_KEY = 'buscadorUsuariosFiltros';
+
   constructor(
     private usuarioService: UsuarioService,
     private periodoDetalles: PeriodoDetallesService,
@@ -67,11 +68,22 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.checkScreenSize();
+    // Leer filtros desde localStorage
+    const saved = localStorage.getItem(BuscadorUsuariosComponent.STORAGE_KEY);
+    if (saved) {
+      try {
+        const filtros = JSON.parse(saved);
+        this.filtroDni = filtros.dni || '';
+        this.filtroNombre = filtros.nombre || '';
+        this.filtroApellido = filtros.apellido || '';
+      } catch {}
+    }
     this.usuarioService.listarUsuariosUnicos().subscribe(data => {
       this.dataSource.data = data;
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
       }
+      this.aplicarFiltro(); // Aplica el filtro guardado
     });
   }
 
@@ -94,9 +106,19 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
       nombre: this.filtroNombre.trim().toLowerCase(),
       apellido: this.filtroApellido.trim().toLowerCase()
     });
+    // Guardar en localStorage
+    localStorage.setItem(BuscadorUsuariosComponent.STORAGE_KEY, filterValue);
     this.dataSource.filter = filterValue;
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
     this.expandedElement = null;
+  }
+
+  limpiarFiltros(): void {
+    this.filtroDni = '';
+    this.filtroNombre = '';
+    this.filtroApellido = '';
+    localStorage.removeItem(BuscadorUsuariosComponent.STORAGE_KEY);
+    this.aplicarFiltro();
   }
 
   onRowExpand(usuario: UsuarioUnico) {
@@ -135,14 +157,15 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
   }
 
   onPeriodoBeneficiarioClick(periodo: string, usuario: UsuarioUnico) {
-  this.dialog.open(BeneficiarioDetallesComponent, {
-    data: { periodo, dni: usuario.dni },
-    panelClass: 'boleta-dialog-panel',
+    this.dialog.open(BeneficiarioDetallesComponent, {
+      data: { periodo, dni: usuario.dni },
+      panelClass: 'boleta-dialog-panel',
       width: '96vw',
       height: '92vh',
       maxWidth: '100vw',
-  });
-}
+    });
+  }
+
   onPageChange() {
     this.expandedElement = null;
   }
@@ -161,7 +184,6 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
     if (!this.paginator) {
       return this.dataSource.filteredData;
     }
-    
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     const endIndex = startIndex + this.paginator.pageSize;
     return this.dataSource.filteredData.slice(startIndex, endIndex);

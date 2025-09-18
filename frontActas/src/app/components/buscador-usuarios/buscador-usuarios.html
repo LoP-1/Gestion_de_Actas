@@ -23,6 +23,12 @@
       <input matInput [(ngModel)]="filtroApellido" (keyup)="aplicarFiltro()" placeholder="Ingresa apellido">
       <mat-icon matSuffix *ngIf="filtroApellido" (click)="filtroApellido=''; aplicarFiltro()" style="cursor: pointer;">clear</mat-icon>
     </mat-form-field>
+
+    <!-- BOTÓN LIMPIAR -->
+    <button mat-raised-button color="primary" (click)="limpiarFiltros()" style="height: 56px;">
+      <mat-icon>delete_sweep</mat-icon>
+      Limpiar filtros
+    </button>
   </div>
 
   <p>Seleccione un usuario para consultar los periodos</p>

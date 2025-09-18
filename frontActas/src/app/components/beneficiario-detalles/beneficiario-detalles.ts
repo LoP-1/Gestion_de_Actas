@@ -32,7 +32,6 @@ interface Beneficiario {
     MatIconModule,
     MatButtonModule,
     DatePipe,
-    CurrencyPipe
   ]
 })
 export class BeneficiarioDetallesComponent {

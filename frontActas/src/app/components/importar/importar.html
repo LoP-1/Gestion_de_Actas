@@ -1,24 +1,39 @@
 <mat-card class="import-card">
+  <!-- Selector de modo -->
+  <div class="mode-switcher" style="display: flex; justify-content: flex-end; gap: 8px;">
+    <button mat-stroked-button
+            color="{{modo === 'boleta' ? 'primary' : 'accent'}}"
+            (click)="cambiarModo()"
+            style="border-radius: 12px; font-weight: bold; min-width: 160px;">
+      <mat-icon>{{ modo === 'boleta' ? 'table_chart' : 'group' }}</mat-icon>
+      <span>{{ modo === 'boleta' ? 'Importar periodos' : 'Importar Beneficiarios' }}</span>
+    </button>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <div class="title">
-      <mat-icon>cloud_upload</mat-icon>
-      <h2>Importar CSV</h2>
+      <mat-icon>{{ modo === 'boleta' ? 'cloud_upload' : 'group_add' }}</mat-icon>
+      <h2>Importar CSV {{ modo === 'beneficiario' ? 'de Beneficiarios' : 'de Boletas' }}</h2>
     </div>
     <div class="hint">
       Sube uno o varios archivos CSV. Se procesarán en cola automáticamente, uno a uno.
+      <br>
+      <span style="color: var(--brand-orange)" *ngIf="modo === 'beneficiario'">
+        <mat-icon>info</mat-icon> <strong>Modo Beneficiario:</strong> Los datos se guardan en la tabla beneficiarios.
+      </span>
     </div>
   </div>
 
   <!-- Dropzone mejorada -->
-  <div class="dropzone" 
-       [class.active]="dragActive" 
+  <div class="dropzone"
+       [class.active]="dragActive"
        (click)="fileInput.click()"
        (dragover)="onDragOver($event)"
        (dragleave)="onDragLeave($event)"
        (drop)="onDrop($event)">
-    
-    <mat-icon class="cloud">cloud_upload</mat-icon>
+
+    <mat-icon class="cloud">{{ modo === 'boleta' ? 'cloud_upload' : 'group_add' }}</mat-icon>
     <p>Arrastra y suelta tus archivos CSV aquí</p>
     <span class="or">o</span>
 
@@ -31,12 +46,12 @@
       multiple
       hidden
     />
-    
+
     <!-- Botón de selección -->
     <div class="select-btn">
-      <button mat-raised-button 
-              color="primary" 
-              type="button" 
+      <button mat-raised-button
+              color="primary"
+              type="button"
               (click)="openFilePicker(fileInput); $event.stopPropagation()">
         <mat-icon>attach_file</mat-icon>
         Seleccionar CSV(s)
@@ -47,14 +62,12 @@
   <!-- Cola de archivos -->
   <div class="queue-list" *ngIf="filesQueue.length > 0">
     <div class="queue-item" *ngFor="let item of filesQueue; let i = index">
-      
       <!-- Info del archivo -->
       <div class="info">
         <div>
           <strong>{{ item.file.name }}</strong>
           <span class="size">{{ (item.file.size / 1024) | number:'1.0-0' }} KB</span>
         </div>
-        
         <div class="status">
           <ng-container [ngSwitch]="item.status">
             <span *ngSwitchCase="'pending'" style="color: #6b7280;">
@@ -81,28 +94,26 @@
         </div>
       </div>
 
-      <!-- Barra de progreso -->
+      <!-- Barra de progreso: solo llega a 100 cuando status === 'done' -->
       <mat-progress-bar mode="determinate" [value]="item.progress"></mat-progress-bar>
 
       <!-- Acciones del archivo -->
       <div class="actions">
-        <button mat-stroked-button 
-                color="primary" 
-                (click)="retryItem(i)" 
+        <button mat-stroked-button
+                color="primary"
+                (click)="retryItem(i)"
                 *ngIf="item.status === 'error'">
           <mat-icon>refresh</mat-icon>
           <span>Reintentar</span>
         </button>
-        
-        <button mat-stroked-button 
-                color="warn" 
+        <button mat-stroked-button
+                color="warn"
                 (click)="removeFromQueue(i)">
           <mat-icon>delete</mat-icon>
           <span>Remover</span>
         </button>
-        
-        <button mat-stroked-button 
-                (click)="cancelCurrent()" 
+        <button mat-stroked-button
+                (click)="cancelCurrent()"
                 *ngIf="item.status === 'uploading'">
           <mat-icon>stop</mat-icon>
           <span>Cancelar</span>
@@ -119,24 +130,22 @@
 
   <!-- Acciones principales -->
   <div class="actions">
-    <button mat-flat-button 
-            color="primary" 
-            (click)="startUploadQueue()" 
+    <button mat-flat-button
+            color="primary"
+            (click)="startUploadQueue()"
             [disabled]="uploading || filesQueue.length === 0">
       <mat-icon>cloud_done</mat-icon>
       <span>Subir Cola ({{ filesQueue.length }})</span>
     </button>
-    
-    <button mat-stroked-button 
-            color="warn" 
-            (click)="cancelCurrent()" 
+    <button mat-stroked-button
+            color="warn"
+            (click)="cancelCurrent()"
             [disabled]="!uploading">
       <mat-icon>cancel</mat-icon>
       <span>Cancelar Actual</span>
     </button>
-    
-    <button mat-stroked-button 
-            (click)="clearQueue()" 
+    <button mat-stroked-button
+            (click)="clearQueue()"
             [disabled]="filesQueue.length === 0 && !uploading">
       <mat-icon>delete_sweep</mat-icon>
       <span>Limpiar Todo</span>
@@ -150,7 +159,10 @@
       <strong>💡 Consejos:</strong><br>
       • Tamaño máximo por archivo: <strong>10 MB</strong><br>
       • Formatos aceptados: <strong>.csv</strong><br>
-      • Los archivos se procesan secuencialmente para evitar sobrecarga del servidor
+      • Los archivos se procesan secuencialmente para evitar sobrecarga del servidor<br>
+      <span *ngIf="modo === 'beneficiario'" style="color: var(--brand-orange); font-weight: bold;">
+        <mat-icon>warning</mat-icon> Cada CSV se importa directamente en la tabla <u>beneficiarios</u>.
+      </span>
     </div>
   </div>
 </mat-card>

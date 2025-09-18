@@ -119,6 +119,7 @@ export class DetalleSimpleComponent {
       carrito.push(boleta);
       localStorage.setItem('carritoBoletas', JSON.stringify(carrito));
       window.dispatchEvent(new Event('carritoActualizado'));
+      this.cerrarDialogo();
     }
   }
 
