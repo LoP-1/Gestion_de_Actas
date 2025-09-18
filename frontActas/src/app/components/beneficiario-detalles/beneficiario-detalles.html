@@ -1,48 +1,118 @@
-<h2 mat-dialog-title>
-  Beneficiarios del periodo 
-  <span class="periodo-title-highlight">{{data.periodo}}</span><br>
-  <small style="font-size:1rem;color:#666;">DNI Titular: {{data.dni}}</small>
+<h2 class="dialog-title-flex" mat-dialog-title>
+  <span>
+    Beneficiarios del periodo
+    <span class="periodo-title-highlight">{{ data.periodo }}</span><br />
+    <small class="dni-titular">DNI Titular: {{ data.dni }}</small>
+  </span>
+  <button mat-icon-button class="close-x-btn" mat-dialog-close aria-label="Cerrar diálogo">
+    <mat-icon>close</mat-icon>
+  </button>
 </h2>
-<mat-dialog-content>
-  <div *ngIf="loading">
+
+<mat-dialog-content class="dialog-content-wrapper">
+  <div *ngIf="loading()" class="loading-block" role="status" aria-live="polite">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    Cargando...
+    <span>Cargando información...</span>
   </div>
-  <div *ngIf="error" class="error">{{error}}</div>
-  <div *ngIf="!loading && beneficiarios.length === 0">
+
+  <div *ngIf="error()" class="error-msg" role="alert">{{ error() }}</div>
+  <div *ngIf="!loading() && beneficiarios().length === 0" class="no-data">
     No hay beneficiarios para este periodo y titular.
   </div>
 
-  <div *ngIf="!loading && beneficiarios.length > 0" class="beneficiario-dialog-grid">
-    <!-- Izquierda: Lista de beneficiarios -->
-    <div class="beneficiarios-list">
+  <div *ngIf="!loading() && beneficiarios().length > 0" class="beneficiario-dialog-grid">
+    <!-- Lista -->
+    <aside class="beneficiarios-list" aria-label="Lista de beneficiarios">
       <h3>Beneficiarios</h3>
-      <div *ngFor="let b of beneficiarios"
+      <div *ngFor="let b of beneficiarios(); trackBy: trackByDni"
            (click)="seleccionar(b)"
-           [class.seleccionado]="b === seleccionado"
-           class="beneficiario-item">
-        <mat-icon color="primary" style="vertical-align: middle;">person</mat-icon>
-        <span class="ben-nombre">{{ getNombreCompletoBen(b) }}</span>
-        <span class="ben-dni">({{b.dni_ben}})</span>
+           [class.seleccionado]="b === seleccionado()"
+           class="beneficiario-item"
+           tabindex="0"
+           (keyup.enter)="seleccionar(b)"
+           aria-pressed="{{ b === seleccionado() }}">
+        <mat-icon class="person-ico" inline>person</mat-icon>
+        <div class="ben-texts">
+          <span class="ben-nombre">{{ getNombreCompletoBen(b) }}</span>
+          <span class="ben-dni">{{ b.dni_ben }}</span>
+        </div>
+        <mat-icon *ngIf="b === seleccionado()" class="check-ico">check_circle</mat-icon>
       </div>
-    </div>
+    </aside>
 
-    <!-- Derecha: Detalle tipo boleta -->
-    <div class="boleta-detalle" *ngIf="seleccionado">
-      <h3 class="boleta-titulo">{{ getNombreCompletoBen(seleccionado) }}</h3>
-      <div class="boleta-leyenda">{{seleccionado.leyenda}}</div>
-      <div class="boleta-datos">
-        <div><strong>DNI:</strong> {{seleccionado.dni_ben}}</div>
-        <div><strong>Fecha Nac.:</strong> {{seleccionado.fnac_ben | date:'dd/MM/yyyy'}}</div>
-        <div><strong>Cuenta ahorro:</strong> {{seleccionado.cuenta_ahorro}}</div>
-        <div class="total-haber"><strong>Total Haber:</strong> {{seleccionado.total_haber}}</div>
-        <div class="total-liquido"><strong>Total Líquido:</strong> {{seleccionado.total_liquido}}</div>
-        <div style="margin-top:10px;"><strong>Leyenda:</strong> {{seleccionado.leyenda}}</div>
-        <!-- Puedes agregar más campos aquí -->
+    <!-- Detalle / Boleta -->
+    <section class="boleta-detalle" *ngIf="seleccionado()" id="print-area" aria-label="Detalle boleta beneficiario">
+      <header class="boleta-header-flex">
+        <div class="title-stack">
+          <h3 class="boleta-titulo">{{ getNombreCompletoBen(seleccionado()) }}</h3>
+          <div class="mini-ref">DNI: <b>{{ seleccionado()?.dni_ben }}</b></div>
+        </div>
+        <div class="action-buttons">
+          <button mat-raised-button color="accent" class="print-btn" (click)="imprimirBoleta()" aria-label="Imprimir boleta">
+            <mat-icon>print</mat-icon>
+            <span>Imprimir</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="boleta-leyenda" *ngIf="seleccionado()?.leyenda as ley">
+        {{ ley }}
       </div>
-    </div>
+
+      <div class="boleta-datos">
+        <div class="datos-grid">
+          <div><span class="label">Fecha Nac.:</span> <span>{{ seleccionado()?.fnac_ben | date:'dd/MM/yyyy' }}</span></div>
+          <div><span class="label">Cuenta Ahorro:</span> <span>{{ seleccionado()?.cuenta_ahorro || '-' }}</span></div>
+        </div>
+
+        <div class="montos-flex">
+          <div class="monto-box haber">
+            <span class="monto-label">Total Haber</span>
+            <span class="monto-valor">{{ seleccionado()?.total_haber }}</span>
+          </div>
+          <div class="monto-box liquido">
+            <span class="monto-label">Total Líquido</span>
+            <span class="monto-valor">{{ seleccionado()?.total_liquido }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="seleccionadoHaberes().length > 0" class="boleta-haberes">
+          <h4>Haberes</h4>
+          <div class="haberes-table-wrapper">
+            <table class="haberes-table" aria-label="Tabla de haberes">
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th class="col-valor">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of seleccionadoHaberes()">
+                  <td>{{ item.key }}</td>
+                  <td class="col-valor">{{ item.value }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total Ítems</td>
+                  <td class="col-valor resaltado">{{ seleccionadoHaberes().length }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div *ngIf="seleccionado()?.leyenda as leyendaFull" class="leyenda-secundaria">
+          <strong>Leyenda:</strong> {{ leyendaFull }}
+        </div>
+      </div>
+    </section>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+
+<mat-dialog-actions align="end" class="actions-flex no-print">
+  <button mat-stroked-button color="primary" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    Cerrar
+  </button>
 </mat-dialog-actions>
