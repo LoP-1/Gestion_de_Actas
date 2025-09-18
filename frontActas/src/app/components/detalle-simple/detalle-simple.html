@@ -1,104 +1,203 @@
 <mat-card class="boleta-window">
-  <!-- Encabezado moderno -->
-  <div class="boleta-header">
+  <!-- Encabezado -->
+  <header class="boleta-header">
     <div class="title-wrap">
-      <mat-icon>receipt_long</mat-icon>
-      <h2>Detalle de la Boleta</h2>
+      <div class="icon-badge">
+        <mat-icon>receipt_long</mat-icon>
+      </div>
+      <div class="title-stack">
+        <h2>Detalle de la Boleta</h2>
+        <small *ngIf="data" class="subref">Periodo: <b>{{data?.periodoPago}}</b></small>
+      </div>
     </div>
-    <button mat-icon-button mat-dialog-close class="close-btn" aria-label="Cerrar">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+    <div class="header-actions">
+      <button mat-icon-button (click)="imprimirBoleta()" aria-label="Imprimir">
+        <mat-icon>print</mat-icon>
+      </button>
+      <button mat-icon-button mat-dialog-close class="close-btn" aria-label="Cerrar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </header>
 
-  <!-- Zona scrollable principal (ocupa todo el alto disponible) -->
-  <div class="boleta-scroll">
-    <div class="boleta-grid">
-      <!-- Datos a la izquierda -->
-      <mat-card class="boleta-user-card">
-        <mat-card-title>Datos del Usuario</mat-card-title>
-        <mat-card-content>
-          <div class="user-row"><strong>Periodo:</strong> <span>{{data?.periodoPago}}</span></div>
-          <div class="user-row"><strong>Cargo:</strong> <span>{{data?.cargoOrig}}</span></div>
-          <div class="user-row"><strong>Nombre:</strong> <span>{{data?.nombres}} {{data?.apePaterno}} {{data?.apeMaterno}}</span></div>
-          <div class="user-row"><strong>DNI:</strong> <span>{{data?.nroDocumento}}</span></div>
-          <div class="user-row"><strong>Código Modular:</strong> <span>{{data?.codigoModular}}</span></div>
-          <div class="user-row"><strong>Proceso:</strong> <span>{{data?.tipoServidor}}</span></div>
-          <div class="user-row"><strong>Días trabajados:</strong> <span>{{data?.diasTrabajados}}</span></div>
-          <div class="user-row"><strong>Total Remuneración:</strong> <span>{{data?.totalRemuneracion | currency:'S/.'}}</span></div>
-          <div class="user-row"><strong>Total Tributable:</strong> <span>{{data?.tributable | currency:'S/.'}}</span></div>
-          <div class="user-row"><strong>Total Líquido:</strong> <span>{{data?.totalLiquido | currency:'S/.'}}</span></div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Ingresos y Egresos a la derecha -->
-      <div class="boleta-tables">
-        <mat-card class="boleta-ing-card">
-          <mat-card-title>Ingresos</mat-card-title>
-          <mat-card-content>
-            <table mat-table [dataSource]="ingresos" class="mat-elevation-z1">
-              <ng-container matColumnDef="concepto">
-                <th mat-header-cell *matHeaderCellDef> Concepto </th>
-                <td mat-cell *matCellDef="let i"> {{i.concepto}} </td>
-              </ng-container>
-              <ng-container matColumnDef="monto">
-                <th mat-header-cell *matHeaderCellDef> Monto </th>
-                <td mat-cell *matCellDef="let i"> {{i.monto | currency:'S/.'}} </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="ingresosDisplayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: ingresosDisplayedColumns;"></tr>
-              <tr class="empty-row" *ngIf="ingresos.length === 0">
-                <td colspan="2">Sin ingresos</td>
-              </tr>
-            </table>
-            <div class="boleta-totales">
-              <strong>Total Ingresos:</strong> {{totalIngresos | currency:'S/.'}}
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="boleta-egre-card">
-          <mat-card-title>Egresos</mat-card-title>
-          <mat-card-content>
-            <table mat-table [dataSource]="egresos" class="mat-elevation-z1">
-              <ng-container matColumnDef="concepto">
-                <th mat-header-cell *matHeaderCellDef> Concepto </th>
-                <td mat-cell *matCellDef="let e"> {{e.concepto}} </td>
-              </ng-container>
-              <ng-container matColumnDef="monto">
-                <th mat-header-cell *matHeaderCellDef> Monto </th>
-                <td mat-cell *matCellDef="let e"> {{e.monto | currency:'S/.'}} </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="egresosDisplayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: egresosDisplayedColumns;"></tr>
-              <tr class="empty-row" *ngIf="egresos.length === 0">
-                <td colspan="2">Sin egresos</td>
-              </tr>
-            </table>
-            <div class="boleta-totales"><strong>Total Egresos:</strong> {{totalEgresos | currency:'S/.'}}</div>
-            <div class="boleta-totales saldo-neto"><strong>Saldo Neto:</strong> {{(totalIngresos - totalEgresos) | currency:'S/.'}}</div>
-          </mat-card-content>
-        </mat-card>
+  <!-- Barra de resumen (fuera del área print? → la incluimos dentro) -->
+  <div class="resumen-wrapper" *ngIf="!isLoading && data">
+    <div class="resumen-bar">
+      <div class="resumen-item">
+        <span class="lbl">Remuneración</span>
+        <span class="val">{{ formato(data?.totalRemuneracion || 0) }}</span>
+      </div>
+      <div class="resumen-item">
+        <span class="lbl">Tributable</span>
+        <span class="val">{{ formato(data?.tributable || 0) }}</span>
+      </div>
+      <div class="resumen-item">
+        <span class="lbl">Días Trab.</span>
+        <span class="val">{{ data?.diasTrabajados || 0 }}</span>
+      </div>
+      <div class="resumen-item total-neto">
+        <span class="lbl">Líquido</span>
+        <span class="val">{{ formato(data?.totalLiquido || (totalIngresos - totalEgresos)) }}</span>
       </div>
     </div>
   </div>
 
-  <!-- Acciones fijas al fondo -->
+  <!-- Área scroll principal -->
+  <div class="boleta-scroll">
+    <ng-container *ngIf="isLoading">
+      <div class="loading-box">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Cargando información...</span>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!isLoading && !data">
+      <div class="empty-box">
+        <mat-icon>info</mat-icon>
+        No se encontró información de la boleta.
+      </div>
+    </ng-container>
+
+    <div *ngIf="!isLoading && data" class="boleta-grid" id="print-area-simple">
+      <!-- Columna izquierda: datos de usuario -->
+      <section class="panel datos-panel">
+        <h3 class="panel-title">Identificación</h3>
+        <div class="datos-grid">
+          <div>
+            <span class="label">Nombre Completo</span>
+            <span class="value">{{data?.nombres}} {{data?.apePaterno}} {{data?.apeMaterno}}</span>
+          </div>
+          <div>
+            <span class="label">DNI</span>
+            <span class="value">{{data?.nroDocumento}}</span>
+          </div>
+          <div>
+            <span class="label">Código Modular</span>
+            <span class="value">{{data?.codigoModular || '-'}}</span>
+          </div>
+           <div>
+            <span class="label">Leyenda</span>
+            <span class="value">{{data?.leyendaPermanente || '-'}}</span>
+          </div>
+          <div>
+            <span class="label">Cargo</span>
+            <span class="value">{{data?.cargoOrig || '-'}}</span>
+          </div>
+          <div>
+            <span class="label">Proceso</span>
+            <span class="value">{{data?.tipoServidor || '-'}}</span>
+          </div>
+          <div>
+            <span class="label">Periodo</span>
+            <span class="value">{{data?.periodoPago}}</span>
+          </div>
+          <div>
+            <span class="label">Días Trabajados</span>
+            <span class="value">{{data?.diasTrabajados || 0}}</span>
+          </div>
+          <div>
+            <span class="label">Remuneración</span>
+            <span class="value">{{ formato(data?.totalRemuneracion || 0) }}</span>
+          </div>
+          <div>
+            <span class="label">Tributable</span>
+            <span class="value">{{ formato(data?.tributable || 0) }}</span>
+          </div>
+          <div>
+            <span class="label">Total Líquido</span>
+            <span class="value liquido">{{ formato(data?.totalLiquido || (totalIngresos - totalEgresos)) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna derecha: tablas -->
+      <section class="panel tablas-panel">
+        <div class="tables-wrapper">
+          <!-- Ingresos -->
+            <div class="table-card ingresos">
+              <div class="table-head">
+                <span class="tag tipo-ing">INGRESOS</span>
+                <span class="head-total">{{ formato(totalIngresos) }}</span>
+              </div>
+              <table mat-table [dataSource]="ingresos" class="tabla-montos">
+                <ng-container matColumnDef="concepto">
+                  <th mat-header-cell *matHeaderCellDef> Concepto </th>
+                  <td mat-cell *matCellDef="let i">{{ i.concepto }}</td>
+                </ng-container>
+                <ng-container matColumnDef="monto">
+                  <th mat-header-cell *matHeaderCellDef class="col-num"> Monto </th>
+                  <td mat-cell *matCellDef="let i" class="col-num">{{ formato(i.monto) }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="ingresosDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: ingresosDisplayedColumns;"></tr>
+                <tr class="empty-row" *ngIf="ingresos.length === 0">
+                  <td colspan="2">Sin ingresos</td>
+                </tr>
+                <tfoot>
+                  <tr>
+                    <td>Total</td>
+                    <td class="col-num">{{ formato(totalIngresos) }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+          <!-- Egresos -->
+            <div class="table-card egresos">
+              <div class="table-head">
+                <span class="tag tipo-eg">EGRESOS</span>
+                <span class="head-total">{{ formato(totalEgresos) }}</span>
+              </div>
+              <table mat-table [dataSource]="egresos" class="tabla-montos">
+                <ng-container matColumnDef="concepto">
+                  <th mat-header-cell *matHeaderCellDef> Concepto </th>
+                  <td mat-cell *matCellDef="let e">{{ e.concepto }}</td>
+                </ng-container>
+                <ng-container matColumnDef="monto">
+                  <th mat-header-cell *matHeaderCellDef class="col-num"> Monto </th>
+                  <td mat-cell *matCellDef="let e" class="col-num">{{ formato(e.monto) }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="egresosDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: egresosDisplayedColumns;"></tr>
+                <tr class="empty-row" *ngIf="egresos.length === 0">
+                  <td colspan="2">Sin egresos</td>
+                </tr>
+                <tfoot>
+                  <tr>
+                    <td>Total</td>
+                    <td class="col-num">{{ formato(totalEgresos) }}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+        </div>
+
+        <!-- Neto final -->
+        <div class="neto-box">
+          <span class="label">Saldo Neto</span>
+          <span class="valor">{{ formato(totalIngresos - totalEgresos) }}</span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Acciones -->
   <div class="boleta-actions">
-  <button mat-raised-button color="primary" (click)="cerrarDialogo()">
-    <mat-icon>close</mat-icon>
-    Cerrar
-  </button>
-  <button mat-raised-button color="accent" (click)="agregarADetalles(); cerrarDialogo()">
-    <mat-icon>playlist_add</mat-icon>
-    Agregar a detalles
-  </button>
-  <button mat-button color="primary" (click)="verDetalleCompleto()">
-    <mat-icon>open_in_new</mat-icon>
-    Ver Detalle Completo
-  </button>
-  <button mat-button color="primary" (click)="verDescuentos()">
-    <mat-icon>open_in_new</mat-icon>
-    Ver Descuentos
-  </button>
-</div>
+    <button mat-raised-button color="primary" (click)="cerrarDialogo()">
+      <mat-icon>close</mat-icon>
+      Cerrar
+    </button>
+    <button mat-raised-button color="accent" (click)="agregarADetalles()">
+      <mat-icon>playlist_add</mat-icon>
+      Agregar a detalles
+    </button>
+    <button mat-stroked-button color="primary" (click)="verDetalleCompleto()">
+      <mat-icon>open_in_new</mat-icon>
+      Ver Detalle Completo
+    </button>
+    <button mat-stroked-button color="primary" (click)="verDescuentos()">
+      <mat-icon>open_in_new</mat-icon>
+      Ver Descuentos
+    </button>
+  </div>
 </mat-card>

@@ -99,6 +99,12 @@ export class BeneficiarioDetallesComponent {
     // Clona el nodo para asegurar estilos internos
     const clone = area.cloneNode(true) as HTMLElement;
 
+      const printBtn = clone.querySelector('.print-btn');
+  if (printBtn) {
+    printBtn.remove();
+  }
+
+
     const win = window.open('', '_blank', 'width=840,height=1000');
     if (!win) return;
     win.document.open();
