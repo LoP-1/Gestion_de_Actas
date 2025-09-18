@@ -19,4 +19,8 @@ export class PeriodoDetallesService {
   listarPeriodosPorDni(dni: string): Observable<PeriodoDTO[]> {
     return this.http.get<PeriodoDTO[]>(`${this.apiUrl}/${dni}`);
   }
+
+  listarPeriodosPorDniBeneficiario(dni: string): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.apiUrl}/beneficiarios/periodos/dni/${dni}`);
+  }
 }

@@ -9,7 +9,6 @@ class Beneficiario extends Model
     protected $table = 'beneficiarios';
 
     protected $fillable = [
-        'acta_personal_id',
         'periodo_pago',
         'cod_mod_tit',
         'cargo_tit',

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\ActasPersonal;
 use App\Models\Beneficiario;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +20,6 @@ class BeneficiarioImportService
             throw new FileException('No se puede leer la ruta temporal del archivo.');
         }
 
-        // Detectar separador con la primera línea no vacía
         $bytes = @file_get_contents($real);
         if ($bytes === false) {
             throw new FileException('No se pudo leer el contenido del archivo.');
@@ -38,7 +36,6 @@ class BeneficiarioImportService
             throw new FileException('No se pudo abrir el archivo CSV.');
         }
 
-        // Leer cabecera normalizada
         $rawHeader = fgetcsv($handle, 0, $separator);
         if (!$rawHeader) {
             fclose($handle);
@@ -58,46 +55,16 @@ class BeneficiarioImportService
             while (($row = fgetcsv($handle, 0, $separator)) !== false) {
                 if ($this->isRowEmpty($row)) continue;
 
-                // Obtener campos principales con validaciones robustas
-                $periodoPago     = $this->getValue($row, $headerMap, 'PERIODO_PAGO');
-                $codigoModular   = $this->getValue($row, $headerMap, 'COD_MOD_TIT');
-                $dniTitular      = $this->getValue($row, $headerMap, 'DNI_TIT');
-
-                // Buscar el acta_personal asociada
-                $acta = ActasPersonal::where('codigo_modular', $codigoModular)
-                                     ->where('nro_documento', $dniTitular)
-                                     ->where('periodo_pago', $periodoPago)
-                                     ->first();
-
-                // Si no lo encuentra, buscar en periodos anteriores restando 20 al mes
-                if (!$acta && $periodoPago) {
-                    $anio = substr($periodoPago, 0, 4);
-                    $mes = (int)substr($periodoPago, 4, 2);
-
-                    while ($mes >= 11) {
-                        $mes -= 20;
-                        if ($mes < 11) break;
-                        $nuevoPeriodo = $anio . str_pad($mes, 2, '0', STR_PAD_LEFT);
-                        $acta = ActasPersonal::where('codigo_modular', $codigoModular)
-                                             ->where('nro_documento', $dniTitular)
-                                             ->where('periodo_pago', $nuevoPeriodo)
-                                             ->first();
-                        if ($acta) break;
-                    }
-                }
-
-                if (!$acta) continue;
-
-                // Generar datos del beneficiario
+                // Generar datos del beneficiario SOLO con formato
                 $beneficiarioData = [
-                    'acta_personal_id' => $acta->id,
-                    'periodo_pago'     => $periodoPago,
-                    'cod_mod_tit'      => $codigoModular,
+                    'acta_personal_id' => null, // Si no corresponde, dejar null
+                    'periodo_pago'     => $this->getValue($row, $headerMap, 'PERIODO_PAGO'),
+                    'cod_mod_tit'      => $this->getValue($row, $headerMap, 'COD_MOD_TIT'),
                     'cargo_tit'        => $this->getValue($row, $headerMap, 'CARGO_TIT'),
                     'pat_tit'          => $this->getValue($row, $headerMap, 'PAT_TIT'),
                     'mat_tit'          => $this->getValue($row, $headerMap, 'MAT_TIT'),
                     'nom_tit'          => $this->getValue($row, $headerMap, 'NOM_TIT'),
-                    'dni_tit'          => $dniTitular,
+                    'dni_tit'          => $this->getValue($row, $headerMap, 'DNI_TIT'),
                     'fnac_tit'         => $this->parseFecha($this->getValue($row, $headerMap, 'FNAC_TIT')),
                     'rut_fam'          => $this->getValue($row, $headerMap, 'RUT_FAM'),
                     'dni_ben'          => $this->getValue($row, $headerMap, 'DNI_BEN'),
@@ -117,12 +84,11 @@ class BeneficiarioImportService
                     'haberes_json'     => json_encode($this->parseHaberes($row, $headerMap)),
                 ];
 
-                // Aquí solo se inserta SIEMPRE, permitiendo duplicados
                 $beneficiario = Beneficiario::create($beneficiarioData);
                 $inserted++;
 
                 if (count($preview) < 3) {
-                    $preview[] = $beneficiario->only(['id', 'acta_personal_id', 'dni_ben', 'nom_ben', 'airshp']);
+                    $preview[] = $beneficiario->only(['id', 'periodo_pago', 'dni_ben', 'nom_ben', 'airshp']);
                 }
             }
 
@@ -140,7 +106,6 @@ class BeneficiarioImportService
         }
     }
 
-    // Funciones utilitarias robustas
     private function readFirstNonEmptyLine(string $bytes): array
     {
         $lines = preg_split("/\r\n|\n|\r/", $bytes);
@@ -224,7 +189,6 @@ class BeneficiarioImportService
         return number_format((float)$s, 2, '.', '');
     }
 
-    // Obtiene campos H1, M1... desde la cabecera en adelante
     private function parseHaberes(array $row, array $headerMap): array
     {
         $haberes = [];

@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>
+  Beneficiarios del periodo 
+  <span class="periodo-title-highlight">{{data.periodo}}</span><br>
+  <small style="font-size:1rem;color:#666;">DNI Titular: {{data.dni}}</small>
+</h2>
+<mat-dialog-content>
+  <div *ngIf="loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    Cargando...
+  </div>
+  <div *ngIf="error" class="error">{{error}}</div>
+  <div *ngIf="!loading && beneficiarios.length === 0">
+    No hay beneficiarios para este periodo y titular.
+  </div>
+
+  <div *ngIf="!loading && beneficiarios.length > 0" class="beneficiario-dialog-grid">
+    <!-- Izquierda: Lista de beneficiarios -->
+    <div class="beneficiarios-list">
+      <h3>Beneficiarios</h3>
+      <div *ngFor="let b of beneficiarios"
+           (click)="seleccionar(b)"
+           [class.seleccionado]="b === seleccionado"
+           class="beneficiario-item">
+        <mat-icon color="primary" style="vertical-align: middle;">person</mat-icon>
+        <span class="ben-nombre">{{ getNombreCompletoBen(b) }}</span>
+        <span class="ben-dni">({{b.dni_ben}})</span>
+      </div>
+    </div>
+
+    <!-- Derecha: Detalle tipo boleta -->
+    <div class="boleta-detalle" *ngIf="seleccionado">
+      <h3 class="boleta-titulo">{{ getNombreCompletoBen(seleccionado) }}</h3>
+      <div class="boleta-leyenda">{{seleccionado.leyenda}}</div>
+      <div class="boleta-datos">
+        <div><strong>DNI:</strong> {{seleccionado.dni_ben}}</div>
+        <div><strong>Fecha Nac.:</strong> {{seleccionado.fnac_ben | date:'dd/MM/yyyy'}}</div>
+        <div><strong>Cuenta ahorro:</strong> {{seleccionado.cuenta_ahorro}}</div>
+        <div class="total-haber"><strong>Total Haber:</strong> {{seleccionado.total_haber}}</div>
+        <div class="total-liquido"><strong>Total Líquido:</strong> {{seleccionado.total_liquido}}</div>
+        <div style="margin-top:10px;"><strong>Leyenda:</strong> {{seleccionado.leyenda}}</div>
+        <!-- Puedes agregar más campos aquí -->
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

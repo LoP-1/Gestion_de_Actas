@@ -1,0 +1,170 @@
+.beneficiario-dialog-grid {
+  display: flex;
+  gap: 2.5rem;
+  min-width: 320px;
+  max-width: 950px;
+  width: 100%;
+}
+
+.beneficiarios-list {
+  flex: 1 1 210px;
+  background: #f5f6fa;
+  padding: 18px 12px 10px 12px;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px 0 rgba(0,40,106,0.05);
+}
+
+.beneficiarios-list h3 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--brand-navy);
+  letter-spacing: 0.02em;
+}
+
+.beneficiario-item {
+  cursor: pointer;
+  padding: 12px 12px 10px 10px;
+  border-radius: 7px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.20s, color 0.20s;
+  font-size: 1.05em;
+  background: #fff;
+  border: 2px solid transparent;
+}
+.beneficiario-item.seleccionado {
+  background: var(--brand-green, #00d084);
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid var(--brand-green);
+}
+.beneficiario-item.seleccionado .ben-dni {
+  color: #fff;
+}
+.beneficiario-item:hover:not(.seleccionado) {
+  background: #ededfa;
+  border-color: var(--brand-navy, #00286a);
+}
+.ben-nombre {
+  font-weight: 500;
+  flex: 1 1 auto;
+}
+.ben-dni {
+  color: #666;
+  font-size: 0.97em;
+  margin-left: 6px;
+}
+
+.boleta-detalle {
+  flex: 2 1 400px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 22px 22px 22px;
+  box-shadow: 0 2px 24px 2px rgba(0,40,106,0.08);
+  border: 1px solid #e1e5ef;
+  min-width: 270px;
+  max-width: 470px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.boleta-titulo {
+  margin: 0 0 10px 0;
+  color: var(--brand-navy, #00286a);
+  font-size: 1.23rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.boleta-leyenda {
+  color: var(--brand-orange, #ff6900);
+  font-size: 1.14rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+}
+
+.boleta-datos {
+  margin-top: 2px;
+  font-size: 1.04em;
+  color: #222;
+}
+
+.boleta-datos div {
+  margin-bottom: 5px;
+}
+
+.boleta-datos .total-haber,
+.boleta-datos .total-liquido {
+  background: var(--brand-green, #00d084);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1em;
+  padding: 2px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 7px;
+  margin-right: 8px;
+}
+
+/* Título periodo resaltado */
+.periodo-title-highlight {
+  display: inline-block;
+  background: rgba(255,105,0,0.08);
+  color: var(--brand-orange, #ff6900);
+  padding: 2px 12px 2px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.16rem;
+  margin-left: 4px;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+  .beneficiario-dialog-grid {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
+    max-width: 99vw;
+  }
+  .boleta-detalle {
+    margin-top: 0;
+    max-width: 99vw;
+  }
+  .beneficiarios-list {
+    margin-bottom: 0;
+    min-width: 0;
+    max-width: 99vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .beneficiario-dialog-grid {
+    padding: 0;
+    gap: 1rem;
+  }
+  .beneficiarios-list, .boleta-detalle {
+    padding: 18px 8px 10px 8px; /* más padding en móvil */
+    border-radius: 10px;
+    font-size: 1em;
+  }
+  .boleta-titulo {
+    font-size: 1.08rem;
+  }
+  .boleta-leyenda {
+    font-size: 1.01rem;
+  }
+  .boleta-datos {
+    padding: 6px 4px 6px 4px;
+  }
+}
+
+/* Botón cerrar Material */
+.mat-dialog-actions {
+  margin-top: 24px;
+}

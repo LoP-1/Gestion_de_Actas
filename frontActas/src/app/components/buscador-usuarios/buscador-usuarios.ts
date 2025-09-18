@@ -13,6 +13,8 @@ import { UsuarioService } from '../../services/usuario';
 import { PeriodoDetallesService, PeriodoDTO } from '../../services/periodo-detalles';
 import { UsuarioUnico } from '../../models/usuario-unico';
 import { DetalleSimpleComponent } from '../detalle-simple/detalle-simple';
+import { BeneficiarioDetallesComponent } from '../../components/beneficiario-detalles/beneficiario-detalles';
+
 
 @Component({
   selector: 'app-buscador-usuarios',
@@ -41,6 +43,7 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
 
   expandedElement: UsuarioUnico | null = null;
   periodosPorUsuario: { [dni: string]: PeriodoDTO[] | undefined } = {};
+  periodosComoBeneficiario: { [dni: string]: string[] | undefined } = {};
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 10;
@@ -55,9 +58,9 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
   ) {
     this.dataSource.filterPredicate = (data: UsuarioUnico, filter: string) => {
       const filters = JSON.parse(filter);
-      const matchDni = !filters.dni || data.dni?.toLowerCase().includes(filters.dni);
-      const matchNombre = !filters.nombre || data.nombres?.toLowerCase().includes(filters.nombre);
-      const matchApellido = !filters.apellido || data.apellido?.toLowerCase().includes(filters.apellido);
+      const matchDni = !filters.dni || (data.dni ?? '').toLowerCase().includes(filters.dni);
+      const matchNombre = !filters.nombre || (data.nombres ?? '').toLowerCase().includes(filters.nombre);
+      const matchApellido = !filters.apellido || (data.apellido ?? '').toLowerCase().includes(filters.apellido);
       return matchDni && matchNombre && matchApellido;
     };
   }
@@ -103,9 +106,17 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
     }
     this.expandedElement = usuario;
 
+    // Periodos como titular
     if (this.periodosPorUsuario[usuario.dni] === undefined) {
       this.periodoDetalles.listarPeriodosPorDni(usuario.dni).subscribe(periodos => {
         this.periodosPorUsuario[usuario.dni] = periodos;
+      });
+    }
+
+    // Periodos como beneficiario
+    if (this.periodosComoBeneficiario[usuario.dni] === undefined) {
+      this.periodoDetalles.listarPeriodosPorDniBeneficiario(usuario.dni).subscribe(periodos => {
+        this.periodosComoBeneficiario[usuario.dni] = periodos;
       });
     }
   }
@@ -123,6 +134,15 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
     this.abrirDetalle(id);
   }
 
+  onPeriodoBeneficiarioClick(periodo: string, usuario: UsuarioUnico) {
+  this.dialog.open(BeneficiarioDetallesComponent, {
+    data: { periodo, dni: usuario.dni },
+    panelClass: 'boleta-dialog-panel',
+      width: '96vw',
+      height: '92vh',
+      maxWidth: '100vw',
+  });
+}
   onPageChange() {
     this.expandedElement = null;
   }
@@ -130,14 +150,13 @@ export class BuscadorUsuariosComponent implements OnInit, AfterViewInit {
   abrirDetalle(id: number | string) {
     this.dialog.open(DetalleSimpleComponent, {
       data: { id },
-      panelClass: 'boleta-dialog-panel',
       width: '96vw',
       height: '92vh',
       maxWidth: '100vw',
     });
   }
 
-  // ✅ Método para obtener datos paginados (CORREGIDO)
+  // Método para obtener datos paginados
   getPaginatedData(): UsuarioUnico[] {
     if (!this.paginator) {
       return this.dataSource.filteredData;

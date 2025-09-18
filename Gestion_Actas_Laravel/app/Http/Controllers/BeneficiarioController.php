@@ -32,6 +32,18 @@ class BeneficiarioController extends Controller
         return response()->json($beneficiario);
     }
 
+
+    // GET /api/beneficiarios/periodos/dni/{dni}
+public function obtenerPeriodosPorDniBeneficiario($dni)
+{
+    $periodos = Beneficiario::where('dni_tit', $dni)
+        ->distinct()
+        ->orderBy('periodo_pago')
+        ->pluck('periodo_pago');
+
+    return response()->json($periodos);
+}
+
     //GET /api/beneficiarios/periodo/{periodo}
     public function obtenerBeneficiariosPorPeriodo($periodo)
     {
@@ -45,5 +57,11 @@ class BeneficiarioController extends Controller
         $beneficiarios = Beneficiario::where('dni_tit', $dni)->get();
         return response()->json($beneficiarios);
     }
+    // GET /api/beneficiarios/periodos
+    public function obtenerPeriodosUnicos()
+{
+    $periodos = Beneficiario::distinct()->pluck('periodo_pago');
+    return response()->json($periodos);
+}
 
 }

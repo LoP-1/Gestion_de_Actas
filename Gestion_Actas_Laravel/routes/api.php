@@ -23,7 +23,7 @@ Route::middleware('jwt.auth')->get('/user', function (Request $request) {
 
 // Endpoints protegidos con JWT
 Route::middleware('jwt.auth')->group(function () {
-    // PONER PRIMERO LAS RUTAS ESTÁTICAS o más específicas
+    // Usuarios: rutas más específicas primero
     Route::get('/usuarios/detalles', [ActasController::class, 'obtenerDetallesSimples']);  // ?nroDocumento=...
     Route::get('/usuarios/detalle/{dni}', [ActasController::class, 'obtenerPorDni']);
     Route::get('/usuarios/lista-unicos', [ActasController::class, 'listarUsuariosUnicosPorDni']);
@@ -36,26 +36,21 @@ Route::middleware('jwt.auth')->group(function () {
     // Descuentos
     Route::get('/descuentos', [ActasController::class, 'getPeriodosEgresos']);
 
-    // Por último, la ruta dinámica numérica
+    // Ruta dinámica numérica al final
     Route::get('/usuarios/{id}', [ActasController::class, 'obtenerUsuario'])
         ->whereNumber('id');
-    //beneficiario
-Route::get('/beneficiarios', [BeneficiarioController::class, 'index']);
-Route::get('/beneficiarios/{id}', [BeneficiarioController::class, 'show']);
 });
-
-// Beneficiarios por periodo
-Route::get('/beneficiarios/periodo/{periodo}', [BeneficiarioController
-::class, 'obtenerBeneficiariosPorPeriodo']);
-// Beneficiarios por dni
-Route::get('/beneficiarios/dni/{dni}', [BeneficiarioController
-::class, 'obtenerBeneficiariosPorDni']);
+Route::get('/beneficiarios/periodos/dni/{dni}', [BeneficiarioController::class, 'obtenerPeriodosPorDniBeneficiario']);
+// Beneficiarios: rutas más específicas primero
+Route::get('/beneficiarios/periodos', [BeneficiarioController::class, 'obtenerPeriodosUnicos']);
+Route::get('/beneficiarios/periodo/{periodo}', [BeneficiarioController::class, 'obtenerBeneficiariosPorPeriodo']);
+Route::get('/beneficiarios/dni/{dni}', [BeneficiarioController::class, 'obtenerBeneficiariosPorDni']);
+Route::get('/beneficiarios', [BeneficiarioController::class, 'index']);
+Route::get('/beneficiarios/{id}', [BeneficiarioController::class, 'show'])->whereNumber('id'); // Si quieres restringir a números
 
 // Upload CSV (público)
 Route::post('/upload', [CSVController::class, 'importarCsv']);
-// Upload Beneficiarios CSV (público)
 Route::post('/upload/beneficiario', [BeneficiarioCSVController::class, 'importarCsv']);
-
 
 // Rutas demo por rol (opcionales)
 Route::middleware('jwt.auth:ADMIN')->group(function () {
